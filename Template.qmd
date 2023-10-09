@@ -1,0 +1,19 @@
+---
+title: "Template"
+author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
+format: html
+editor: visual
+---
+
+```{r Packages}
+library(keras) 
+library(reticulate) 
+library(tensorflow)
+```
+
+
+```{r Data}
+sys.source("sona-first-steps.R" , envir = knitr::knit_global())
+sys.source("DataClean.R", envir = knitr::knit_global())
+```
+
