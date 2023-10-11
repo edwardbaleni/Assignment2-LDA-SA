@@ -289,3 +289,47 @@ wordsSentiment %>%
   geom_bar(fill = "red", stat = "identity") +
   xlab("President") + ylab("Change in Net Positive Sentiments in Speech") + 
   theme_bw(base_size = 12) 
+
+### NRC Sentiment Analysis
+
+wordsSentimentNRC = wordsSentiment %>% 
+  left_join(nrc, by = "word", relationship = "many-to-many") %>% 
+  rename(nrc_sentiment = sentiment)
+
+head(wordsSentimentNRC)
+
+wordsSentimentNRC %>%
+  add_count(president, name = "n_words") %>%
+  na.omit() %>%
+  group_by(president, nrc_sentiment) %>%
+  summarize(prop = n() / first(n_words)) %>% 
+  ungroup() %>%
+  group_by(president, nrc_sentiment) %>%
+  summarize(mean_prop = mean(prop)) %>% 
+  ungroup() %>%
+  group_by(president) %>%
+  mutate(nrc_id = 1:10) %>%
+  ungroup() %>%
+  filter(nrc_id <= 5) %>%
+  ggplot(aes(reorder(nrc_sentiment, mean_prop), mean_prop, fill = president)) + 
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Average Proportion") +
+  theme_bw(base_size = 12)
+
+wordsSentimentNRC %>%
+  add_count(president, name = "n_words") %>%
+  na.omit() %>%
+  group_by(president, nrc_sentiment) %>%
+  summarize(prop = n() / first(n_words)) %>% 
+  ungroup() %>%
+  group_by(president, nrc_sentiment) %>%
+  summarize(mean_prop = mean(prop)) %>% 
+  ungroup() %>%
+  group_by(president) %>%
+  mutate(nrc_id = 1:10) %>%
+  ungroup() %>%
+  filter(nrc_id >= 6) %>%
+  ggplot(aes(reorder(nrc_sentiment, mean_prop), mean_prop, fill = president)) + 
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Average Proportion") +
+  theme_bw(base_size = 12)
