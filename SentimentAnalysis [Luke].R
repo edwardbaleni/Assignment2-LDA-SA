@@ -272,3 +272,20 @@ wordsSentiment %>%
                    breaks = c("1994","1999","2004", "2009", 
                               "2014", "2019", "2023")) +
   scale_shape_manual(values = c(5, 15, 1, 18, 0, 16)) 
+
+## Change in Net Positive Sentiment between first and last speech
+
+wordsSentiment %>%
+  group_by(year, president, bing_sentiment) %>%
+  filter(bing_sentiment == "negative" | bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ungroup(bing_sentiment) %>%
+  mutate(netSent = n - first(n)) %>%
+  filter(bing_sentiment == "positive") %>%
+  ungroup(year) %>%
+  mutate(changeNetSent = last(netSent) - netSent) %>% 
+  filter(row_number() == 1) %>%
+  ggplot(aes(x = as.factor(president), y = changeNetSent)) + 
+  geom_bar(fill = "red", stat = "identity") +
+  xlab("President") + ylab("Change in Net Positive Sentiments in Speech") + 
+  theme_bw(base_size = 12) 
