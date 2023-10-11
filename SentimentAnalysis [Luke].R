@@ -333,3 +333,33 @@ wordsSentimentNRC %>%
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Average Proportion") +
   theme_bw(base_size = 12)
+
+### Word Clouds (maybe for EDA...)
+
+library(wordcloud)
+
+set.seed(2023)
+
+wordsWithSentID %>%
+  anti_join(stop_words) %>%
+  filter(president == "Mandela") %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 25, scale = c(2.5, 1)))
+
+wordsWithSentID %>%
+  anti_join(stop_words) %>%
+  filter(president == "Mbeki") %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 25, scale = c(2.5, 1)))
+
+wordsWithSentID %>%
+  anti_join(stop_words) %>%
+  filter(president == "Ramaphosa") %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 25, scale = c(2.5, 1)))
+
+wordsWithSentID %>%
+  anti_join(stop_words) %>%
+  filter(president == "Zuma") %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 25, scale = c(2.5, 1)))
