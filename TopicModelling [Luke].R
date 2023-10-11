@@ -153,7 +153,8 @@ gamma = tidy(speechLDAforDTP, matrix = 'gamma')
 gamma$gamma = round(gamma$gamma, 3)
 
 speechGamma = left_join(speechSentences %>% 
-                        mutate(speechID = as.character(speechID)), 
+                        mutate(speechID = as.character(speechID)) %>%
+                        select(-sentences, -sentID), 
                         gamma,
                         by = c("speechID" = "document"), 
                         relationship = "many-to-many")
@@ -163,6 +164,8 @@ speechGamma = left_join(speechSentences %>%
 # I don't know what's going on here 
 
 speechGamma %>% 
+  group_by(speechID) %>%
+  # summarise_all(speechID = first(speechID)) %>%
   filter(president == "Mandela") %>%
   filter(topic != 4 & gamma > 0.5) 
 
