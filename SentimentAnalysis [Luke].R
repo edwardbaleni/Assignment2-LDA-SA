@@ -226,3 +226,49 @@ wordsSentiment %>%
   xlab(" ") + ylab("Times Used in Speech") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
+
+### Count the positive and negative sentiments in each speech 
+
+wordsSentiment %>%
+  group_by(year, president) %>%
+  filter(bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ggplot(aes(x = year, y = n, shape = president)) + 
+  geom_point(col = "purple", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Positive Sentiments in Speech") +
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16))
+
+wordsSentiment %>%
+  group_by(year, president) %>%
+  filter(bing_sentiment == "negative") %>%
+  count(bing_sentiment) %>%
+  ggplot(aes(x = year, y = n, shape = president)) + 
+  geom_point(col = "orange", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Negative Sentiments in Speech") + 
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16)) 
+
+## Net Sentiment of Speech
+
+wordsSentiment %>%
+  group_by(year, president, bing_sentiment) %>%
+  filter(bing_sentiment == "negative" | bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ungroup(bing_sentiment) %>%
+  mutate(netSent = n - first(n)) %>%
+  filter(bing_sentiment == "positive") %>%
+  ggplot(aes(x = year, y = netSent, shape = president)) + 
+  geom_point(col = "red", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Net Positive Sentiments in Speech") + 
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16)) 
