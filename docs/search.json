@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome!",
+    "section": "",
+    "text": "This is a website for the submission of Assignment 2 for STA5073Z. Group: Edward Baleni, Luke Barnes and Andrea Plumbley"
+  },
+  {
+    "objectID": "Template.html",
+    "href": "Template.html",
+    "title": "Template",
+    "section": "",
+    "text": "This is where our main report will go.\n\n#library(keras) \n#library(reticulate) \n#library(tensorflow)\n\n\n#sys.source(\"sona-first-steps.R\" , envir = knitr::knit_global())\n#sys.source(\"DataClean.R\", envir = knitr::knit_global())"
+  },
+  {
+    "objectID": "Appendix.html",
+    "href": "Appendix.html",
+    "title": "Appendix",
+    "section": "",
+    "text": "This will contain the appendix of the report and maybe some code.\n\n2 + 2\n\n[1] 4"
+  }
+]

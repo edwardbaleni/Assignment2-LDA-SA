@@ -1,0 +1,10 @@
+---
+title: "Appendix"
+---
+
+This will contain the appendix of the report and maybe some code. 
+
+```{r}
+2 + 2
+```
+
