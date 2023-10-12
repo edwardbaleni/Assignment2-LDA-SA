@@ -15,10 +15,12 @@ bing <- get_sentiments('bing')
 nrc <- get_sentiments('nrc') %>%
   distinct(word, .keep_all = T)
 
+# Tokenize
 uni <- data_count %>%
   unnest_tokens(word, speech, token = "words") %>%
   filter(!word %in% stop_words$word)
 
+# Combining sentiment dictionaries with tokens
 uni <- uni %>%
   left_join(bing) %>%
   rename( bing_sentiment = sentiment) %>%
@@ -28,72 +30,64 @@ uni <- uni %>%
   rename(nrc_sentiment = sentiment)
 
 # Sentiment over time
-
-
-sentiments_per_month <- uni %>%
+sentiment_time <- uni %>%
   group_by(date, bing_sentiment) %>%
   summarize(n = n()) 
 
-ggplot(filter(sentiments_per_month, bing_sentiment != 'neutral'), aes(x = date, y = n, fill = bing_sentiment)) +
+# Positive and negative sentiment over time.
+ggplot(filter(sentiment_time, bing_sentiment != 'neutral'), aes(x = date, y = n, fill = bing_sentiment)) +
   geom_col() 
 
-
-sentiments_per_month <- sentiments_per_month %>% 
-  left_join(sentiments_per_month %>% 
+sentiment_time <- sentiment_time %>% 
+  left_join(sentiment_time %>% 
               group_by(date) %>% 
               summarise(total = sum(n))) %>%
   mutate(freq = n/total) 
 
-sentiments_per_month %>% filter(bing_sentiment != 'neutral') %>%
+# A line graph depicting the rise and fall of possitive and negatice sentiment 
+# over time
+sentiment_time %>% filter(bing_sentiment != 'neutral') %>%
   ggplot(aes(x = date, y = freq, colour = bing_sentiment)) +
   geom_line() + 
   geom_smooth(aes(colour = bing_sentiment))
 
-
-
-
-sentiments_per_tweet <- uni %>%
+# This line gives the sentiment of the statements over sentences
+sentiment_over_sentence <- uni %>%
   group_by(ids) %>%
   summarize(net_sentiment = (sum(bing_sentiment == 'positive') - sum(bing_sentiment == 'negative')),
             month = first(date))
 
+# Negative sentiment
 sentences %>% 
-  left_join(sentiments_per_tweet) %>% 
+  left_join(sentiment_over_sentence) %>% 
   arrange(net_sentiment) %>% 
   head(10) %>%
   select(speech, net_sentiment) 
 
+# Positive Sentiment
 sentences %>% 
-  left_join(sentiments_per_tweet) %>% 
+  left_join(sentiment_over_sentence) %>% 
   arrange(desc(net_sentiment)) %>% 
   head(10) %>%
   select(speech, net_sentiment) 
 
 
-# Plot does not run
-sentiments_per_tweet %>%
-  group_by(month) %>%
-  summarize(prop_neg = sum(net_sentiment < 0) / n()) %>%
-  ggplot(aes(x = month, y = prop_neg)) +
-  geom_line() + geom_smooth()
-
-
-
-
-
+# illustrates the sentiment over time and through their texts
+# If this was split up per speech it would show the change in sentiment throught the speech
 ggplot(uni, aes(ids, afinn_sentiment, fill = president)) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~president, ncol = 2, scales = "free_x")
 
 
-
-number_of_sentences <- 50
-jane_austen_sentiment <- uni %>%
+# This will look at the sentiment over sections of each presidents speeches going 20
+# sentences at a time
+number_of_sentences <- 20
+sentiment_president <- uni %>%
   count(president, index = ids %/% number_of_sentences, bing_sentiment) %>%
   pivot_wider(names_from = bing_sentiment, values_from = n, values_fill = 0) %>% 
   mutate(sentiment = positive - negative)
 
-ggplot(jane_austen_sentiment, aes(index, sentiment, fill = president)) +
+ggplot(sentiment_president, aes(index, sentiment, fill = president)) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~president, ncol = 2, scales = "free_x")
 
@@ -101,8 +95,7 @@ ggplot(jane_austen_sentiment, aes(index, sentiment, fill = president)) +
 
 
 
-# Most common words
-
+# Most sentiment words
 bing_word_counts <- uni %>%
   count(word, bing_sentiment, sort = TRUE) %>%
   ungroup()
@@ -112,6 +105,7 @@ bing_word_counts %>%
   slice_max(n, n = 10) %>% 
   ungroup() %>%
   mutate(word = reorder(word, n)) %>%
+  filter(!is.na(bing_sentiment)) %>%
   ggplot(aes(n, word, fill = bing_sentiment)) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~bing_sentiment, scales = "free_y") +
@@ -120,11 +114,10 @@ bing_word_counts %>%
 
 
 library(wordcloud)
-
 uni %>%
   anti_join(stop_words) %>%
   count(word) %>%
-  with(wordcloud(word, n, max.words = 100, random.order = F, min.freq = 10))
+  with(wordcloud(word, n, max.words = 100, random.order = F, min.freq = 10),  scale = c(1,.1))
 
 library(reshape2)
 
@@ -132,18 +125,7 @@ uni %>%
   filter(!is.na(bing_sentiment)) %>%
   count(word, bing_sentiment, sort = TRUE) %>%
   acast(word ~ bing_sentiment, value.var = "n", fill = 0) %>%
-  comparison.cloud(colors = c("gray20", "gray80"), max.words = 100)
-
-
-
-
-
-
-
-
-
-
-
+  comparison.cloud(colors = c("gray20", "gray80"), max.words = 100, scale = c(4,.1))
 
 
 
@@ -218,20 +200,21 @@ bigrams_separated <- bigrams_separated %>%
   unite(bigram, word1, word2, sep = ' ', remove = FALSE)
 bigrams_separated %>% select(word1, word2, sentiment1, sentiment2, net_sentiment)
 
-
+# Positive bigrams
 bigrams_separated %>%
   filter(net_sentiment > 0) %>% # get positive bigrams
   count(bigram, sort = TRUE) %>%
   filter(rank(desc(n)) < 20) %>%
   ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
 
-
+# Negative biagrams
 bigrams_separated %>%
   filter(net_sentiment < 0) %>% # get negative bigrams
   count(bigram, sort = TRUE) %>%
   filter(rank(desc(n)) < 20) %>%
   ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
 
+# Negated bigrams
 bigrams_separated %>%
   filter(net_sentiment < 0) %>% # get negative bigrams
   filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
