@@ -21,7 +21,7 @@ dtm_uni <- uni_tdf %>%
   cast_dtm(ids, word, n)
 
 
-uni_lda <- LDA(dtm_uni, k = 2, control = list(seed = 1234))
+uni_lda <- LDA(dtm_uni, k = 4, control = list(seed = 1234))
 uni_lda
 
 
@@ -69,3 +69,22 @@ beta_spread %>%
   geom_col() +
   labs(y = 'Log2 ratio of beta in topic 2 / topic 1') +
   coord_flip()
+
+
+
+
+# Document Topic Probabilities
+
+uni_gamma <- data %>% 
+  left_join(tidy(uni_lda, matrix = 'gamma') %>% 
+              mutate(ids = as.numeric(document)) %>%       
+              select(-document) %>%
+              spread(key = topic, value = gamma, sep = '_'))
+
+uni_gamma %>% group_by(ids) %>% summarize(ntopic1 = sum(topic_1 > 0.5))
+uni_gamma %>% filter(ids == '2') %>% arrange(topic_1) %>% head(7) %>% select(speech, topic_1, topic_2)
+uni_gamma %>% filter(ids == '2') %>% arrange(desc(topic_1)) %>% head(3) %>% select(speech, topic_1, topic_2)
+uni_gamma %>% filter(ids != '2') %>% arrange(topic_2) %>% head(4) %>% select(speech, topic_1, topic_2)
+uni_gamma %>% filter(ids != '2') %>% arrange(desc(topic_2)) %>% head(3) %>% select(speech, topic_1, topic_2)
+
+
