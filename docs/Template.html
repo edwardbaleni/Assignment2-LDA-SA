@@ -155,6 +155,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="./Appendix.html">
  <span class="menu-text">Appendix</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Use of ChatGPT.html">
+ <span class="menu-text">Appendix</span></a>
+  </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
@@ -166,7 +170,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#literature-review" id="toc-literature-review" class="nav-link" data-scroll-target="#literature-review">Literature Review</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis"><em>Sentiment Analysis</em></a></li>
+  <li><a href="#topic-modelling" id="toc-topic-modelling" class="nav-link" data-scroll-target="#topic-modelling"><em>Topic Modelling</em></a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#sentiment-analysis-1" id="toc-sentiment-analysis-1" class="nav-link" data-scroll-target="#sentiment-analysis-1"><em>Sentiment Analysis</em></a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -194,18 +218,190 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>This is where our main report will go.</p>
+<section id="abstract" class="level2">
+<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its ‘emotions’ (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.</p>
+<p>Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.</p>
+<p>(Maybe mention something about use of chat GPT here and where that info can be found. )</p>
+</section>
+<section id="literature-review" class="level2">
+<h2 class="anchored" data-anchor-id="literature-review">Literature Review</h2>
+<ul>
+<li>Brief paragraph on sentiment analysis</li>
+<li>Brief paragraph on topic modelling - look at phillipines paper.</li>
+</ul>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents.</p>
+<p>In order to perform sentiment analysis the speeches need to be tokenized into words and bigrams so that the sentiment of the words can be determined and then overall sentiment determined by aggregating these.</p>
+<ul>
+<li>explain how tokenization done and why bigram were also needed for negation?</li>
+</ul>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<section id="sentiment-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment-analysis"><em>Sentiment Analysis</em></h3>
+<p>In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the bing dictionary which labels words as positive or negative. The affin dictionary gives each word a score between negative five and five, from negative to positive sentiments.</p>
+<p>Because many of the words in the speeches are not in the dictionary, these words were assigned with a sentiment value of neutral. Explain why this is not ideal…….</p>
+<p>Database joins and filtering can be used in order to select each presidents most common postive and negative words as well as the overall most common positive and negative words.</p>
+<p>Explain how this is aggregated to get net sentiment of a speech.</p>
+<p>Changing sentiment over time - what method did we use????</p>
+<p>Talk about negation - use of bigrams.</p>
+</section>
+<section id="topic-modelling" class="level3">
+<h3 class="anchored" data-anchor-id="topic-modelling"><em>Topic Modelling</em></h3>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="sentiment-analysis-1" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment-analysis-1"><em>Sentiment Analysis</em></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(keras) </span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#library(reticulate) </span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#library(tensorflow)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+negative  neutral positive 
+    4510    88544     7327 </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sys.source("sona-first-steps.R" , envir = knitr::knit_global())</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#sys.source("DataClean.R", envir = knitr::knit_global())</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Each Presidents Top 15 Most Frequent Positive words</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Top 5 is highlighted</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">=</span> wordsSentiment <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(president <span class="sc">==</span> <span class="st">"Mandela"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bing_sentiment <span class="sc">==</span> <span class="st">"positive"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(rank(desc(n)) &lt;= 20) %&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(.)[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">&lt;=</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(word, n), n)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">" "</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Times Used in Speeches"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(id <span class="sc">&lt;=</span> <span class="dv">6</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">=</span> wordsSentiment <span class="sc">%&gt;%</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(president <span class="sc">==</span> <span class="st">"Mbeki"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bing_sentiment <span class="sc">==</span> <span class="st">"positive"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(.)[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">&lt;=</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(word, n), n)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">" "</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Times Used in Speeches"</span>) <span class="sc">+</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(id <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">=</span> wordsSentiment <span class="sc">%&gt;%</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(president <span class="sc">==</span> <span class="st">"Motlanthe"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bing_sentiment <span class="sc">==</span> <span class="st">"positive"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(id &lt;= 15) %&gt;%</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(.)[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">&lt;=</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(word, n), n)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">" "</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Times Used in Speech"</span>) <span class="sc">+</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(id <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>P4 <span class="ot">=</span> wordsSentiment <span class="sc">%&gt;%</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(president <span class="sc">==</span> <span class="st">"Ramaphosa"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bing_sentiment <span class="sc">==</span> <span class="st">"positive"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(id &lt;= 15) %&gt;%</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(.)[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">&lt;=</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(word, n), n)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">" "</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Times Used in Speeches"</span>) <span class="sc">+</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(id <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>P5 <span class="ot">=</span> wordsSentiment <span class="sc">%&gt;%</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(president <span class="sc">==</span> <span class="st">"Zuma"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bing_sentiment <span class="sc">==</span> <span class="st">"positive"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(rank(desc(n)) &lt;= 20) %&gt;%</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(.)[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">&lt;=</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(word, n), n)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">" "</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Times Used in Speeches"</span>) <span class="sc">+</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(id <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>P6 <span class="ot">=</span> wordsSentiment <span class="sc">%&gt;%</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(president <span class="sc">==</span> <span class="st">"deKlerk"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bing_sentiment <span class="sc">==</span> <span class="st">"positive"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(rank(desc(n)) &lt;= 20) %&gt;%</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(.)[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">&lt;=</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(word, n), n)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">" "</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Times Used in Speech"</span>) <span class="sc">+</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(id <span class="sc">&lt;=</span> <span class="dv">5</span>)</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(P1, P2, P3, P4, P5, P6, <span class="at">ncol=</span><span class="dv">3</span>, <span class="at">nrow=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-3-5.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

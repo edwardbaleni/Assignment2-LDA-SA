@@ -10,6 +10,7 @@ website:
         text: Home
       - Template.qmd
       - Appendix.qmd
+      - Use of ChatGPT.qmd
 
 format:
   html:

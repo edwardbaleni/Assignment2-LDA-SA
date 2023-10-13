@@ -4,14 +4,56 @@
     "href": "index.html",
     "title": "Welcome!",
     "section": "",
-    "text": "This is a website for the submission of Assignment 2 for STA5073Z. Group: Edward Baleni, Luke Barnes and Andrea Plumbley"
+    "text": "This is a website for the submission of Assignment 2 for STA5073Z.\nGroup: Edward Baleni, Luke Barnes and Andrea Plumbley"
   },
   {
-    "objectID": "Template.html",
-    "href": "Template.html",
+    "objectID": "Template.html#introduction",
+    "href": "Template.html#introduction",
     "title": "Template",
-    "section": "",
-    "text": "This is where our main report will go.\n\n#library(keras) \n#library(reticulate) \n#library(tensorflow)\n\n\n#sys.source(\"sona-first-steps.R\" , envir = knitr::knit_global())\n#sys.source(\"DataClean.R\", envir = knitr::knit_global())"
+    "section": "Introduction",
+    "text": "Introduction\nThe aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its ‘emotions’ (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.\nBefore the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.\n(Maybe mention something about use of chat GPT here and where that info can be found. )"
+  },
+  {
+    "objectID": "Template.html#literature-review",
+    "href": "Template.html#literature-review",
+    "title": "Template",
+    "section": "Literature Review",
+    "text": "Literature Review\n\nBrief paragraph on sentiment analysis\nBrief paragraph on topic modelling - look at phillipines paper."
+  },
+  {
+    "objectID": "Template.html#data",
+    "href": "Template.html#data",
+    "title": "Template",
+    "section": "Data",
+    "text": "Data\nAs mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents.\nIn order to perform sentiment analysis the speeches need to be tokenized into words and bigrams so that the sentiment of the words can be determined and then overall sentiment determined by aggregating these.\n\nexplain how tokenization done and why bigram were also needed for negation?"
+  },
+  {
+    "objectID": "Template.html#methods",
+    "href": "Template.html#methods",
+    "title": "Template",
+    "section": "Methods",
+    "text": "Methods\n\nSentiment Analysis\nIn order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the bing dictionary which labels words as positive or negative. The affin dictionary gives each word a score between negative five and five, from negative to positive sentiments.\nBecause many of the words in the speeches are not in the dictionary, these words were assigned with a sentiment value of neutral. Explain why this is not ideal…….\nDatabase joins and filtering can be used in order to select each presidents most common postive and negative words as well as the overall most common positive and negative words.\nExplain how this is aggregated to get net sentiment of a speech.\nChanging sentiment over time - what method did we use????\nTalk about negation - use of bigrams.\n\n\nTopic Modelling"
+  },
+  {
+    "objectID": "Template.html#results",
+    "href": "Template.html#results",
+    "title": "Template",
+    "section": "Results",
+    "text": "Results\n\nSentiment Analysis\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.3     ✔ readr     2.1.4\n✔ forcats   1.0.0     ✔ stringr   1.5.0\n✔ ggplot2   3.4.3     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.0\n✔ purrr     1.0.1     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the \u001b]8;;http://conflicted.r-lib.org/\u0007conflicted package\u001b]8;;\u0007 to force all conflicts to become errors\n\n\n\nnegative  neutral positive \n    4510    88544     7327 \n\n\n\n\n\n\n## Each Presidents Top 15 Most Frequent Positive words\n## Top 5 is highlighted\n\nP1 = wordsSentiment %>%\n  filter(president == \"Mandela\") %>%\n  filter(bing_sentiment == \"positive\") %>%\n  count(word) %>%\n  #filter(rank(desc(n)) <= 20) %>%\n  arrange(desc(n)) %>%\n  mutate(id = 1:dim(.)[1]) %>%\n  filter(id <= 15) %>%\n  ggplot(aes(reorder(word, n), n)) + geom_col(fill = \"purple\", col = \"black\") + \n  coord_flip() + \n  xlab(\" \") + ylab(\"Times Used in Speeches\") +\n  theme_bw(base_size = 12) +\n  gghighlight(id <= 6)\n\nP2 = wordsSentiment %>%\n  filter(president == \"Mbeki\") %>%\n  filter(bing_sentiment == \"positive\") %>%\n  count(word) %>%\n  arrange(desc(n)) %>%\n  mutate(id = 1:dim(.)[1]) %>%\n  filter(id <= 15) %>%\n  ggplot(aes(reorder(word, n), n)) + geom_col(fill = \"purple\", col = \"black\") + \n  coord_flip() + \n  xlab(\" \") + ylab(\"Times Used in Speeches\") +\n  theme_bw(base_size = 12) +\n  gghighlight(id <= 5)\n\nP3 = wordsSentiment %>%\n  filter(president == \"Motlanthe\") %>%\n  filter(bing_sentiment == \"positive\") %>%\n  count(word) %>%\n  #filter(id <= 15) %>%\n  arrange(desc(n)) %>%\n  mutate(id = 1:dim(.)[1]) %>%\n  filter(id <= 15) %>%\n  ggplot(aes(reorder(word, n), n)) + geom_col(fill = \"purple\", col = \"black\") + \n  coord_flip() + \n  xlab(\" \") + ylab(\"Times Used in Speech\") +\n  theme_bw(base_size = 12) +\n  gghighlight(id <= 5)\n\nP4 = wordsSentiment %>%\n  filter(president == \"Ramaphosa\") %>%\n  filter(bing_sentiment == \"positive\") %>%\n  count(word) %>%\n  #filter(id <= 15) %>%\n  arrange(desc(n)) %>%\n  mutate(id = 1:dim(.)[1]) %>%\n  filter(id <= 15) %>%\n  ggplot(aes(reorder(word, n), n)) + geom_col(fill = \"purple\", col = \"black\") + \n  coord_flip() + \n  xlab(\" \") + ylab(\"Times Used in Speeches\") +\n  theme_bw(base_size = 12) +\n  gghighlight(id <= 5)\n\nP5 = wordsSentiment %>%\n  filter(president == \"Zuma\") %>%\n  filter(bing_sentiment == \"positive\") %>%\n  count(word) %>%\n  #filter(rank(desc(n)) <= 20) %>%\n  arrange(desc(n)) %>%\n  mutate(id = 1:dim(.)[1]) %>%\n  filter(id <= 15) %>%\n  ggplot(aes(reorder(word, n), n)) + geom_col(fill = \"purple\", col = \"black\") + \n  coord_flip() + \n  xlab(\" \") + ylab(\"Times Used in Speeches\") +\n  theme_bw(base_size = 12) +\n  gghighlight(id <= 5)\n\nP6 = wordsSentiment %>%\n  filter(president == \"deKlerk\") %>%\n  filter(bing_sentiment == \"positive\") %>%\n  count(word) %>%\n  #filter(rank(desc(n)) <= 20) %>%\n  arrange(desc(n)) %>%\n  mutate(id = 1:dim(.)[1]) %>%\n  filter(id <= 15) %>%\n  ggplot(aes(reorder(word, n), n)) + geom_col(fill = \"purple\", col = \"black\") + \n  coord_flip() + \n  xlab(\" \") + ylab(\"Times Used in Speech\") +\n  theme_bw(base_size = 12) +\n  gghighlight(id <= 5)\n\nggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)"
+  },
+  {
+    "objectID": "Template.html#discussion",
+    "href": "Template.html#discussion",
+    "title": "Template",
+    "section": "Discussion",
+    "text": "Discussion"
+  },
+  {
+    "objectID": "Template.html#conclusion",
+    "href": "Template.html#conclusion",
+    "title": "Template",
+    "section": "Conclusion",
+    "text": "Conclusion"
   },
   {
     "objectID": "Appendix.html",
@@ -19,5 +61,12 @@
     "title": "Appendix",
     "section": "",
     "text": "This will contain the appendix of the report and maybe some code.\n\n2 + 2\n\n[1] 4"
+  },
+  {
+    "objectID": "Use of ChatGPT.html",
+    "href": "Use of ChatGPT.html",
+    "title": "Appendix",
+    "section": "",
+    "text": "This will contain Chat GPT section.\n\n2 + 2\n\n[1] 4"
   }
 ]

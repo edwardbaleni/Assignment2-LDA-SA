@@ -5,15 +5,360 @@ format: html
 editor: visual
 ---
 
-This is where our main report will go. 
+## Abstract
 
-```{r Packages}
-#library(keras) 
-#library(reticulate) 
-#library(tensorflow)
+## Introduction 
+The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents. 
+
+Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed. 
+
+(Maybe mention something about use of chat GPT here and where that info can be found. )
+
+
+## Literature Review
+- Brief paragraph on sentiment analysis
+- Brief paragraph on topic modelling - look at phillipines paper. 
+
+## Data
+As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents. 
+
+In order to perform sentiment analysis the speeches need to be tokenized into words and bigrams so that the sentiment of the words can be determined and then overall sentiment determined by aggregating these. 
+
+- explain how tokenization done and why bigram were also needed for negation?
+
+
+
+
+## Methods
+
+### *Sentiment Analysis*
+
+In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the bing dictionary which labels words as positive or negative. The affin dictionary gives each word a score between negative five and five, from negative to positive sentiments. 
+
+Because many of the words in the speeches are not in the dictionary, these words were assigned with a sentiment value of neutral. Explain why this is not ideal.......
+
+Database joins and filtering can be used in order to select each presidents most common postive and negative words as well as the overall most common positive and negative words. 
+
+Explain how this is aggregated to get net sentiment of a speech. 
+
+Changing sentiment over time - what method did we use????
+
+Talk about negation - use of bigrams. 
+
+### *Topic Modelling*
+
+## Results 
+
+### *Sentiment Analysis*
+
+```{r, echo = FALSE}
+### Libraries
+
+library(tidyverse)
+library(tidytext)
+library(tokenizers)
+library(gghighlight)
+library(tictoc)
+library(ggpubr)
+
+### Load Data
+
+load("SonaData.RData")
+load("dsfi-lexicons.Rdata")
+
+### Separate speeches into sentences and sentences into words
+
+unnest_reg = "[^\\w_#@']"
+
+speechSentences = as_tibble(sona) %>%
+  rename(president = president_13) %>%
+  unnest_tokens(sentences, speech, token = "sentences") %>%
+  select(president, year, sentences) %>%
+  mutate(sentences, sentences = str_replace_all(sentences, "’", "'")) %>%
+  mutate(sentences, sentences = str_replace_all(sentences, "'", "")) %>%
+  mutate(sentences, sentences = str_remove_all(sentences, "[0-9]")) %>%
+  mutate(sentID = row_number())
+
+wordsWithSentID = speechSentences %>% 
+  unnest_tokens(word, sentences, token = 'regex', pattern = unnest_reg) %>%
+  filter(str_detect(word, '[a-z]')) %>%
+  filter(!word %in% stop_words$word) %>%
+  select(sentID, president, year, word)
+
+### Join with Sentiment Lexicon
+
+wordsSentiment = wordsWithSentID %>% 
+  left_join(bing, by = "word") %>%
+  rename(bing_sentiment = sentiment) %>%
+  mutate(bing_sentiment = ifelse(is.na(bing_sentiment), "neutral", bing_sentiment))
+
+#head(wordsSentiment)
+table(wordsSentiment$bing_sentiment)
+
+### Most frequent Words
+## Positive
+
+## How often each president has said the top 10 most frequent positive words
+
+wordsSentiment %>%
+  filter(bing_sentiment == "positive") %>%
+  count(president, word) %>%
+  group_by(president) %>% 
+  filter(rank(desc(n)) <= 10) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col() + 
+  facet_wrap(~president) + coord_flip() + xlab(" ")
+
 ```
 
-```{r Data}
-#sys.source("sona-first-steps.R" , envir = knitr::knit_global())
-#sys.source("DataClean.R", envir = knitr::knit_global())
+
+```{r}
+## Each Presidents Top 15 Most Frequent Positive words
+## Top 5 is highlighted
+
+P1 = wordsSentiment %>%
+  filter(president == "Mandela") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 6)
+
+P2 = wordsSentiment %>%
+  filter(president == "Mbeki") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P3 = wordsSentiment %>%
+  filter(president == "Motlanthe") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(id <= 15) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speech") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P4 = wordsSentiment %>%
+  filter(president == "Ramaphosa") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(id <= 15) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P5 = wordsSentiment %>%
+  filter(president == "Zuma") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P6 = wordsSentiment %>%
+  filter(president == "deKlerk") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speech") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 ```
+
+
+```{r, echo = FALSE}
+## Each Presidents Most Frequent Negative words
+## Top 5 is highlighted
+
+P1 = wordsSentiment %>%
+  filter(president == "Mandela") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P2 = wordsSentiment %>%
+  filter(president == "Mbeki") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P3 = wordsSentiment %>%
+  filter(president == "Motlanthe") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speech") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P4 = wordsSentiment %>%
+  filter(president == "Ramaphosa") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P5 = wordsSentiment %>%
+  filter(president == "Zuma") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speeches") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P6 = wordsSentiment %>%
+  filter(president == "deKlerk") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Times Used in Speech") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
+
+### Count the positive and negative sentiments in each speech 
+
+wordsSentiment %>%
+  group_by(year, president) %>%
+  filter(bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ggplot(aes(x = year, y = n, shape = president)) + 
+  geom_point(col = "purple", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Positive Sentiments in Speech") +
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16))
+
+wordsSentiment %>%
+  group_by(year, president) %>%
+  filter(bing_sentiment == "negative") %>%
+  count(bing_sentiment) %>%
+  ggplot(aes(x = year, y = n, shape = president)) + 
+  geom_point(col = "orange", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Negative Sentiments in Speech") + 
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16)) 
+
+## Net Sentiment of Speech
+
+wordsSentiment %>%
+  group_by(year, president, bing_sentiment) %>%
+  filter(bing_sentiment == "negative" | bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ungroup(bing_sentiment) %>%
+  mutate(netSent = n - first(n)) %>%
+  filter(bing_sentiment == "positive") %>%
+  ggplot(aes(x = year, y = netSent, shape = president)) + 
+  geom_point(col = "red", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Net Positive Sentiments in Speech") + 
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16)) 
+
+## Change in Net Positive Sentiment between first and last speech
+
+wordsSentiment %>%
+  group_by(year, president, bing_sentiment) %>%
+  filter(bing_sentiment == "negative" | bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ungroup(bing_sentiment) %>%
+  mutate(netSent = n - first(n)) %>%
+  filter(bing_sentiment == "positive") %>%
+  ungroup(year) %>%
+  mutate(changeNetSent = last(netSent) - netSent) %>% 
+  filter(row_number() == 1) %>%
+  ggplot(aes(x = as.factor(president), y = changeNetSent)) + 
+  geom_bar(fill = "red", stat = "identity") +
+  xlab("President") + ylab("Change in Net Positive Sentiments in Speech") + 
+  theme_bw(base_size = 12) 
+```
+
+
+## Discussion 
+
+## Conclusion 
+
+

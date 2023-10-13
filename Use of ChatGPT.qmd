@@ -1,0 +1,10 @@
+---
+title: "Appendix"
+---
+
+This will contain Chat GPT section. 
+
+```{r}
+2 + 2
+```
+
