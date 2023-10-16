@@ -180,14 +180,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
-  <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis"><em>Sentiment Analysis</em></a></li>
-  <li><a href="#topic-modelling" id="toc-topic-modelling" class="nav-link" data-scroll-target="#topic-modelling"><em>Topic Modelling</em></a></li>
-  </ul></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
-  <ul class="collapse">
   <li><a href="#sentiment-analysis-1" id="toc-sentiment-analysis-1" class="nav-link" data-scroll-target="#sentiment-analysis-1"><em>Sentiment Analysis</em></a></li>
+  <li><a href="#topic-modelling-1" id="toc-topic-modelling-1" class="nav-link" data-scroll-target="#topic-modelling-1"><em>Topic Modelling</em></a></li>
   </ul></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#sentiment-analysis-2" id="toc-sentiment-analysis-2" class="nav-link" data-scroll-target="#sentiment-analysis-2"><em>Sentiment Analysis</em></a></li>
+  </ul></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
@@ -225,42 +225,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its ‘emotions’ (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.</p>
 <p>Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.</p>
-<p>(Maybe mention something about use of chat GPT here and where that info can be found. )</p>
+<p>Chat GPT was used as an aid to this assignment. The purpose of this was to experiment large language models and to assess Chat GPT’s ability to assist with the assignment. A brief summary of how well it did and how it responded to different prompts and guides in given in Appendix A (which can be found on Appendix A tab of this website).</p>
 </section>
 <section id="literature-review" class="level2">
 <h2 class="anchored" data-anchor-id="literature-review">Literature Review</h2>
-<ul>
-<li>Brief paragraph on sentiment analysis</li>
-<li>Brief paragraph on topic modelling - look at phillipines paper.</li>
-</ul>
+<section id="sentiment-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="sentiment-analysis"><strong><em>Sentiment Analysis</em></strong></h4>
+</section>
+<section id="topic-modelling" class="level4">
+<h4 class="anchored" data-anchor-id="topic-modelling"><strong><em>Topic Modelling</em></strong></h4>
+</section>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
-<p>As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents.</p>
-<p>In order to perform sentiment analysis the speeches need to be tokenized into words and bigrams so that the sentiment of the words can be determined and then overall sentiment determined by aggregating these.</p>
+<p>As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents: de Klerk, Mandela, Mbeki, Motlanthe, Zuma and Ramaphosa.</p>
+<p>This data needed to be cleaned before sentiment analysis or topic modelling could be done. The data was cleaned by removing punctuation marks and numbers from the speeches. Stop words, which are common words such as ‘the’, ‘and’ and ‘they’ were also removed from the speeches.</p>
+<p>In order to perform sentiment analysis the speeches needed to be tokenized into shorter parts such as bigrams and words in order to assess the sentiment of each smaller part and then aggregate these sentiments to understand the sentiment of the speech as a whole. The speeches are tokenized first into sentences and then into words using the unnest_tokens() function in R.</p>
 <ul>
-<li>explain how tokenization done and why bigram were also needed for negation?</li>
+<li>Explain why bigrams were necessary and how this worked - Were stop words not removed?? Because we need not and no etc</li>
 </ul>
+<p>How was data structured for topic modelling??</p>
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<section id="sentiment-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="sentiment-analysis"><em>Sentiment Analysis</em></h3>
-<p>In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the bing dictionary which labels words as positive or negative. The affin dictionary gives each word a score between negative five and five, from negative to positive sentiments.</p>
-<p>Because many of the words in the speeches are not in the dictionary, these words were assigned with a sentiment value of neutral. Explain why this is not ideal…….</p>
-<p>Database joins and filtering can be used in order to select each presidents most common postive and negative words as well as the overall most common positive and negative words.</p>
-<p>Explain how this is aggregated to get net sentiment of a speech.</p>
-<p>Changing sentiment over time - what method did we use????</p>
-<p>Talk about negation - use of bigrams.</p>
-</section>
-<section id="topic-modelling" class="level3">
-<h3 class="anchored" data-anchor-id="topic-modelling"><em>Topic Modelling</em></h3>
-</section>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
 <section id="sentiment-analysis-1" class="level3">
 <h3 class="anchored" data-anchor-id="sentiment-analysis-1"><em>Sentiment Analysis</em></h3>
+<p>In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the <em>bing</em> dictionary which labels words as positive or negative. The <em>affin</em> dictionary gives each word a score between negative five and five, from negative to positive sentiments.</p>
+<p>In order to get each words sentiment, the data frame containing individual words, with an associated president, year ans sentence ID is left joined with the <em>bing</em> lexicon in order to get their associated positive or negative sentiment. Because many of the words in the speeches are not in the dictionary, these words are assigned with a sentiment value of neutral instead of removing them from analysis. This is not an ideal situation as it may mean that words which are very emotively loaded are being assigned as neutral and so one could miss the true sentiment of a sentence or speech however it is better than removing all these words from the analysis completely.</p>
+<p>In order to analyze the sentiment of different presidents we can consider each presidents most commonly used positive and negative words which can be found using filtering by president and filtering by positive or negative sentiment.</p>
+<p>In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.</p>
+<ul>
+<li>NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS</li>
+</ul>
+</section>
+<section id="topic-modelling-1" class="level3">
+<h3 class="anchored" data-anchor-id="topic-modelling-1"><em>Topic Modelling</em></h3>
+<p>Add topic modelling methods and explain LDA.</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<p>Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.</p>
+<section id="sentiment-analysis-2" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment-analysis-2"><em>Sentiment Analysis</em></h3>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
@@ -394,8 +401,8 @@ negative  neutral positive
 </div>
 </section>
 </section>
-<section id="discussion" class="level2">
-<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
