@@ -7,47 +7,53 @@ editor: visual
 
 ## Abstract
 
-## Introduction 
-The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents. 
+## Introduction
 
-Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed. 
+The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
 
-(Maybe mention something about use of chat GPT here and where that info can be found. )
+Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.
 
+Chat GPT was used as an aid to this assignment. The purpose of this was to experiment large language models and to assess Chat GPT's ability to assist with the assignment. A brief summary of how well it did and how it responded to different prompts and guides in given in Appendix A (which can be found on Appendix A tab of this website).
 
 ## Literature Review
-- Brief paragraph on sentiment analysis
-- Brief paragraph on topic modelling - look at phillipines paper. 
+
+#### ***Sentiment Analysis***
+
+#### ***Topic Modelling***
 
 ## Data
-As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents. 
 
-In order to perform sentiment analysis the speeches need to be tokenized into words and bigrams so that the sentiment of the words can be determined and then overall sentiment determined by aggregating these. 
+As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents: de Klerk, Mandela, Mbeki, Motlanthe, Zuma and Ramaphosa.
 
-- explain how tokenization done and why bigram were also needed for negation?
+This data needed to be cleaned before sentiment analysis or topic modelling could be done. The data was cleaned by removing punctuation marks and numbers from the speeches. Stop words, which are common words such as 'the', 'and' and 'they' were also removed from the speeches.
 
+In order to perform sentiment analysis the speeches needed to be tokenized into shorter parts such as bigrams and words in order to assess the sentiment of each smaller part and then aggregate these sentiments to understand the sentiment of the speech as a whole. The speeches are tokenized first into sentences and then into words using the unnest_tokens() function in R.
 
+-   Explain why bigrams were necessary and how this worked - Were stop words not removed?? Because we need not and no etc
 
+How was data structured for topic modelling??
 
 ## Methods
 
 ### *Sentiment Analysis*
 
-In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the bing dictionary which labels words as positive or negative. The affin dictionary gives each word a score between negative five and five, from negative to positive sentiments. 
+In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the *bing* dictionary which labels words as positive or negative. The *affin* dictionary gives each word a score between negative five and five, from negative to positive sentiments.
 
-Because many of the words in the speeches are not in the dictionary, these words were assigned with a sentiment value of neutral. Explain why this is not ideal.......
+In order to get each words sentiment, the data frame containing individual words, with an associated president, year ans sentence ID is left joined with the *bing* lexicon in order to get their associated positive or negative sentiment. Because many of the words in the speeches are not in the dictionary, these words are assigned with a sentiment value of neutral instead of removing them from analysis. This is not an ideal situation as it may mean that words which are very emotively loaded are being assigned as neutral and so one could miss the true sentiment of a sentence or speech however it is better than removing all these words from the analysis completely.
 
-Database joins and filtering can be used in order to select each presidents most common postive and negative words as well as the overall most common positive and negative words. 
+In order to analyze the sentiment of different presidents we can consider each presidents most commonly used positive and negative words which can be found using filtering by president and filtering by positive or negative sentiment.
 
-Explain how this is aggregated to get net sentiment of a speech. 
+In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.
 
-Changing sentiment over time - what method did we use????
-
-Talk about negation - use of bigrams. 
+-   NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS
 
 ### *Topic Modelling*
 
-## Results 
+Add topic modelling methods and explain LDA.
+
+## Results and Discussion 
+
+Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.
 
 ### *Sentiment Analysis*
 
@@ -109,7 +115,6 @@ wordsSentiment %>%
   facet_wrap(~president) + coord_flip() + xlab(" ")
 
 ```
-
 
 ```{r}
 ## Each Presidents Top 15 Most Frequent Positive words
@@ -200,7 +205,6 @@ P6 = wordsSentiment %>%
 
 ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 ```
-
 
 ```{r, echo = FALSE}
 ## Each Presidents Most Frequent Negative words
@@ -356,9 +360,6 @@ wordsSentiment %>%
   theme_bw(base_size = 12) 
 ```
 
+## 
 
-## Discussion 
-
-## Conclusion 
-
-
+## Conclusion
