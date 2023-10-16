@@ -55,7 +55,13 @@ Add topic modelling methods and explain LDA.
 
 Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.
 
-### *Sentiment Analysis*
+### *Sentiment Analysis* 
+
+Figure 1 below shows the most common positive words used by each president. A number of words stand out here. "Regard" is used very frequently by Mandela, Mbeki and Motlanthe while Zuma and Ramaphosa both say "support" often. Mandela and de Klerk's most common words are similar in terms of theme, examples being "freedom", "peaceful" and "reconciliation". These types of positive words are expected from these two presidents who were in office at the end of apartheid in South Africa.
+
+It can also be noted that Ramaphosa and Zuma share similar positive words including "reform", "improve", "sustainable" and "progress" which indicates where much of their positive focus lies introducing new reforms or advocating for economic improvements and sustainable economic policy.
+
+-   NOT SURE WHAT ELSE STANDS OUT HERE?
 
 ```{r, echo = FALSE}
 ### Libraries
@@ -99,24 +105,11 @@ wordsSentiment = wordsWithSentID %>%
   mutate(bing_sentiment = ifelse(is.na(bing_sentiment), "neutral", bing_sentiment))
 
 #head(wordsSentiment)
-table(wordsSentiment$bing_sentiment)
-
-### Most frequent Words
-## Positive
-
-## How often each president has said the top 10 most frequent positive words
-
-wordsSentiment %>%
-  filter(bing_sentiment == "positive") %>%
-  count(president, word) %>%
-  group_by(president) %>% 
-  filter(rank(desc(n)) <= 10) %>%
-  ggplot(aes(reorder(word, n), n)) + geom_col() + 
-  facet_wrap(~president) + coord_flip() + xlab(" ")
+#table(wordsSentiment$bing_sentiment)
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 ## Each Presidents Top 15 Most Frequent Positive words
 ## Top 5 is highlighted
 
@@ -130,7 +123,7 @@ P1 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Mandela") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 6)
 
@@ -143,7 +136,7 @@ P2 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Mbeki") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -157,7 +150,7 @@ P3 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speech") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Motlanthe") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -171,7 +164,7 @@ P4 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Ramaphosa") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -185,7 +178,7 @@ P5 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Zuma") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -199,12 +192,18 @@ P6 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speech") +
+  xlab(" ") + ylab("Frequency") + ggtitle("deKlerk") +
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
 ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 ```
+
+[*Figure 1: The most commonly used positive words used by each president.*]{.underline}
+
+Figure 2 below shows the most frequently used negative word by each president. Again here, as with the positive sentiment words, a couple words stand out which can highlight what the major issues at the time of each presidency. For Mbeki and Motlanthe, the most common negative sentiment word is poverty which indicates that that was a large problem at the time of their presidency or a negative aspect of the country that was focused on significantly in their speeches. Ramaphosa and Zuma use "corruption" many times in their speeches and this again points to what was regarded by them as a major negative issue to be addresses. In addition to corruption they both also speak of crime and poverty fairly frequently.
+
+-   ADD SOME MORE HERE BUT NOT TOO SURE WHAT
 
 ```{r, echo = FALSE}
 ## Each Presidents Most Frequent Negative words
@@ -220,7 +219,7 @@ P1 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Mandela") + 
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -234,7 +233,7 @@ P2 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Mbeki") + 
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -248,7 +247,7 @@ P3 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speech") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Motlanthe") + 
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -262,7 +261,7 @@ P4 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Ramaphosa") + 
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -276,7 +275,7 @@ P5 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speeches") +
+  xlab(" ") + ylab("Frequency") + ggtitle("Zuma") + 
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
@@ -290,12 +289,18 @@ P6 = wordsSentiment %>%
   filter(id <= 15) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
   coord_flip() + 
-  xlab(" ") + ylab("Times Used in Speech") +
+  xlab(" ") + ylab("Frequency") + ggtitle("de Klerk") + 
   theme_bw(base_size = 12) +
   gghighlight(id <= 5)
 
 ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 
+
+```
+
+[*Figure 2: The most commonly used negative words used by each president.*]{.underline}
+
+```{r, echo = FALSE}
 ### Count the positive and negative sentiments in each speech 
 
 wordsSentiment %>%
@@ -358,8 +363,21 @@ wordsSentiment %>%
   geom_bar(fill = "red", stat = "identity") +
   xlab("President") + ylab("Change in Net Positive Sentiments in Speech") + 
   theme_bw(base_size = 12) 
-```
 
-## 
+
+
+### Most frequent Words
+## Positive
+
+## How often each president has said the top 10 most frequent positive words
+
+wordsSentiment %>%
+  filter(bing_sentiment == "positive") %>%
+  count(president, word) %>%
+  group_by(president) %>% 
+  filter(rank(desc(n)) <= 10) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col() + 
+  facet_wrap(~president) + coord_flip() + xlab(" ")
+```
 
 ## Conclusion
