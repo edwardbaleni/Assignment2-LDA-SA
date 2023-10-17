@@ -208,7 +208,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>If one wanted to generate a speech, first the number of words to generate must be specified. Following that one makes a draw from a Dirichlet distribution which gives a vector of proportions of each topic in the document. Then one divides up the number of words between the topics in the proportions specified. The words are then drawn from a conditional distribution which gives the probability of word i appearing given that the topic is topic j. LDA is therefore a hierarchical model, sampling first the topic proportions and then sampling the words given the topic proportions.</p>
 <p>The <em>topicmodels</em> package is used in R in order to perform LDA on the SONA data using the LDA() function. A seed of 2023 is set within the LDA control argument in order to ensure results are reproducible. The LDA() function takes in as arguments the DocumentTermMatrix of the speeches, as discussed in the data section and a parameter k which specifies the number of topics one wants to obtain.</p>
-<p>How did we go about choosing k?</p>
+<p>In terms of selecting the number of topics to look for, this has to be specified in the LDA() function when it is run. Miranda and Bringula (2021) selected three topics in analyzing the Philippines SONA speeches. For this analysis: two, three and four topics were considered. A few of the different results for these different numbers of topics will be presented in the results. It was found that four topics was best and were easiest to categorize into understandable labels. For this reason the majority of topic modelling results presented below are based on the four topic case.</p>
 </section>
 </section>
 <section id="results-and-discussion" class="level2">
