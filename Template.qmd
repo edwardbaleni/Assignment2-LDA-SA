@@ -752,6 +752,7 @@ chosenTopic %>%
   geom_col(show.legend = FALSE) +
   facet_wrap(~ topic, scales = 'free') + 
   coord_flip() + xlab(" ") +
+  scale_fill_manual(values=c("black", "deeppink", "deepskyblue", "darkorchid")) +
   theme_bw(base_size = 12)
 
 # Labels
