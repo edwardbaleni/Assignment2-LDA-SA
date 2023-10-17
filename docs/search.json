@@ -18,7 +18,7 @@
     "href": "Template.html#literature-review",
     "title": "Template",
     "section": "Literature Review",
-    "text": "Literature Review\n\nSentiment Analysis\nlook at tidytext chapter\n\n\nTopic Modelling"
+    "text": "Literature Review\n\nSentiment Analysis\nSentiment analysis is a technique to programmatically asses the emotional content of a text (Silge & Robinson, 2017). It gives a way, through the use of sentiment lexicons to understand the attitudes and opinions expressed in a piece of text or speech and identify if they are positive or negstive (Silge & Robinson, 2017). Sentiment analysis can also be seen as a classification method as it classifies documents into positive or negative categories or more sophiscated classes such as joy, disgust or anger, depending on which specific sentiment lexicon one is using in the analysis (Medhat et al., 2014).\n\n\nTopic Modelling"
   },
   {
     "objectID": "Template.html#data",
@@ -60,6 +60,6 @@
     "href": "Use of ChatGPT.html",
     "title": "Using Chat GPT",
     "section": "",
-    "text": "Need an introductory paragraph.\nA number of requests were made to ChatGPT to be able to see how it could help with the assignment and how well it is able to do as well as to identify short comings of the model.\n\ntalk about its response to fairly open ended questions\ntalk about providing literature - seemed to actually do all right but obviously its not comprehensive\nTalk about help with code\nHelp with write up?"
+    "text": "Need an introductory paragraph.\nA number of requests were made to ChatGPT to be able to see how it could help with the assignment and how well it is able to do as well as to identify short comings of the model.\n\ntalk about its response to fairly open ended questions\ntalk about providing literature - seemed to actually do all right but obviously its not comprehensive. But also some papers that not convinced actually exist.\nTalk about help with code\nHelp with write up?"
   }
 ]

@@ -8,7 +8,7 @@ A number of requests were made to ChatGPT to be able to see how it could help wi
 
 -   talk about its response to fairly open ended questions
 
--   talk about providing literature - seemed to actually do all right but obviously its not comprehensive
+-   talk about providing literature - seemed to actually do all right but obviously its not comprehensive. But also some papers that not convinced actually exist.
 
 -   Talk about help with code
 

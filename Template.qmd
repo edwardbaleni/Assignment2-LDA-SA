@@ -19,7 +19,7 @@ Chat GPT was used as an aid to this assignment. The purpose of this was to exper
 
 #### ***Sentiment Analysis***
 
-look at tidytext chapter
+Sentiment analysis is a technique to programmatically asses the emotional content of a text (Silge & Robinson, 2017). It gives a way, through the use of sentiment lexicons to understand the attitudes and opinions expressed in a piece of text or speech and identify if they are positive or negstive (Silge & Robinson, 2017). Sentiment analysis can also be seen as a classification method as it classifies documents into positive or negative categories or more sophiscated classes such as joy, disgust or anger, depending on which specific sentiment lexicon one is using in the analysis (Medhat et al., 2014).
 
 #### ***Topic Modelling***
 
