@@ -31,7 +31,7 @@ In order to perform sentiment analysis the speeches needed to be tokenized into 
 
 -   Explain why bigrams were necessary and how this worked - Were stop words not removed?? Because we need not and no etc
 
-How was data structured for topic modelling??
+For topic modelling, for which Latent Dirichlet allocation will be applied, the data format that will be used is a DocumentTermMatrix object. Once the speeches have been tokenized and cleaned, as was done above, a DTM object is created using the cast_dtm() function which is part of the *tidytext* package in R. The cast_dtm() function is applied to the data frame containing the words, speechIDs and counts and turns the data frame into a DTM object using these variables.
 
 ## Methods
 
@@ -49,7 +49,17 @@ In addition one can consider how sentiment changes over time and by president by
 
 ### *Topic Modelling*
 
-Add topic modelling methods and explain LDA.
+The second technique used to analyze the State of the Nation Addresses is topic modelling for which Latent Dirichlet allocation is used. The basic components of Latent Dirichlet Allocation (LDA) are as follows:
+
+-   Each document (in this case speech) is made up of a mixture of topics.
+
+-   Each topic is made up of a mixture of words.
+
+If one wanted to generate a speech, first the number of words to generate must be specified. Following that one makes a draw from a Dirichlet distribution which gives a vector of proportions of each topic in the document. Then one divides up the number of words between the topics in the proportions specified. The words are then drawn from a conditional distribution which gives the probability of word i appearing given that the topic is topic j. LDA is therefore a hierarchical model, sampling first the topic proportions and then sampling the words given the topic proportions.
+
+The *topicmodels* package is used in R in order to perform LDA on the SONA data using the LDA() function. A seed of 2023 is set within the LDA control argument in order to ensure results are reproducible. The LDA() function takes in as arguments the DocumentTermMatrix of the speeches, as discussed in the data section and a parameter k which specifies the number of topics one wants to obtain.
+
+How did we go about choosing k?
 
 ## Results and Discussion
 
@@ -310,7 +320,7 @@ Ramaphosa 2019 State of the Nation address also has a high net positive value. T
 
 The speeches from 2020 to 2023 decreased significantly in net positive sentiment which makes sense due to the COVID-19 pandemic and its economic impact on the country. However overall these SONA speeches were still overall positive than negative but not as positive as Ramaphosa first official SONA as president (2019).
 
-```{r}
+```{r, echo=FALSE}
  
 ## Net Sentiment of Speech
 
