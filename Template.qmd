@@ -1,3 +1,692 @@
+<<<<<<< HEAD
+---
+title: "Assignment 2: Report"
+author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
+format: html
+editor: visual
+---
+
+## Abstract
+
+Due to the large volume of text data available today, sentiment analysis and topic modelling have become popular methods to classify documents (or other pieces of text) based on their emotional content and topics or themes present. Sentiment analysis and topic modelling methods provide techniques to programmatically categorize documents and does not require individuals to sit and read through large documents. In this report, sentiment analysis and topic modelling is applied to State of the Nation Addresses in South Africa between 1994 and 2023. The sentiment analysis section allows one to identify different presidents sentiment conveyed in their speeches and how this changed over time. Topic modelling highlights what the major themes are that each president speaks about and if the proportion of time spent on each topic changes over time. The results of the sentiment analysis showed that on the whole South African presidents have a net positive sentiment in their speeches. Specifically Mandela and Mbeki became more positive in their speeches over the time of their presidency while Zuma and Ramaphosa become less positive during their time in office. These findings correlate with what was happening in South Africa at the times of their respective presidencies.
+
+-   ADD TOPIC MODELLING RESULTS ONCE COMPLETE
+
+## Introduction
+
+The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (Silge & Robinson, 2017). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (Silge & Robinson, 2017. This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
+
+Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.
+
+Chat GPT was used as an aid to this assignment. The purpose of this was to experiment large language models and to assess Chat GPT's ability to assist with the assignment. A brief summary of how well it did and how it responded to different prompts and guides in given in Use of ChatGPT appendix (which can be found on Use of ChatGPT tab of this website).
+
+## Literature Review
+
+#### ***Sentiment Analysis***
+
+Sentiment analysis is a technique to programmatically asses the emotional content of a text (Silge & Robinson, 2017). It gives a way, through the use of sentiment lexicons to understand the attitudes and opinions expressed in a piece of text or speech and identify if they are positive or negstive (Silge & Robinson, 2017). Sentiment analysis can also be seen as a classification method as it classifies documents into positive or negative categories or more sophiscated classes such as joy, disgust or anger, depending on which specific sentiment lexicon one is using in the analysis (Medhat et al., 2014). Due to the large amount of text data around today, sentiment analysis is becoming more popular and necessary in order to classify documents and arrange them in terms of sentiment because the volume is too large for documents to be manually sifted through by people to decide on its emotional contents (Medhat et al., 2014). There are a number of application areas for sentiment analysis including customer feedback and reviews, social media monitoring, market research and political analysis. In the context of the SONA data the sentiment analysis can be seen as a form of political analysis and also a way in which to describe how the country is doing in terms of governance and economy of the years from 1994 to 2023.
+
+#### ***Topic Modelling***
+
+Topic Modelling is a unsupervised classification technique for grouping documents according to topic or theme (Silge & Robinson, 2017). The particular topic modelling method that is popular is Latent Dirichlet Allocation (Silge & Robinson, 2017). The key ideas of this method is to consider documents as a collection of topics and topics as a collection of words (Silge & Robinson, 2017). Topic modelling thus allows one to categorize documents into broad themes and calculate the proportions of each topic or theme that appear in a document. Topic modelling has been done on SONA speeches before by Miranda and Bringula (2021) who analysed the State of the Nation Addresses in the Phillipines. Through the use of Latent Dirichlet Allocation, they were able to identify three major topics each linked with concerns within the country (Miranda & Bringula, 2021). In general one is able to pull out and label a topic by looking at the sentences that contain the words in that topic. This however needs to be discussed and consensus reached on what labels best represents the topic (Miranda & Bringula, 2021). This gives an indication that selecting the labels for topics is not always easy and may in some instances not represent perfectly the true underlying topic picked up by the LDA analysis.
+
+## Data
+
+As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents: de Klerk, Mandela, Mbeki, Motlanthe, Zuma and Ramaphosa.
+
+This data needed to be cleaned before sentiment analysis or topic modelling could be done. The data was cleaned by removing punctuation marks and numbers from the speeches. Stop words, which are common words such as 'the', 'and' and 'they' were also removed from the speeches.
+
+In order to perform sentiment analysis the speeches needed to be tokenized into shorter parts such as bigrams and words in order to assess the sentiment of each smaller part and then aggregate these sentiments to understand the sentiment of the speech as a whole. The speeches are tokenized first into sentences and then into words using the unnest_tokens() function in R.
+
+A separate analysis is done on bigrams in order to consider negation of words, for example 'improvement' vs 'no improvement', and to assess how frequently negation occurred. In order to perform this analysis the unnest_tokens() function was also done specifying the token argument to 'ngrams' and setting 'n' to 2. The same cleaning was done in order to remove numbers and punctuation marks before the speeches were tokenized in this way. In terms of stop word removal, stop words were removed except for those stop words that are negation words. The qdapDictionary::negation.words dictionary was used to identify negation words and remove them from the stop words before removing stop words from the analysis.
+
+For topic modelling, for which Latent Dirichlet allocation will be applied, the data format that will be used is a DocumentTermMatrix object. Once the speeches have been tokenized and cleaned, as was done above, a DTM object is created using the cast_dtm() function which is part of the *tidytext* package in R. The cast_dtm() function is applied to the data frame containing the words, speechIDs and counts and turns the data frame into a DTM object using these variables.
+
+## Methods
+
+### *Sentiment Analysis*
+
+In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the *bing* dictionary which labels words as positive or negative. The *affin* dictionary gives each word a score between negative five and five, from negative to positive sentiments.
+
+In order to get each words sentiment, the data frame containing individual words, with an associated president, year ans sentence ID is left joined with the *bing* lexicon in order to get their associated positive or negative sentiment. Because many of the words in the speeches are not in the dictionary, these words are assigned with a sentiment value of neutral instead of removing them from analysis. This is not an ideal situation as it may mean that words which are very emotively loaded are being assigned as neutral and so one could miss the true sentiment of a sentence or speech however it is better than removing all these words from the analysis completely.
+
+In order to analyze the sentiment of different presidents we can consider each presidents most commonly used positive and negative words which can be found using filtering by president and filtering by positive or negative sentiment.
+
+In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.
+
+-   NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS
+
+### *Topic Modelling*
+
+The second technique used to analyze the State of the Nation Addresses is topic modelling for which Latent Dirichlet allocation is used. The basic components of Latent Dirichlet Allocation (LDA) are as follows:
+
+-   Each document (in this case speech) is made up of a mixture of topics.
+
+-   Each topic is made up of a mixture of words.
+
+If one wanted to generate a speech, first the number of words to generate must be specified. Following that one makes a draw from a Dirichlet distribution which gives a vector of proportions of each topic in the document. Then one divides up the number of words between the topics in the proportions specified. The words are then drawn from a conditional distribution which gives the probability of word i appearing given that the topic is topic j. LDA is therefore a hierarchical model, sampling first the topic proportions and then sampling the words given the topic proportions.
+
+The *topicmodels* package is used in R in order to perform LDA on the SONA data using the LDA() function. A seed of 2023 is set within the LDA control argument in order to ensure results are reproducible. The LDA() function takes in as arguments the DocumentTermMatrix of the speeches, as discussed in the data section and a parameter k which specifies the number of topics one wants to obtain.
+
+In terms of selecting the number of topics to look for, this has to be specified in the LDA() function when it is run. Miranda and Bringula (2021) selected three topics in analyzing the Philippines SONA speeches. For this analysis: two, three and four topics were considered. A few of the different results for these different numbers of topics will be presented in the results. It was found that four topics was best and were easiest to categorize into understandable labels. For this reason the majority of topic modelling results presented below are based on the four topic case.
+
+## Results and Discussion
+
+Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.
+
+### *Sentiment Analysis*
+
+#### ***Individual Words***
+
+Figure 1 below shows the most common positive words used by each president. A number of words stand out here. "Regard" is used very frequently by Mandela, Mbeki and Motlanthe while Zuma and Ramaphosa both say "support" often. Mandela and de Klerk's most common words are similar in terms of theme, examples being "freedom", "peaceful" and "reconciliation". These types of positive words are expected from these two presidents who were in office at the end of apartheid in South Africa.
+
+It can also be noted that Ramaphosa and Zuma share similar positive words including "reform", "improve", "sustainable" and "progress" which indicates where much of their positive focus lies introducing new reforms or advocating for economic improvements and sustainable economic policy.
+
+-   NOT SURE WHAT ELSE STANDS OUT HERE?
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, include=FALSE}
+### Libraries
+
+library(tidyverse)
+library(tidytext)
+library(tokenizers)
+library(gghighlight)
+library(tictoc)
+library(ggpubr)
+library(topicmodels)
+
+### Load Data
+
+load("SonaData.RData")
+load("dsfi-lexicons.Rdata")
+
+### Separate speeches into sentences and sentences into words
+
+unnest_reg = "[^\\w_#@']"
+
+speechSentences = as_tibble(sona) %>%
+  rename(president = president_13) %>%
+  unnest_tokens(sentences, speech, token = "sentences") %>%
+  select(president, year, sentences) %>%
+  mutate(sentences, sentences = str_replace_all(sentences, "’", "'")) %>%
+  mutate(sentences, sentences = str_replace_all(sentences, "'", "")) %>%
+  mutate(sentences, sentences = str_remove_all(sentences, "[0-9]")) %>%
+  mutate(sentID = row_number())
+
+wordsWithSentID = speechSentences %>% 
+  unnest_tokens(word, sentences, token = 'regex', pattern = unnest_reg) %>%
+  filter(str_detect(word, '[a-z]')) %>%
+  filter(!word %in% stop_words$word) %>%
+  select(sentID, speechID, president, year, word)
+
+### Join with Sentiment Lexicon
+
+wordsSentiment = wordsWithSentID %>% 
+  left_join(bing, by = "word") %>%
+  rename(bing_sentiment = sentiment) %>%
+  mutate(bing_sentiment = ifelse(is.na(bing_sentiment), "neutral", bing_sentiment))
+
+#head(wordsSentiment)
+#table(wordsSentiment$bing_sentiment)
+
+```
+
+```{r, echo = FALSE}
+## Each Presidents Top 15 Most Frequent Positive words
+## Top 5 is highlighted
+
+P1 = wordsSentiment %>%
+  filter(president == "Mandela") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Mandela") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 6)
+
+P2 = wordsSentiment %>%
+  filter(president == "Mbeki") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Mbeki") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P3 = wordsSentiment %>%
+  filter(president == "Motlanthe") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(id <= 15) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Motlanthe") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P4 = wordsSentiment %>%
+  filter(president == "Ramaphosa") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(id <= 15) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Ramaphosa") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P5 = wordsSentiment %>%
+  filter(president == "Zuma") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Zuma") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P6 = wordsSentiment %>%
+  filter(president == "deKlerk") %>%
+  filter(bing_sentiment == "positive") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "purple", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("deKlerk") +
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
+```
+
+[*Figure 1: The most commonly used positive words used by each president.*]{.underline}
+
+Figure 2 below shows the most frequently used negative word by each president. Again here, as with the positive sentiment words, a couple words stand out which can highlight what the major issues at the time of each presidency. For Mbeki and Motlanthe, the most common negative sentiment word is poverty which indicates that that was a large problem at the time of their presidency or a negative aspect of the country that was focused on significantly in their speeches. Ramaphosa and Zuma use "corruption" many times in their speeches and this again points to what was regarded by them as a major negative issue to be addresses. In addition to corruption they both also speak of crime and poverty fairly frequently.
+
+-   ADD SOME MORE HERE BUT NOT TOO SURE WHAT
+
+```{r, echo = FALSE}
+## Each Presidents Most Frequent Negative words
+## Top 5 is highlighted
+
+P1 = wordsSentiment %>%
+  filter(president == "Mandela") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Mandela") + 
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P2 = wordsSentiment %>%
+  filter(president == "Mbeki") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Mbeki") + 
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P3 = wordsSentiment %>%
+  filter(president == "Motlanthe") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Motlanthe") + 
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P4 = wordsSentiment %>%
+  filter(president == "Ramaphosa") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Ramaphosa") + 
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P5 = wordsSentiment %>%
+  filter(president == "Zuma") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("Zuma") + 
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+P6 = wordsSentiment %>%
+  filter(president == "deKlerk") %>%
+  filter(bing_sentiment == "negative") %>%
+  count(word) %>%
+  #filter(rank(desc(n)) <= 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col(fill = "orange", col = "black") + 
+  coord_flip() + 
+  xlab(" ") + ylab("Frequency") + ggtitle("de Klerk") + 
+  theme_bw(base_size = 12) +
+  gghighlight(id <= 5)
+
+ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
+
+
+```
+
+[*Figure 2: The most commonly used negative words used by each president.*]{.underline}
+
+Having considered overall the most commonly used positive and negative words by each president which gives an idea of what the positive and negative issues of the country were at the time, sentiment changes over time are now considered. Figure A and B in Appendix 1 give the changes in positive and negative sentiment associated words over time. Figure 3 below gives the net change in sentiment overtime, where each president is represented by a different symbol shown in the legend. This net sentiment shows the net positive sentiments over negative sentiments. It is clear that overall most presidents have net positive speeches, using more positive than negative words. An exception to this is de Klerk where the value is just less than zero indicating more negative words than positive ones were said and Mandela's 1998 speech had an almost equal amount of negative and positive words. It must again be noted that those words not present in the *bing* dictionary were set as neutral and so there may be words that would slightly change these net sentiment values.
+
+Mbeki and Ramaphosa stand out as having the highest net positive sentiment. Between 2003 and 2005 the SONA speeches were significantly more positive than negative - WHY??
+
+Ramaphosa 2019 State of the Nation address also has a high net positive value. This was the year that Ramaphosa was elected as president and before the start of the COVID-19 pandemic and so it makes intuitive sense that this specific speech of Ramaphosa's was the largest in net positive sentiment as it was likely a hopeful speech talking about change that would come after Zuma's presidency and attempted impeachment.
+
+The speeches from 2020 to 2023 decreased significantly in net positive sentiment which makes sense due to the COVID-19 pandemic and its economic impact on the country. However overall these SONA speeches were still overall positive than negative but not as positive as Ramaphosa first official SONA as president (2019).
+
+```{r, echo=FALSE}
+ 
+## Net Sentiment of Speech
+
+wordsSentiment %>%
+  group_by(year, president, bing_sentiment) %>%
+  filter(bing_sentiment == "negative" | bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ungroup(bing_sentiment) %>%
+  mutate(netSent = n - first(n)) %>%
+  filter(bing_sentiment == "positive") %>%
+  ggplot(aes(x = year, y = netSent, shape = president)) + 
+  geom_point(col = "red", size = 5, stroke = 2) +
+  xlab("Year") + ylab("Number of Net Positive Sentiments in Speech") + 
+  theme_bw(base_size = 12) + 
+  scale_x_discrete(name = "Year", 
+                   breaks = c("1994","1999","2004", "2009", 
+                              "2014", "2019", "2023")) +
+  scale_shape_manual(values = c(5, 15, 1, 18, 0, 16)) 
+```
+
+[*Figure 3: Net positive sentiment in speeches over the years.*]{.underline}
+
+FIgure 4 below gives the change in net positive sentiment over each of the presidents terms in office. For de Klerk and Motlanthe this is not applicable because they each only delivered one address. Mandela and Mbeki became increasing positive in their speeches over their presidencies which Zuma and Ramaphosa delivered speeches that were less and less positive. It is expected that Mandela and Mbeki would have become increasingly more positive as their presidencies covered a time in which democracy was new in South Africa and significant changes made in government from the apartheid era which increased positive sentiment in the country. In the case of Zuma a decrease in positive sentiment makes sense as particularly toward the end of his presidency he was facing numerous allegations of corruption which likely would have impacted his speech sentiment. As already mentioned the second year of Ramaphosa's presidency saw the start of the pandemic which would have decreased the amount of positive sentiment in his speeches.
+
+```{r, echo = FALSE}
+## Change in Net Positive Sentiment between first and last speech
+
+wordsSentiment %>%
+  group_by(year, president, bing_sentiment) %>%
+  filter(bing_sentiment == "negative" | bing_sentiment == "positive") %>%
+  count(bing_sentiment) %>%
+  ungroup(bing_sentiment) %>%
+  mutate(netSent = n - first(n)) %>%
+  filter(bing_sentiment == "positive") %>%
+  ungroup(year) %>%
+  mutate(changeNetSent = last(netSent) - netSent) %>% 
+  filter(row_number() == 1) %>%
+  ggplot(aes(x = as.factor(president), y = changeNetSent)) + 
+  geom_bar(fill = "red", stat = "identity") +
+  xlab("President") + ylab("Change in Net Positive Sentiments in Speech") + 
+  theme_bw(base_size = 12) 
+```
+[*Figure 4: Change in Net Positive Sentiment between first and last speech, for each president.*]{.underline}
+
+
+```{r, echo = FALSE, eval = FALSE}
+
+## How often each president has said the top 10 most frequent positive words
+
+wordsSentiment %>%
+  filter(bing_sentiment == "positive") %>%
+  count(president, word) %>%
+  group_by(president) %>% 
+  filter(rank(desc(n)) <= 10) %>%
+  ggplot(aes(reorder(word, n), n)) + geom_col() + 
+  facet_wrap(~president) + coord_flip() + xlab(" ")
+```
+
+#### *Bigrams*
+
+### *Topic Modelling*
+
+```{r echo = FALSE}
+
+speechTDF = wordsWithSentID %>%
+  group_by(president, word) %>%
+  count() %>%  
+  ungroup() 
+
+dtmSpeech = speechTDF %>% 
+  cast_dtm(president, word, n)
+
+kSeq = 2:4
+topicsList = list()
+
+for (k in kSeq){
+  
+  speechLDA = LDA(dtmSpeech, k = k, control = list(seed = 2023))
+  
+  speechTopics = tidy(speechLDA, matrix = 'beta')
+  
+  topicsList[[k-1]] = speechTopics
+  
+}
+
+names(topicsList) = c("Two", "Three", "Four")
+
+chosenTopic = topicsList$Four
+
+```
+
+
+```{r echo = FALSE}
+
+# keeping the term in the topic with the highest beta value
+
+chosenTopic %>%
+  group_by(term) %>%
+  slice(which.max(beta)) %>%
+  ungroup() %>%
+  group_by(topic) %>%
+  slice_max(n = 10, order_by = beta) %>% 
+  ungroup() %>%
+  arrange(topic, -beta) %>%
+  ggplot(aes(reorder(term, beta), beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = 'free') + 
+  coord_flip() + xlab(" ") +
+  theme_bw(base_size = 12)
+
+```
+[*Figure 5: Top 10 Terms in each Topic by word-topic probability.*]{.underline}
+
+```{r echo = FALSE, eval = FALSE}
+
+# compare terms with the greatest difference in Betas between topics
+# plots are for all comparisons, assess and visualise for importance
+
+wideBeta = function(speechTopics, k, thresh){
+  
+  if (k == 2){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1))
+  }
+  
+  if (k == 3){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh | topic3 > thresh) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
+      mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
+      mutate(log_ratio2.3 = log2(topic3 / topic2))
+  }
+  
+  if (k == 4){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh | topic3 > thresh | topic4 > thresh ) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
+      mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
+      mutate(log_ratio1.4 = log2(topic4 / topic1)) %>%
+      mutate(log_ratio2.3 = log2(topic3 / topic2)) %>%
+      mutate(log_ratio2.4 = log2(topic4 / topic2)) %>%
+      mutate(log_ratio3.4 = log2(topic4 / topic3)) 
+  }
+  
+  return(betaWide)
+}
+
+betaWide = wideBeta(chosenTopic, k = 4, thresh = 0.001)
+
+betaWide %>%
+  select(term, log_ratio1.2) %>%
+  filter(abs(log_ratio1.2) >= 10) %>%
+  mutate(pos = log_ratio1.2 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.2), log_ratio1.2, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 2 and 1") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+betaWide %>%
+  select(term, log_ratio1.3) %>%
+  filter(abs(log_ratio1.3) >= 50) %>%
+  mutate(pos = log_ratio1.3 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.3), log_ratio1.3, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 3 and 1") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+betaWide %>%
+  select(term, log_ratio1.4) %>%
+  filter(abs(log_ratio1.4) >= 200) %>%
+  mutate(pos = log_ratio1.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.4), log_ratio1.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 4 and 1") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+betaWide %>%
+  select(term, log_ratio2.3) %>%
+  filter(abs(log_ratio2.3) >= 10) %>%
+  mutate(pos = log_ratio2.3 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio2.3), log_ratio2.3, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 3 and 2") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+betaWide %>%
+  select(term, log_ratio2.4) %>%
+  filter(abs(log_ratio2.4) >= 10) %>%
+  mutate(pos = log_ratio2.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio2.4), log_ratio2.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 4 and 2") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+betaWide %>%
+  select(term, log_ratio3.4) %>%
+  filter(abs(log_ratio3.4) >= 100) %>%
+  mutate(pos = log_ratio3.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio3.4), log_ratio3.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 4 and 3") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+```
+
+```{r echo = FALSE}
+
+### Document-Topic Probabilities
+
+speechTDF_DTP = wordsWithSentID %>%
+  group_by(speechID, word) %>%
+  count() %>%  
+  ungroup()
+
+dtmSpeech_DTP = speechTDF_DTP %>% 
+  cast_dtm(speechID, word, n)
+
+speechLDAforDTP = LDA(dtmSpeech_DTP, k = 4, control = list(seed = 2023))
+
+gamma = tidy(speechLDAforDTP, matrix = 'gamma')
+# gamma$gamma = round(gamma$gamma, 3)
+
+speechGamma = left_join(speechSentences %>% 
+                        mutate(speechID = as.character(speechID)) %>%
+                        select(-sentences, -sentID), 
+                        gamma,
+                        by = c("speechID" = "document"),
+                        relationship = "many-to-many") %>%
+  group_by(speechID) %>%
+  slice_head(n = 4) %>%
+  ungroup() %>%
+  mutate(gamma = round(gamma, 3))
+
+```
+
+```{r echo = FALSE}
+
+# Gamma's are the speech topic probabilities
+
+manData = speechGamma %>% 
+  filter(president == "Mandela") %>% arrange(topic)
+
+manPlotData = data.frame("Man.Len" = 1:length(unique(manData$speechID)),
+                         "Man.Gam.Top1" = manData$gamma[1:7],
+                         "Man.Gam.Top2" = manData$gamma[8:14],
+                         "Man.Gam.Top3" = manData$gamma[15:21],
+                         "Man.Gam.Top4" = manData$gamma[22:28])
+
+man = ggplot(manPlotData, aes(x = as.factor(Man.Len))) +
+  geom_point(aes(y = Man.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Man.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Man.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Man.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Gamma") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+mbeData = speechGamma %>% 
+  filter(president == "Mbeki") %>% 
+  mutate(speechID = as.integer(speechID)) %>%
+  arrange(topic, speechID)
+
+mbePlotData = data.frame("Mbe.Len" = 1:length(unique(mbeData$speechID)),
+                         "Mbe.Gam.Top1" = mbeData$gamma[1:10],
+                         "Mbe.Gam.Top2" = mbeData$gamma[11:20],
+                         "Mbe.Gam.Top3" = mbeData$gamma[21:30],
+                         "Mbe.Gam.Top4" = mbeData$gamma[31:40])
+
+mbe = ggplot(mbePlotData, aes(x = as.factor(Mbe.Len))) +
+  geom_point(aes(y = Mbe.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Mbe.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Mbe.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Mbe.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Gamma") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+zumData = speechGamma %>% 
+  filter(president == "Zuma") %>% 
+  mutate(speechID = as.integer(speechID)) %>%
+  arrange(topic, speechID)
+
+zumPlotData = data.frame("Zum.Len" = 1:length(unique(zumData$speechID)),
+                         "Zum.Gam.Top1" = zumData$gamma[1:10],
+                         "Zum.Gam.Top2" = zumData$gamma[11:20],
+                         "Zum.Gam.Top3" = zumData$gamma[21:30],
+                         "Zum.Gam.Top4" = zumData$gamma[31:40])
+
+zum = ggplot(zumPlotData, aes(x = as.factor(Zum.Len))) +
+  geom_point(aes(y = Zum.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Zum.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Zum.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Zum.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Gamma") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+ramData = speechGamma %>% 
+  filter(president == "Ramaphosa") %>% 
+  mutate(speechID = as.integer(speechID)) %>%
+  arrange(topic, speechID)
+
+ramPlotData = data.frame("Ram.Len" = 1:length(unique(ramData$speechID)),
+                         "Ram.Gam.Top1" = ramData$gamma[1:7],
+                         "Ram.Gam.Top2" = ramData$gamma[8:14],
+                         "Ram.Gam.Top3" = ramData$gamma[15:21],
+                         "Ram.Gam.Top4" = ramData$gamma[22:28])
+
+ram = ggplot(ramPlotData, aes(x = as.factor(Ram.Len))) +
+  geom_point(aes(y = Ram.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Ram.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Ram.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Ram.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Gamma") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+ggarrange(man, mbe, zum, ram, ncol = 2, nrow = 2)
+```
+
+## Conclusion
+=======
 ---
 title: "Assignment 2: Report"
 author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
@@ -704,3 +1393,4 @@ ggarrange( s6, s9, s12, s15, s18, ncol=3, nrow=2)
 ### *Topic Modelling*
 
 ## Conclusion
+>>>>>>> 51b22082791e24bade133e8dd052db0989666dd2
