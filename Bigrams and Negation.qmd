@@ -137,7 +137,10 @@ ggplot(sentiment_president, aes(index, sentiment, fill = president)) +
 
 ## Bigrams
 
-Bigrams of words are also a great indi
+Sentiment analysis using unigram tokens are capable of encapsulating the general feeling of a word, it some cases it is possible that negation words appear before these sentiments. Negation words are words that deny a succeeding word, in sentiment analysis, this reverses the polarity of the sentiment of a word that is preceded by a negation word (\url{https://www.mdpi.com/2076-3417/12/8/4066}). In the sentiment analysis with using unigrams the sentiment of words preceded by a negation word have to reverse their sentiment. Bigrams are very useful in exploring this dynamic. Negation can thereafter be explored in conjunction with the unigram sentiment, to see whether some of the positive or negative sentiments are reflecting incorrect sentiment and if the top words negative/positive words were in fact a polar realization of this. 
+
+The negation words have been chosen from the dictionary provided by (\url{https://cran.r-project.org/web/packages/qdapDictionaries/index.html}). This was by no means an exhaustive collection of negation words, and this will be reflected in results
+
 
 ```{r Negation}
 # Tokenize into bigram
