@@ -52,7 +52,7 @@ wordsSentiment %>%
   group_by(president) %>% 
   filter(rank(desc(n)) <= 10) %>%
   ggplot(aes(reorder(word, n), n)) + geom_col() + 
-  facet_wrap(~president) + coord_flip() + xlab(" ")
+  facet_wrap(~president, scales = "free_y") + coord_flip() + xlab(" ")
 
 ## Each Presidents Top 15 Most Frequent Positive words
 ## Top 5 is highlighted
@@ -311,7 +311,8 @@ wordsSentimentNRC %>%
   mutate(nrc_id = 1:10) %>%
   ungroup() %>%
   filter(nrc_id <= 5) %>%
-  ggplot(aes(reorder(nrc_sentiment, mean_prop), mean_prop, fill = president)) + 
+  rename(President = president) %>%
+  ggplot(aes(reorder(nrc_sentiment, mean_prop), mean_prop, fill = President)) + 
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Average Proportion") +
   theme_bw(base_size = 12)
@@ -329,7 +330,8 @@ wordsSentimentNRC %>%
   mutate(nrc_id = 1:10) %>%
   ungroup() %>%
   filter(nrc_id >= 6) %>%
-  ggplot(aes(reorder(nrc_sentiment, mean_prop), mean_prop, fill = president)) + 
+  rename(President = president) %>%
+  ggplot(aes(reorder(nrc_sentiment, mean_prop), mean_prop, fill = President)) + 
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Average Proportion") +
   theme_bw(base_size = 12)
@@ -344,7 +346,7 @@ wordsWithSentID %>%
   anti_join(stop_words) %>%
   filter(president == "Mandela") %>%
   count(word) %>%
-  with(wordcloud(word, n, max.words = 25, scale = c(2.5, 1)))
+  with(wordcloud(word, n, max.words = 25, random.order = TRUE, scale = c(2.5, 1)))
 
 wordsWithSentID %>%
   anti_join(stop_words) %>%

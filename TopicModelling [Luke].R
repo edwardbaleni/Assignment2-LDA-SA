@@ -44,13 +44,54 @@ speechTDF = wordsWithSentID %>%
 dtmSpeech = speechTDF %>% 
   cast_dtm(president, word, n)
 
-speechLDA = LDA(dtmSpeech, k = 6, control = list(seed = 2023))
+kSeq = 2:4
+topicsList = list()
 
-speechTopics = tidy(speechLDA, matrix = 'beta')
+for (k in kSeq){
+  
+  speechLDA = LDA(dtmSpeech, k = k, control = list(seed = 2023))
+  
+  speechTopics = tidy(speechLDA, matrix = 'beta')
+  
+  topicsList[[k-1]] = speechTopics
+  
+  speechTopics %>%
+    group_by(topic) %>%
+    slice_max(n = 15, order_by = beta) %>% 
+    ungroup() %>%
+    arrange(topic, -beta) %>%
+    ggplot(aes(reorder(term, beta), beta, fill = factor(topic))) +
+    geom_col(show.legend = FALSE) +
+    facet_wrap(~ topic, scales = 'free') + 
+    coord_flip() + xlab(" ") +
+    theme_bw(base_size = 12)
+}
 
-speechTopics %>%
+names(topicsList) = c("Two", "Three", "Four")
+
+chosenTopic = topicsList$Two
+
+chosenTopic %>%
   group_by(topic) %>%
   slice_max(n = 15, order_by = beta) %>% 
+  ungroup() %>%
+  arrange(topic, -beta) %>%
+  ggplot(aes(reorder(term, beta), beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = 'free') + 
+  coord_flip() + xlab(" ") +
+  theme_bw(base_size = 12)
+
+removeWords = chosenTopic %>% 
+  group_by(topic) %>%
+  slice_max(beta, n = 10) 
+
+aaa = chosenTopic %>%
+  filter(!term %in% removeWords$term) 
+
+aaa %>%
+  group_by(topic) %>%
+  slice_max(n = 10, order_by = beta) %>% 
   ungroup() %>%
   arrange(topic, -beta) %>%
   ggplot(aes(reorder(term, beta), beta, fill = factor(topic))) +
@@ -76,29 +117,50 @@ wordsWithSentID %>%
 
 # compare terms with the greatest difference in Betas between topics
 
-betaWide = speechTopics %>%
-  mutate(topic = paste0("topic", topic)) %>%
-  pivot_wider(names_from = topic, values_from = beta) %>% 
-  filter(topic1 > .001 | topic2 > .001 | topic3 > .001 | topic4 > .001 | topic5 > .001 | topic6 > .001) %>%
-  mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
-  mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
-  mutate(log_ratio1.4 = log2(topic4 / topic1)) %>%
-  mutate(log_ratio1.5 = log2(topic5 / topic1)) %>%
-  mutate(log_ratio1.6 = log2(topic6 / topic1)) %>%
-  mutate(log_ratio2.3 = log2(topic3 / topic2)) %>%
-  mutate(log_ratio2.4 = log2(topic4 / topic2)) %>%
-  mutate(log_ratio2.5 = log2(topic5 / topic2)) %>%
-  mutate(log_ratio2.6 = log2(topic6 / topic2)) %>%
-  mutate(log_ratio3.4 = log2(topic4 / topic3)) %>%
-  mutate(log_ratio3.5 = log2(topic5 / topic3)) %>%
-  mutate(log_ratio3.6 = log2(topic6 / topic3)) %>%
-  mutate(log_ratio4.5 = log2(topic5 / topic4)) %>%
-  mutate(log_ratio4.6 = log2(topic6 / topic4)) %>%
-  mutate(log_ratio5.6 = log2(topic6 / topic5)) 
+wideBeta = function(speechTopics, k, thresh = 0.001){
+  
+  if (k == 2){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1))
+  }
+  
+  if (k == 3){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh | topic3 > thresh) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
+      mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
+      mutate(log_ratio2.3 = log2(topic3 / topic2))
+  }
+  
+  if (k == 4){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh | topic3 > thresh | topic4 > thresh ) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
+      mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
+      mutate(log_ratio1.4 = log2(topic4 / topic1)) %>%
+      mutate(log_ratio2.3 = log2(topic3 / topic2)) %>%
+      mutate(log_ratio2.4 = log2(topic4 / topic2)) %>%
+      mutate(log_ratio3.4 = log2(topic4 / topic3)) 
+  }
+  
+  return(betaWide)
+}
+
+betaWide = wideBeta(chosenTopic, k = 2, thresh = 0.001)
 
 betaWide %>%
   select(term, log_ratio1.2) %>%
-  filter(abs(log_ratio1.2) >= 10) %>%
+  filter(abs(log_ratio1.2) >= 5) %>%
   ggplot(aes(reorder(term, log_ratio1.2), log_ratio1.2)) +
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 2 and 1") +
