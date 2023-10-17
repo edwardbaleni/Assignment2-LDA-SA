@@ -85,7 +85,6 @@ Figure 1 below shows the most common positive words used by each president. A nu
 
 It can also be noted that Ramaphosa and Zuma share similar positive words including "reform", "improve", "sustainable" and "progress" which indicates where much of their positive focus lies introducing new reforms or advocating for economic improvements and sustainable economic policy.
 
--   NOT SURE WHAT ELSE STANDS OUT HERE?
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE, include=FALSE}
 ### Libraries
@@ -228,8 +227,6 @@ ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 [*Figure 1: The most commonly used positive words used by each president.*]{.underline}
 
 Figure 2 below shows the most frequently used negative word by each president. Again here, as with the positive sentiment words, a couple words stand out which can highlight what the major issues at the time of each presidency. For Mbeki and Motlanthe, the most common negative sentiment word is poverty which indicates that that was a large problem at the time of their presidency or a negative aspect of the country that was focused on significantly in their speeches. Ramaphosa and Zuma use "corruption" many times in their speeches and this again points to what was regarded by them as a major negative issue to be addresses. In addition to corruption they both also speak of crime and poverty fairly frequently.
-
--   ADD SOME MORE HERE BUT NOT TOO SURE WHAT
 
 ```{r, echo = FALSE}
 ## Each Presidents Most Frequent Negative words
@@ -1010,6 +1007,8 @@ ggarrange(man, mbe, zum, ram, ncol = 2, nrow = 2)
 ```
 
 ## Conclusion
+
+This report has outlined a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2023. This descriptive analysis was carried out by implementing sentiment analysis and topic modelling on the speech data. This analysis has highlighted the importance of being able to manipulate and wrangle text data in order to convert it into useful formats. In addition it has shown how both sentiment analysis and topic modelling are useful tools to extract meaning from text data without having to read through the full speeches. The sentiment analysis showed the positive or negative sentiments of each president and described how these sentiments changed over time. Significant increases or decreases in positive sentiment were also able to be noted. The topic modelling technique pulled out four topics that the presidents conveyed in their speeches. These topics were able to be tracked over time for each president which gave insight into which topics different presidents thought were more or less important to speak about. There are some limitations to the analysis that has been done such as the lack of certain words in the sentiment lexicons and assumptions of 'neutral' words. In addition, for the topic modelling, there is no set number of topics that should be chosen and so a potential limitation is not conducting more analysis with varying numbers of topics. Overall this report has given an overview of how to conduct a descriptive analysis of text data and has highlighted two popular techniques, sentiment analysis and topic modelling. 
 
 ## References
 
