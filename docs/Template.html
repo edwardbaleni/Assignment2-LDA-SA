@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Edward Baleni, Andrea Plumbley, Luke Barnes">
+
+<title>Assignment 2 - Template</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Assignment 2</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./Template.html" aria-current="page">
+ <span class="menu-text">Template</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Appendix.html">
+ <span class="menu-text">Appendix</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Use of ChatGPT.html">
+ <span class="menu-text">Appendix</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#literature-review" id="toc-literature-review" class="nav-link" data-scroll-target="#literature-review">Literature Review</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#sentiment-analysis-1" id="toc-sentiment-analysis-1" class="nav-link" data-scroll-target="#sentiment-analysis-1"><em>Sentiment Analysis</em></a></li>
+  <li><a href="#topic-modelling-1" id="toc-topic-modelling-1" class="nav-link" data-scroll-target="#topic-modelling-1"><em>Topic Modelling</em></a></li>
+  </ul></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#sentiment-analysis-2" id="toc-sentiment-analysis-2" class="nav-link" data-scroll-target="#sentiment-analysis-2"><em>Sentiment Analysis</em></a></li>
+  <li><a href="#topic-modelling-2" id="toc-topic-modelling-2" class="nav-link" data-scroll-target="#topic-modelling-2"><em>Topic Modelling</em></a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Template</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Edward Baleni, Andrea Plumbley, Luke Barnes </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="abstract" class="level2">
+<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its ‘emotions’ (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.</p>
+<p>Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.</p>
+<p>Chat GPT was used as an aid to this assignment. The purpose of this was to experiment large language models and to assess Chat GPT’s ability to assist with the assignment. A brief summary of how well it did and how it responded to different prompts and guides in given in Appendix A (which can be found on Appendix A tab of this website).</p>
+</section>
+<section id="literature-review" class="level2">
+<h2 class="anchored" data-anchor-id="literature-review">Literature Review</h2>
+<section id="sentiment-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="sentiment-analysis"><strong><em>Sentiment Analysis</em></strong></h4>
+</section>
+<section id="topic-modelling" class="level4">
+<h4 class="anchored" data-anchor-id="topic-modelling"><strong><em>Topic Modelling</em></strong></h4>
+</section>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>As mentioned, the data for this analysis is a collection of 36 speeches delivered as State of the Nation Addresses between 1994 and 2022. These speeches were delivered by 6 different presidents: de Klerk, Mandela, Mbeki, Motlanthe, Zuma and Ramaphosa.</p>
+<p>This data needed to be cleaned before sentiment analysis or topic modelling could be done. The data was cleaned by removing punctuation marks and numbers from the speeches. Stop words, which are common words such as ‘the’, ‘and’ and ‘they’ were also removed from the speeches.</p>
+<p>In order to perform sentiment analysis the speeches needed to be tokenized into shorter parts such as bigrams and words in order to assess the sentiment of each smaller part and then aggregate these sentiments to understand the sentiment of the speech as a whole. The speeches are tokenized first into sentences and then into words using the unnest_tokens() function in R.</p>
+<ul>
+<li>Explain why bigrams were necessary and how this worked - Were stop words not removed?? Because we need not and no etc</li>
+</ul>
+<p>For topic modelling, for which Latent Dirichlet allocation will be applied, the data format that will be used is a DocumentTermMatrix object. Once the speeches have been tokenized and cleaned, as was done above, a DTM object is created using the cast_dtm() function which is part of the <em>tidytext</em> package in R. The cast_dtm() function is applied to the data frame containing the words, speechIDs and counts and turns the data frame into a DTM object using these variables.</p>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<section id="sentiment-analysis-1" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment-analysis-1"><em>Sentiment Analysis</em></h3>
+<p>In order to perform sentiment analysis, sentiment lexicons are used. These lexicons contain many words which are labelled according to their sentiment. The main lexicon that was made use of here for analysis was the <em>bing</em> dictionary which labels words as positive or negative. The <em>affin</em> dictionary gives each word a score between negative five and five, from negative to positive sentiments.</p>
+<p>In order to get each words sentiment, the data frame containing individual words, with an associated president, year ans sentence ID is left joined with the <em>bing</em> lexicon in order to get their associated positive or negative sentiment. Because many of the words in the speeches are not in the dictionary, these words are assigned with a sentiment value of neutral instead of removing them from analysis. This is not an ideal situation as it may mean that words which are very emotively loaded are being assigned as neutral and so one could miss the true sentiment of a sentence or speech however it is better than removing all these words from the analysis completely.</p>
+<p>In order to analyze the sentiment of different presidents we can consider each presidents most commonly used positive and negative words which can be found using filtering by president and filtering by positive or negative sentiment.</p>
+<p>In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.</p>
+<ul>
+<li>NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS</li>
+</ul>
+</section>
+<section id="topic-modelling-1" class="level3">
+<h3 class="anchored" data-anchor-id="topic-modelling-1"><em>Topic Modelling</em></h3>
+<p>The second technique used to analyze the State of the Nation Addresses is topic modelling for which Latent Dirichlet allocation is used. The basic components of Latent Dirichlet Allocation (LDA) are as follows:</p>
+<ul>
+<li><p>Each document (in this case speech) is made up of a mixture of topics.</p></li>
+<li><p>Each topic is made up of a mixture of words.</p></li>
+</ul>
+<p>If one wanted to generate a speech, first the number of words to generate must be specified. Following that one makes a draw from a Dirichlet distribution which gives a vector of proportions of each topic in the document. Then one divides up the number of words between the topics in the proportions specified. The words are then drawn from a conditional distribution which gives the probability of word i appearing given that the topic is topic j. LDA is therefore a hierarchical model, sampling first the topic proportions and then sampling the words given the topic proportions.</p>
+<p>The <em>topicmodels</em> package is used in R in order to perform LDA on the SONA data using the LDA() function. A seed of 2023 is set within the LDA control argument in order to ensure results are reproducible. The LDA() function takes in as arguments the DocumentTermMatrix of the speeches, as discussed in the data section and a parameter k which specifies the number of topics one wants to obtain.</p>
+<p>How did we go about choosing k?</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<p>Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.</p>
+<section id="sentiment-analysis-2" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment-analysis-2"><em>Sentiment Analysis</em></h3>
+<section id="individual-words" class="level4">
+<h4 class="anchored" data-anchor-id="individual-words"><strong><em>Individual Words</em></strong></h4>
+<p>Figure 1 below shows the most common positive words used by each president. A number of words stand out here. “Regard” is used very frequently by Mandela, Mbeki and Motlanthe while Zuma and Ramaphosa both say “support” often. Mandela and de Klerk’s most common words are similar in terms of theme, examples being “freedom”, “peaceful” and “reconciliation”. These types of positive words are expected from these two presidents who were in office at the end of apartheid in South Africa.</p>
+<p>It can also be noted that Ramaphosa and Zuma share similar positive words including “reform”, “improve”, “sustainable” and “progress” which indicates where much of their positive focus lies introducing new reforms or advocating for economic improvements and sustainable economic policy.</p>
+<ul>
+<li>NOT SURE WHAT ELSE STANDS OUT HERE?</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><u><em>Figure 1: The most commonly used positive words used by each president.</em></u></p>
+<p>Figure 2 below shows the most frequently used negative word by each president. Again here, as with the positive sentiment words, a couple words stand out which can highlight what the major issues at the time of each presidency. For Mbeki and Motlanthe, the most common negative sentiment word is poverty which indicates that that was a large problem at the time of their presidency or a negative aspect of the country that was focused on significantly in their speeches. Ramaphosa and Zuma use “corruption” many times in their speeches and this again points to what was regarded by them as a major negative issue to be addresses. In addition to corruption they both also speak of crime and poverty fairly frequently.</p>
+<ul>
+<li>ADD SOME MORE HERE BUT NOT TOO SURE WHAT</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><u><em>Figure 2: The most commonly used negative words used by each president.</em></u></p>
+<p>Having considered overall the most commonly used positive and negative words by each president which gives an idea of what the positive and negative issues of the country were at the time, sentiment changes over time are now considered. Figure A and B in Appendix 1 give the changes in positive and negative sentiment associated words over time. Figure 3 below gives the net change in sentiment overtime, where each president is represented by a different symbol shown in the legend. This net sentiment shows the net positive sentiments over negative sentiments. It is clear that overall most presidents have net positive speeches, using more positive than negative words. An exception to this is de Klerk where the value is just less than zero indicating more negative words than positive ones were said and Mandela’s 1998 speech had an almost equal amount of negative and positive words. It must again be noted that those words not present in the <em>bing</em> dictionary were set as neutral and so there may be words that would slightly change these net sentiment values.</p>
+<p>Mbeki and Ramaphosa stand out as having the highest net positive sentiment. Between 2003 and 2005 the SONA speeches were significantly more positive than negative - WHY??</p>
+<p>Ramaphosa 2019 State of the Nation address also has a high net positive value. This was the year that Ramaphosa was elected as president and before the start of the COVID-19 pandemic and so it makes intuitive sense that this specific speech of Ramaphosa’s was the largest in net positive sentiment as it was likely a hopeful speech talking about change that would come after Zuma’s presidency and attempted impeachment.</p>
+<p>The speeches from 2020 to 2023 decreased significantly in net positive sentiment which makes sense due to the COVID-19 pandemic and its economic impact on the country. However overall these SONA speeches were still overall positive than negative but not as positive as Ramaphosa first official SONA as president (2019).</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><u><em>Figure 3: Net positive sentiment in speeches over the years.</em></u></p>
+<p>FIgure 4 below gives the change in net positive sentiment over each of the presidents terms in office. For de Klerk and Motlanthe this is not applicable because they each only delivered one address. Mandela and Mbeki became increasing positive in their speeches over their presidencies which Zuma and Ramaphosa delivered speeches that were less and less positive. It is expected that Mandela and Mbeki would have become increasingly more positive as their presidencies covered a time in which democracy was new in South Africa and significant changes made in government from the apartheid era which increased positive sentiment in the country. In the case of Zuma a decrease in positive sentiment makes sense as particularly toward the end of his presidency he was facing numerous allegations of corruption which likely would have impacted his speech sentiment. As already mentioned the second year of Ramaphosa’s presidency saw the start of the pandemic which would have decreased the amount of positive sentiment in his speeches.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="bigrams" class="level4">
+<h4 class="anchored" data-anchor-id="bigrams"><em>Bigrams</em></h4>
+</section>
+</section>
+<section id="topic-modelling-2" class="level3">
+<h3 class="anchored" data-anchor-id="topic-modelling-2"><em>Topic Modelling</em></h3>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -50,4 +50,4 @@ negative_words = all_words_join_lex %>%
 
 negative_words %>% ggplot(aes(reorder(word,n),n)) + geom_col() + coord_flip() + xlab('')
 
-
+## Changes over time 

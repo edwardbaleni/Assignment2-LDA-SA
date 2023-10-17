@@ -1,23 +1,165 @@
+##### Bigrams with Luke's Data
 
-library(tidyverse)
-library(tidytext)
+### Libraries
+
 library(textdata) 
 library(stringr)
 library(lubridate)
 
-source("sona-first-steps.R")
-source("DataClean.R")
+library(tidyverse)
+library(tidytext)
+library(tokenizers)
+library(gghighlight)
+library(tictoc)
+library(ggpubr)
 
-data_count$date = as.Date(data_count$date, tryFormats = "%d-%m-%Y")
+### Load Data
 
-afinn <- get_sentiments('afinn') 
-bing <- get_sentiments('bing') 
-nrc <- get_sentiments('nrc') %>%
+load("SonaData.RData")
+load("dsfi-lexicons.Rdata")
+
+### Change format of date
+sona$date = as.Date(sona$date, tryFormats = "%Y-%m-%d")
+
+### Separate speeches into sentences and sentences into words
+
+unnest_reg = "[^\\w_#@']"
+
+speechSentences = as_tibble(sona) %>%
+  rename(president = president_13) %>%
+  unnest_tokens(sentences, speech, token = "sentences") %>%
+  select(president, year, sentences, date) %>%
+  mutate(sentences, sentences = str_replace_all(sentences, "’", "'")) %>%
+  mutate(sentences, sentences = str_replace_all(sentences, "'", "")) %>%
+  mutate(sentences, sentences = str_remove_all(sentences, "[0-9]")) %>%
+  mutate(sentID = row_number())
+
+wordsWithSentID = speechSentences %>% 
+  unnest_tokens(word, sentences, token = 'regex', pattern = unnest_reg) %>%
+  filter(str_detect(word, '[a-z]')) %>%
+  filter(!word %in% stop_words$word) %>%
+  select(sentID, president, year, word)
+
+
+# Bigrams
+
+# Negation
+
+# Bigram
+bigram <- speechSentences %>% 
+  unnest_tokens(word, sentences, token = 'ngrams', n = 2)
+
+# Collect some negation words from qdap dictionary
+negation_words <- qdapDictionaries::negation.words
+stop_words <- stop_words %>%
+  filter(!word %in% negation_words)
+
+# Separate bigram to use stop words
+bigrams_separated <- bigram %>%
+  separate(word, c("word1", "word2"), sep = " ")
+
+# Filter out stop words
+bigrams_filtered <- bigrams_separated %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+
+# Unite bigram
+bigrams_unite <- bigrams_filtered %>%
+  unite(word1, word2)
+
+# Obtain the negated words
+negated_words <- bigrams_separated %>%
+  filter(word1 %in% negation_words) %>%
+  inner_join(afinn, by = c(word2 = "word")) %>%
+  count(word1, word2, value, sort = TRUE) %>%
+  arrange(desc(n))
+
+# Plot of the negated words
+negated_words %>%
+  mutate(contribution = n * value) %>%
+  arrange(desc(abs(contribution))) %>%
+  mutate(word2 = reorder(word2, contribution)) %>%
+  ggplot(aes(n * value, word2, fill = word1)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~word1, ncol = 2, scales = "free_y")
+
+
+# Sentiment of a bigram
+# reverse the sentiment of word2 whenever it is preceded by a negation word, and then add up the number of positive and negative words within a bigram and take the difference.
+
+bigrams_separated <- bigrams_filtered %>% 
+  # add sentiment for word 1
+  left_join(bing, by = c(word1 = 'word')) %>%
+  rename(sentiment1 = sentiment) %>%
+  mutate(sentiment1 = ifelse(is.na(sentiment1), 'neutral', sentiment1)) %>%
+  # add sentiment for word 2
+  left_join(bing, by = c(word2 = 'word')) %>%
+  rename(sentiment2 = sentiment) %>%
+  mutate(sentiment2 = ifelse(is.na(sentiment2), 'neutral', sentiment2)) %>%
+  select(word1, word2, sentiment1, sentiment2, everything())
+
+bigrams_separated
+
+bigrams_separated <- bigrams_separated %>%
+  # create a variable that is the opposite of sentiment2
+  mutate(opp_sentiment2 = recode(sentiment2, 'positive' = 'negative',
+                                 'negative' = 'positive',
+                                 'neutral' = 'neutral')) %>%
+  # reverse sentiment2 if word1 is a negation word
+  mutate(sentiment2 = ifelse(word1 %in% negation_words, opp_sentiment2, sentiment2)) %>%
+  # remove the opposite sentiment variable, which we don't need any more
+  select(-opp_sentiment2)
+
+
+
+
+bigrams_separated <- bigrams_separated %>%
+  mutate(net_sentiment = (sentiment1 == 'positive') + (sentiment2 == 'positive') - 
+           (sentiment1 == 'negative') - (sentiment2 == 'negative')) %>%
+  unite(bigram, word1, word2, sep = ' ', remove = FALSE)
+bigrams_separated %>% select(word1, word2, sentiment1, sentiment2, net_sentiment)
+
+# Positive bigrams
+bigrams_separated %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
+
+# Negative biagrams
+bigrams_separated %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
+
+# Negated bigrams
+bigrams_separated %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
+
+
+
+
+
+
+
+
+
+##### Using old data, we have some analysis
+
+
+#data_count$date = as.Date(data_count$date, tryFormats = "%d-%m-%Y")
+data_count <-  speechSentences
+nrc <- nrc %>%
   distinct(word, .keep_all = T)
 
 # Tokenize
 uni <- data_count %>%
-  unnest_tokens(word, speech, token = "words") %>%
+  unnest_tokens(word, sentences, token = "words") %>%
   filter(!word %in% stop_words$word)
 
 # Combining sentiment dictionaries with tokens
@@ -74,11 +216,6 @@ sentences %>%
 
 # illustrates the sentiment over time and through their texts
 # If this was split up per speech it would show the change in sentiment throught the speech
-ggplot(uni, aes(ids, afinn_sentiment, fill = president)) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~president, ncol = 2, scales = "free_x")
-
-
 # This will look at the sentiment over sections of each presidents speeches going 20
 # sentences at a time
 number_of_sentences <- 20
@@ -94,24 +231,7 @@ ggplot(sentiment_president, aes(index, sentiment, fill = president)) +
 
 
 
-
-# Most sentiment words
-bing_word_counts <- uni %>%
-  count(word, bing_sentiment, sort = TRUE) %>%
-  ungroup()
-
-bing_word_counts %>%
-  group_by(bing_sentiment) %>%
-  slice_max(n, n = 10) %>% 
-  ungroup() %>%
-  mutate(word = reorder(word, n)) %>%
-  filter(!is.na(bing_sentiment)) %>%
-  ggplot(aes(n, word, fill = bing_sentiment)) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~bing_sentiment, scales = "free_y") +
-  labs(x = "Contribution to sentiment",
-       y = NULL)
-
+# Word Cloud
 
 library(wordcloud)
 uni %>%
@@ -126,98 +246,3 @@ uni %>%
   count(word, bing_sentiment, sort = TRUE) %>%
   acast(word ~ bing_sentiment, value.var = "n", fill = 0) %>%
   comparison.cloud(colors = c("gray20", "gray80"), max.words = 100, scale = c(4,.1))
-
-
-
-
-# Negation
-
-# Bigram
-bigram <- data_count %>% 
-  unnest_tokens(word, speech, token = 'ngrams', n = 2)
-
-bigrams_separated <- bigram %>%
-  separate(word, c("word1", "word2"), sep = " ")
-
-bigrams_filtered <- bigrams_separated %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word)
-
-bigrams_unite <- bigrams_filtered %>%
-  unite(word1, word2)
-
-
-
-negation_words <- c("not", "no", "never", "without")
-
-negated_words <- bigrams_separated %>%
-  filter(word1 %in% negation_words) %>%
-  inner_join(afinn, by = c(word2 = "word")) %>%
-  count(word1, word2, value, sort = TRUE) %>%
-  arrange(desc(n))
-
-negated_words %>%
-  mutate(contribution = n * value) %>%
-  arrange(desc(abs(contribution))) %>%
-  mutate(word2 = reorder(word2, contribution)) %>%
-  ggplot(aes(n * value, word2, fill = word1)) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~word1, ncol = 2, scales = "free_y")
-
-
-# Sentiment of a bigram
-# reverse the sentiment of word2 whenever it is preceded by a negation word, and then add up the number of positive and negative words within a bigram and take the difference.
-
-bigrams_separated <- bigrams_separated %>% 
-  # add sentiment for word 1
-  left_join(bing, by = c(word1 = 'word')) %>%
-  rename(sentiment1 = sentiment) %>%
-  mutate(sentiment1 = ifelse(is.na(sentiment1), 'neutral', sentiment1)) %>%
-  # add sentiment for word 2
-  left_join(bing, by = c(word2 = 'word')) %>%
-  rename(sentiment2 = sentiment) %>%
-  mutate(sentiment2 = ifelse(is.na(sentiment2), 'neutral', sentiment2)) %>%
-  select(date, word1, word2, sentiment1, sentiment2, everything())
-
-bigrams_separated
-
-bigrams_separated <- bigrams_separated %>%
-  # create a variable that is the opposite of sentiment2
-  mutate(opp_sentiment2 = recode(sentiment2, 'positive' = 'negative',
-                                 'negative' = 'positive',
-                                 'neutral' = 'neutral')) %>%
-  # reverse sentiment2 if word1 is a negation word
-  mutate(sentiment2 = ifelse(word1 %in% negation_words, opp_sentiment2, sentiment2)) %>%
-  # remove the opposite sentiment variable, which we don't need any more
-  select(-opp_sentiment2)
-
-
-
-
-bigrams_separated <- bigrams_separated %>%
-  mutate(net_sentiment = (sentiment1 == 'positive') + (sentiment2 == 'positive') - 
-           (sentiment1 == 'negative') - (sentiment2 == 'negative')) %>%
-  unite(bigram, word1, word2, sep = ' ', remove = FALSE)
-bigrams_separated %>% select(word1, word2, sentiment1, sentiment2, net_sentiment)
-
-# Positive bigrams
-bigrams_separated %>%
-  filter(net_sentiment > 0) %>% # get positive bigrams
-  count(bigram, sort = TRUE) %>%
-  filter(rank(desc(n)) < 20) %>%
-  ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
-
-# Negative biagrams
-bigrams_separated %>%
-  filter(net_sentiment < 0) %>% # get negative bigrams
-  count(bigram, sort = TRUE) %>%
-  filter(rank(desc(n)) < 20) %>%
-  ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')
-
-# Negated bigrams
-bigrams_separated %>%
-  filter(net_sentiment < 0) %>% # get negative bigrams
-  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
-  count(bigram, sort = TRUE) %>%
-  filter(rank(desc(n)) < 20) %>%
-  ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('')

@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Assignment 2"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - Template.qmd
+      - Appendix.qmd
+      - Use of ChatGPT.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
