@@ -424,20 +424,6 @@ negated_words <- bigrams_filtered %>%
   count(word1, word2, value, sort = TRUE) %>%
   arrange(desc(n))
 
-# Plot of the negated words
-negated_words %>%
-  mutate(Contribution = n * value) %>%
-  arrange(desc(abs(Contribution))) %>%
-  mutate(word2 = reorder(word2, Contribution)) %>%
-  filter(abs(value) > 1.9) %>%
-  ungroup() %>%
-  ggplot(aes(Contribution, word2, fill = word1)) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~word1, ncol = 2, scales = "free_y") +
-  theme_bw() +
-  ylab("Negated Word")
-
-
 # Sentiment of a bigram
 # reverse the sentiment of word2 whenever it is preceded by a negation word, and then add up the number of positive and negative words within a bigram and take the difference.
 bigrams_filtered <- bigrams_filtered %>% 
@@ -698,21 +684,18 @@ s18 <- bigrams_filtered %>%
   geom_col(fill = "red", col = "black") + 
   coord_flip() + 
   ylab('Frequency') + 
-  xlab("")
+  xlab("") +
   theme_bw(base_size = 12) + 
   ggtitle("Mandela")
 ```
-
 
 ```{r Positive Bigrams per President}
 ggarrange( s1, s4, s7, s10, s13, s16, ncol=3, nrow=2)
 ```
 
-
 ```{r Negative Bigrams per President}
 ggarrange( s2, s5, s8, s11, s14, s17, ncol=3, nrow=2)
 ```
-
 
 ```{r Negated Bigrams per President}
 ggarrange( s6, s9, s12, s15, s18, ncol=3, nrow=2)
