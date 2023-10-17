@@ -756,7 +756,7 @@ chosenTopic %>%
 # Labels
 ## Topic 1: Economic Growth
 ## Topic 2: Social Development
-## Topic 3: Governance / Government Policy 
+## Topic 3: Public Governance / Government Policy 
 ## Topic 4: 
 
 ```
