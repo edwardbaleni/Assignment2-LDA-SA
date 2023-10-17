@@ -69,27 +69,14 @@ for (k in kSeq){
 
 names(topicsList) = c("Two", "Three", "Four")
 
-chosenTopic = topicsList$Two
+chosenTopic = topicsList$Four
+
+# keeping the term in the topic with the highest beta value
 
 chosenTopic %>%
-  group_by(topic) %>%
-  slice_max(n = 15, order_by = beta) %>% 
+  group_by(term) %>%
+  slice(which.max(beta)) %>%
   ungroup() %>%
-  arrange(topic, -beta) %>%
-  ggplot(aes(reorder(term, beta), beta, fill = factor(topic))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = 'free') + 
-  coord_flip() + xlab(" ") +
-  theme_bw(base_size = 12)
-
-removeWords = chosenTopic %>% 
-  group_by(topic) %>%
-  slice_max(beta, n = 10) 
-
-aaa = chosenTopic %>%
-  filter(!term %in% removeWords$term) 
-
-aaa %>%
   group_by(topic) %>%
   slice_max(n = 10, order_by = beta) %>% 
   ungroup() %>%
@@ -100,24 +87,10 @@ aaa %>%
   coord_flip() + xlab(" ") +
   theme_bw(base_size = 12)
 
-# compare the top 15 most used words in each topic 
-# to the top 15 most commonly used words for each president
-
-wordsWithSentID %>%
-  group_by(president) %>%
-  count(word) %>%
-  slice_max(n = 15, order_by = n) %>% 
-  ungroup() %>%
-  arrange(president, -n) %>%
-  ggplot(aes(reorder(word, n), n, fill = factor(president))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ president, scales = 'free') + 
-  coord_flip() + xlab(" ") +
-  theme_bw(base_size = 12)
-
 # compare terms with the greatest difference in Betas between topics
+# plots are for all comparisons, assess and visualise for importance
 
-wideBeta = function(speechTopics, k, thresh = 0.001){
+wideBeta = function(speechTopics, k, thresh){
   
   if (k == 2){
     
@@ -156,97 +129,197 @@ wideBeta = function(speechTopics, k, thresh = 0.001){
   return(betaWide)
 }
 
-betaWide = wideBeta(chosenTopic, k = 2, thresh = 0.001)
+betaWide = wideBeta(chosenTopic, k = 4, thresh = 0.001)
 
 betaWide %>%
   select(term, log_ratio1.2) %>%
-  filter(abs(log_ratio1.2) >= 5) %>%
-  ggplot(aes(reorder(term, log_ratio1.2), log_ratio1.2)) +
+  filter(abs(log_ratio1.2) >= 10) %>%
+  mutate(pos = log_ratio1.2 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.2), log_ratio1.2, fill = pos)) +
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 2 and 1") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
   theme_bw(base_size = 12)
 
 betaWide %>%
   select(term, log_ratio1.3) %>%
-  filter(abs(log_ratio1.3) >= 100) %>%
-  ggplot(aes(reorder(term, log_ratio1.3), log_ratio1.3)) +
+  filter(abs(log_ratio1.3) >= 50) %>%
+  mutate(pos = log_ratio1.3 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.3), log_ratio1.3, fill = pos)) +
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 3 and 1") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
   theme_bw(base_size = 12)
 
 betaWide %>%
   select(term, log_ratio1.4) %>%
-  filter(abs(log_ratio1.4) >= 10) %>%
-  ggplot(aes(reorder(term, log_ratio1.4), log_ratio1.4)) +
+  filter(abs(log_ratio1.4) >= 200) %>%
+  mutate(pos = log_ratio1.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.4), log_ratio1.4, fill = pos)) +
   geom_bar(stat = "identity", position = 'dodge') + 
   coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 4 and 1") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
   theme_bw(base_size = 12)
 
 betaWide %>%
-  select(term, log_ratio1.5) %>%
-  filter(abs(log_ratio1.5) >= 10) %>%
-  ggplot(aes(reorder(term, log_ratio1.5), log_ratio1.5)) +
+  select(term, log_ratio2.3) %>%
+  filter(abs(log_ratio2.3) >= 10) %>%
+  mutate(pos = log_ratio2.3 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio2.3), log_ratio2.3, fill = pos)) +
   geom_bar(stat = "identity", position = 'dodge') + 
-  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 5 and 1") +
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 3 and 2") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
   theme_bw(base_size = 12)
 
 betaWide %>%
-  select(term, log_ratio1.6) %>%
-  filter(abs(log_ratio1.6) >= 100) %>%
-  ggplot(aes(reorder(term, log_ratio1.6), log_ratio1.6)) +
+  select(term, log_ratio2.4) %>%
+  filter(abs(log_ratio2.4) >= 10) %>%
+  mutate(pos = log_ratio2.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio2.4), log_ratio2.4, fill = pos)) +
   geom_bar(stat = "identity", position = 'dodge') + 
-  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 6 and 1") +
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 4 and 2") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
   theme_bw(base_size = 12)
 
+betaWide %>%
+  select(term, log_ratio3.4) %>%
+  filter(abs(log_ratio3.4) >= 100) %>%
+  mutate(pos = log_ratio3.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio3.4), log_ratio3.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log Ratio between Topic 4 and 3") +
+  scale_fill_manual(values=c("red", "blue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
 
 ### Document-Topic Probabilities
 
 speechTDF_DTP = wordsWithSentID %>%
   group_by(speechID, word) %>%
   count() %>%  
-  ungroup() 
+  ungroup()
 
 dtmSpeech_DTP = speechTDF_DTP %>% 
   cast_dtm(speechID, word, n)
 
-speechLDAforDTP = LDA(dtmSpeech_DTP, k = 6, control = list(seed = 2023))
+speechLDAforDTP = LDA(dtmSpeech_DTP, k = 4, control = list(seed = 2023))
 
-gamma = tidy(speechLDAforDTP, matrix = 'gamma') 
-gamma$gamma = round(gamma$gamma, 3)
+gamma = tidy(speechLDAforDTP, matrix = 'gamma')
+# gamma$gamma = round(gamma$gamma, 3)
 
 speechGamma = left_join(speechSentences %>% 
                         mutate(speechID = as.character(speechID)) %>%
                         select(-sentences, -sentID), 
                         gamma,
-                        by = c("speechID" = "document"), 
-                        relationship = "many-to-many")
-
-
-## Number of Mandela's sentences that LDA estimated to not be from Mandela
-# I don't know what's going on here 
-
-speechGamma %>% 
+                        by = c("speechID" = "document"),
+                        relationship = "many-to-many") %>%
   group_by(speechID) %>%
-  # summarise_all(speechID = first(speechID)) %>%
-  filter(president == "Mandela") %>%
-  filter(topic != 4 & gamma > 0.5) 
+  slice_head(n = 4) %>%
+  ungroup() %>%
+  mutate(gamma = round(gamma, 3))
 
-speechGamma %>% 
-  filter(president == "deKlerk") %>%
-  filter(topic != 1 & gamma > 0.5)
+manData = speechGamma %>% 
+  filter(president == "Mandela") %>% arrange(topic)
 
-speechGamma %>% 
-  filter(president == "Mbeki") %>%
-  filter(topic != 1 & gamma > 0.5) 
+manPlotData = data.frame("Man.Len" = 1:length(unique(manData$speechID)),
+                         "Man.Gam.Top1" = manData$gamma[1:7],
+                         "Man.Gam.Top2" = manData$gamma[8:14],
+                         "Man.Gam.Top3" = manData$gamma[15:21],
+                         "Man.Gam.Top4" = manData$gamma[22:28])
 
-speechGamma %>% 
-  filter(president == "Motlanthe") %>%
-  filter(topic != 2 & gamma > 0.5) 
+ggplot(manPlotData, aes(x = as.factor(Man.Len))) +
+  geom_point(aes(y = Man.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Man.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Man.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Man.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Man.Len, y = Man.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Speech Topic Probability") + xlab("Speech") +
+  theme_bw(base_size = 12)
 
-speechGamma %>% 
-  filter(president == "Ramaphosa") %>%
-  filter(topic != 6 & gamma > 0.5) 
+mbeData = speechGamma %>% 
+  filter(president == "Mbeki") %>% 
+  mutate(speechID = as.integer(speechID)) %>%
+  arrange(topic, speechID)
 
-speechGamma %>% 
-  filter(president == "Zuma") %>%
-  filter(topic != 3 & gamma > 0.5) 
+mbePlotData = data.frame("Mbe.Len" = 1:length(unique(mbeData$speechID)),
+                         "Mbe.Gam.Top1" = mbeData$gamma[1:10],
+                         "Mbe.Gam.Top2" = mbeData$gamma[11:20],
+                         "Mbe.Gam.Top3" = mbeData$gamma[21:30],
+                         "Mbe.Gam.Top4" = mbeData$gamma[31:40])
+
+ggplot(mbePlotData, aes(x = as.factor(Mbe.Len))) +
+  geom_point(aes(y = Mbe.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Mbe.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Mbe.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Mbe.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Mbe.Len, y = Mbe.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Speech Topic Probability") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+zumData = speechGamma %>% 
+  filter(president == "Zuma") %>% 
+  mutate(speechID = as.integer(speechID)) %>%
+  arrange(topic, speechID)
+
+zumPlotData = data.frame("Zum.Len" = 1:length(unique(zumData$speechID)),
+                         "Zum.Gam.Top1" = zumData$gamma[1:10],
+                         "Zum.Gam.Top2" = zumData$gamma[11:20],
+                         "Zum.Gam.Top3" = zumData$gamma[21:30],
+                         "Zum.Gam.Top4" = zumData$gamma[31:40])
+
+ggplot(zumPlotData, aes(x = as.factor(Zum.Len))) +
+  geom_point(aes(y = Zum.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Zum.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Zum.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Zum.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Zum.Len, y = Zum.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Speech Topic Probability") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+ramData = speechGamma %>% 
+  filter(president == "Ramaphosa") %>% 
+  mutate(speechID = as.integer(speechID)) %>%
+  arrange(topic, speechID)
+
+ramPlotData = data.frame("Ram.Len" = 1:length(unique(ramData$speechID)),
+                         "Ram.Gam.Top1" = ramData$gamma[1:7],
+                         "Ram.Gam.Top2" = ramData$gamma[8:14],
+                         "Ram.Gam.Top3" = ramData$gamma[15:21],
+                         "Ram.Gam.Top4" = ramData$gamma[22:28])
+
+ggplot(ramPlotData, aes(x = as.factor(Ram.Len))) +
+  geom_point(aes(y = Ram.Gam.Top1), col = "black", size = 4) +
+  geom_point(aes(y = Ram.Gam.Top2), col = "deeppink", size = 4) +
+  geom_point(aes(y = Ram.Gam.Top3), col = "deepskyblue", size = 4) +
+  geom_point(aes(y = Ram.Gam.Top4), col = "darkorchid", size = 4) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top1), col = "black", linewidth = 2) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top2), col = "deeppink", linewidth = 2) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top3), col = "deepskyblue", linewidth = 2) +
+  geom_line(aes(x = Ram.Len, y = Ram.Gam.Top4), col = "darkorchid", linewidth = 2) +
+  ylab("Speech Topic Probability") + xlab("Speech") +
+  theme_bw(base_size = 12)
+
+# includes the sentences with the gammas
+
+sentencesGamma = left_join(speechSentences %>% 
+                             mutate(speechID = as.character(speechID)), 
+                           gamma,
+                           by = c("speechID" = "document"),
+                           relationship = "many-to-many") %>%
+  mutate(gamma = round(gamma, 3))
+
+
