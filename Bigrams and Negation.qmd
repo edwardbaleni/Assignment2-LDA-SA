@@ -248,7 +248,6 @@ bigrams_filtered %>%
 ```
 
 ```{r Negated Words per President}
-#require(scales)
 s1 <- bigrams_filtered %>%
   filter(net_sentiment > 0) %>% # get positive bigrams
     filter(president == "deKlerk") %>%
