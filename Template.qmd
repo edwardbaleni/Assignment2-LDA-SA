@@ -104,9 +104,10 @@ load("dsfi-lexicons.Rdata")
 unnest_reg = "[^\\w_#@']"
 
 speechSentences = as_tibble(sona) %>%
+  mutate(speechID = 1:36) %>%
   rename(president = president_13) %>%
   unnest_tokens(sentences, speech, token = "sentences") %>%
-  select(president, year, sentences) %>%
+  select(speechID, president, year, sentences) %>%
   mutate(sentences, sentences = str_replace_all(sentences, "’", "'")) %>%
   mutate(sentences, sentences = str_replace_all(sentences, "'", "")) %>%
   mutate(sentences, sentences = str_remove_all(sentences, "[0-9]")) %>%
