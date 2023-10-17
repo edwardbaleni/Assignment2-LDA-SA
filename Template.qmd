@@ -7,9 +7,7 @@ editor: visual
 
 ## Abstract
 
-Due to the large volume of text data available today, sentiment analysis and topic modelling have become popular methods to classify documents (or other pieces of text) based on their emotional content and topics or themes present. Sentiment analysis and topic modelling methods provide techniques to programmatically categorize documents and does not require individuals to sit and read through large documents. In this report, sentiment analysis and topic modelling is applied to State of the Nation Addresses in South Africa between 1994 and 2023. The sentiment analysis section allows one to identify different presidents sentiment conveyed in their speeches and how this changed over time. Topic modelling highlights what the major themes are that each president speaks about and if the proportion of time spent on each topic changes over time. The results of the sentiment analysis showed that on the whole South African presidents have a net positive sentiment in their speeches. Specifically Mandela and Mbeki became more positive in their speeches over the time of their presidency while Zuma and Ramaphosa become less positive during their time in office. These findings correlate with what was happening in South Africa at the times of their respective presidencies.
-
--   ADD TOPIC MODELLING RESULTS ONCE COMPLETE
+Due to the large volume of text data available today, sentiment analysis and topic modelling have become popular methods to classify documents (or other pieces of text) based on their emotional content and topics or themes present. Sentiment analysis and topic modelling methods provide techniques to programmatically categorize documents and does not require individuals to sit and read through large documents. In this report, sentiment analysis and topic modelling is applied to State of the Nation Addresses in South Africa between 1994 and 2023. The sentiment analysis section allows one to identify different presidents sentiment conveyed in their speeches and how this changed over time. Topic modelling highlights what the major themes are that each president speaks about and if the proportion of time spent on each topic changes over time. The results of the sentiment analysis showed that on the whole South African presidents have a net positive sentiment in their speeches. Specifically Mandela and Mbeki became more positive in their speeches over the time of their presidency while Zuma and Ramaphosa become less positive during their time in office. These findings correlate with what was happening in South Africa at the times of their respective presidencies. Topic modelling extracted four key topics or themes which were given the following labels: Economic Growth, Social Development, Public Governance and Politics and Administration. The four topics were tracked over time for each president and results show how different presidents' different speeches contained varying levels of each of these four topics. 
 
 ## Introduction
 
@@ -53,7 +51,13 @@ In order to analyze the sentiment of different presidents we can consider each p
 
 In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.
 
--   NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS
+Sentiment analysis, with unigram tokens, can effectively capture the sentiment associated with a word. However, there are instances where negation words precede these sentiments. Negation words are words that reverse the sentiment of a succeeding word in sentiment analysis, essentially reversing its polarity (AlGhamdi, 2022). In unigram-based sentiment analysis, it becomes necessary to account for this reversal in sentiment when negation words are present. Bigrams, which are pairs of consecutive words, prove to be valuable in investigating this phenomenon. Analyzing negation in conjunction with unigram sentiment helps assess whether some positive or negative sentiments might be incorrectly classified and whether the most frequently used positive/negative words truly represent a polar sentiment to the realization discussed.
+
+The negation words used here have been drawn from the dictionary provided by (Rinker, T. W., 2013). It's important to note that this list of negation words is not exhaustive, and this limitation could affect the outcomes of the analysis. 
+
+To facilitate this process, the text was tokenized into bigrams. Following this, the words were separated, which allowed for the removal of stop words from the text. Negation words were collected, to handle contractions within some of these negation words, apostrophes were removed. Given that many negation words were found among the stop words, these negation terms were excluded from the stop word dictionary. Subsequently, the stop words were filtered out from the bigrams, resulting in a filtered dataset used for the analysis of bigram sentiment.
+
+In cases where a bigram contained a negation word as the first of the two words, the sentiment was reversed. Afterward, an overall sentiment score was computed for each bigram to determine the sentiment associated with it.
 
 ### *Topic Modelling*
 
@@ -69,6 +73,8 @@ The *topicmodels* package is used in R in order to perform LDA on the SONA data 
 
 In terms of selecting the number of topics to look for, this has to be specified in the LDA() function when it is run. Miranda and Bringula (2021) selected three topics in analyzing the Philippines SONA speeches. For this analysis: two, three and four topics were considered. A few of the different results for these different numbers of topics will be presented in the results. It was found that four topics was best and were easiest to categorize into understandable labels. For this reason the majority of topic modelling results presented below are based on the four topic case.
 
+It was found that in many cases the same words were appearing in many topics, particularly more common words like 'government', 'africa' and 'people'. In order to make the individual topics more meaningful these repeated words were set to only be allowed to be within one topic. This helped make the topics more unique so that better topic labels could be identified for each. 
+
 ## Results and Discussion
 
 Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.
@@ -81,7 +87,6 @@ Figure 1 below shows the most common positive words used by each president. A nu
 
 It can also be noted that Ramaphosa and Zuma share similar positive words including "reform", "improve", "sustainable" and "progress" which indicates where much of their positive focus lies introducing new reforms or advocating for economic improvements and sustainable economic policy.
 
--   NOT SURE WHAT ELSE STANDS OUT HERE?
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE, include=FALSE}
 ### Libraries
@@ -225,8 +230,6 @@ ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 
 Figure 2 below shows the most frequently used negative word by each president. Again here, as with the positive sentiment words, a couple words stand out which can highlight what the major issues at the time of each presidency. For Mbeki and Motlanthe, the most common negative sentiment word is poverty which indicates that that was a large problem at the time of their presidency or a negative aspect of the country that was focused on significantly in their speeches. Ramaphosa and Zuma use "corruption" many times in their speeches and this again points to what was regarded by them as a major negative issue to be addresses. In addition to corruption they both also speak of crime and poverty fairly frequently.
 
--   ADD SOME MORE HERE BUT NOT TOO SURE WHAT
-
 ```{r, echo = FALSE}
 ## Each Presidents Most Frequent Negative words
 ## Top 5 is highlighted
@@ -324,9 +327,7 @@ ggarrange(P1, P2, P3, P4, P5, P6, ncol=3, nrow=2)
 
 Having considered overall the most commonly used positive and negative words by each president which gives an idea of what the positive and negative issues of the country were at the time, sentiment changes over time are now considered. Figure A and B in Appendix 1 give the changes in positive and negative sentiment associated words over time. Figure 3 below gives the net change in sentiment overtime, where each president is represented by a different symbol shown in the legend. This net sentiment shows the net positive sentiments over negative sentiments. It is clear that overall most presidents have net positive speeches, using more positive than negative words. An exception to this is de Klerk where the value is just less than zero indicating more negative words than positive ones were said and Mandela's 1998 speech had an almost equal amount of negative and positive words. It must again be noted that those words not present in the *bing* dictionary were set as neutral and so there may be words that would slightly change these net sentiment values.
 
-Mbeki and Ramaphosa stand out as having the highest net positive sentiment. Between 2003 and 2005 the SONA speeches were significantly more positive than negative - WHY??
-
-Ramaphosa 2019 State of the Nation address also has a high net positive value. This was the year that Ramaphosa was elected as president and before the start of the COVID-19 pandemic and so it makes intuitive sense that this specific speech of Ramaphosa's was the largest in net positive sentiment as it was likely a hopeful speech talking about change that would come after Zuma's presidency and attempted impeachment.
+Mbeki and Ramaphosa stand out as having the highest net positive sentiment. Between 2003 and 2005 the SONA speeches were significantly more positive than negative during Mbeki's presidency. Ramaphosa's 2019 State of the Nation address also has a high net positive value. This was the year that Ramaphosa was elected as president and before the start of the COVID-19 pandemic and so it makes intuitive sense that this specific speech of Ramaphosa's was the largest in net positive sentiment as it was likely a hopeful speech talking about change that would come after Zuma's presidency and attempted impeachment.
 
 The speeches from 2020 to 2023 decreased significantly in net positive sentiment which makes sense due to the COVID-19 pandemic and its economic impact on the country. However overall these SONA speeches were still overall positive than negative but not as positive as Ramaphosa first official SONA as president (2019).
 
@@ -758,7 +759,7 @@ chosenTopic %>%
 ## Topic 1: Economic Growth
 ## Topic 2: Social Development
 ## Topic 3: Public Governance / Government Policy 
-## Topic 4: 
+## Topic 4: Politics and Admin
 
 ```
 
@@ -1006,3 +1007,27 @@ ggarrange(man, mbe, zum, ram, ncol = 2, nrow = 2)
 ```
 
 ## Conclusion
+
+This report has outlined a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2023. This descriptive analysis was carried out by implementing sentiment analysis and topic modelling on the speech data. This analysis has highlighted the importance of being able to manipulate and wrangle text data in order to convert it into useful formats. In addition it has shown how both sentiment analysis and topic modelling are useful tools to extract meaning from text data without having to read through the full speeches. The sentiment analysis showed the positive or negative sentiments of each president and described how these sentiments changed over time. Significant increases or decreases in positive sentiment were also able to be noted. The topic modelling technique pulled out four topics that the presidents conveyed in their speeches. These topics were able to be tracked over time for each president which gave insight into which topics different presidents thought were more or less important to speak about. There are some limitations to the analysis that has been done such as the lack of certain words in the sentiment lexicons and assumptions of 'neutral' words. In addition, for the topic modelling, there is no set number of topics that should be chosen and so a potential limitation is not conducting more analysis with varying numbers of topics. Overall this report has given an overview of how to conduct a descriptive analysis of text data and has highlighted two popular techniques, sentiment analysis and topic modelling. 
+
+## References
+
+AlGhamdi, Najwa, Shaheen Khatoon, and Majed Alshamari. 2022. "Multi-Aspect Oriented Sentiment Classification: Prior Knowledge Topic Modelling and Ensemble Learning Classifier Approach" Applied Sciences 12, no. 8: 4066. https://doi.org/10.3390/app12084066 
+
+Bringula, R., Ulfa, S., Miranda, J and Atienze, F. 2022. Text mining analysis on students' expectations and anxieties towards data analytics course. Cogent Engineering.
+
+Miranda, J. and Bringula, R. 2021. Exploring Phillipine presidents' speeches: a sentiment analysis and topic modeling approach. Cogent Social Sciences.
+
+Medhat, W., Hassan, A. and Korashy, H. 2014. Sentiment analysis algorithms and applications: a survey. Ain Shams Engineering Journal, 5(4).
+
+R Core Team. 2022. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+Rinker, T. W. (2013). qdapDictionaries: Dictionaries to Accompany the qdap Package. 1.0.7. University at Buffalo. Buffalo, New York. http://github.com/trinker/qdapDictionaries
+
+Silge, J. and Robinson, D. 2016. Text Mining with R, A tidy approach. O'Reilly.
+
+Silge, J. and Robinson, D. 2016. "tidytext: Text Mining and Analysis Using Tidy Data Principles in R." _JOSS_, *1*(3). doi:10.21105/joss.00037 https://doi.org/10.21105/joss.00037.
+
+Wickham H., François R., Henry L., Müller K., Vaughan D. 2023. _dplyr: A Grammar of Data Manipulation_. R package version 1.1.3, https://CRAN.R-project.org/package=dplyr.
+
+Wickham, H. 2022. _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.0, <https://CRAN.R-project.org/package=stringr>.

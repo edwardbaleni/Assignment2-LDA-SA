@@ -2,7 +2,7 @@
 title: "Appendix"
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
 ### Libraries
 
 library(tidyverse)
@@ -47,7 +47,7 @@ wordsSentiment = wordsWithSentID %>%
 #table(wordsSentiment$bing_sentiment)
 ```
 
-```{r}
+```{r, echo = FALSE}
 ### Count the positive and negative sentiments in each speech 
 
 wordsSentiment %>%
@@ -66,7 +66,7 @@ wordsSentiment %>%
 
 [*Figure A: Positive Sentiment Over Time*]{.underline}
 
-```{r}
+```{r, echo = FALSE}
 
 wordsSentiment %>%
   group_by(year, president) %>%
