@@ -195,9 +195,10 @@ ul.task-list li input[type="checkbox"] {
 <p>In order to get each words sentiment, the data frame containing individual words, with an associated president, year ans sentence ID is left joined with the <em>bing</em> lexicon in order to get their associated positive or negative sentiment. Because many of the words in the speeches are not in the dictionary, these words are assigned with a sentiment value of neutral instead of removing them from analysis. This is not an ideal situation as it may mean that words which are very emotively loaded are being assigned as neutral and so one could miss the true sentiment of a sentence or speech however it is better than removing all these words from the analysis completely.</p>
 <p>In order to analyze the sentiment of different presidents we can consider each presidents most commonly used positive and negative words which can be found using filtering by president and filtering by positive or negative sentiment.</p>
 <p>In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.</p>
-<p>Sentiment analysis, with unigram tokens, can effectively capture the sentiment associated with a word. However, there are instances where negation words precede these sentiments. Negation words are words that reverse the sentiment of a succeeding word in sentiment analysis, essentially reversing its polarity (). In unigram-based sentiment analysis, it becomes necessary to account for this reversal in sentiment when negation words are present. Bigrams, which are pairs of consecutive words, prove to be valuable in investigating this phenomenon. Analyzing negation in conjunction with unigram sentiment helps assess whether some positive or negative sentiments might be incorrectly classified and whether the most frequently used positive/negative words truly represent a polar sentiment to the realization discussed.</p>
-<p>The negation words used here have been drawn from the dictionary provided by (). It’s important to note that this list of negation words is not exhaustive, and this limitation could affect the outcomes of the analysis.</p>
-<p>For this to happen, tokenization by bigrams occured. These words were subsequently separated so that stop words could be filtered out of them. The stop word dictionary provided by</p>
+<p>Sentiment analysis, with unigram tokens, can effectively capture the sentiment associated with a word. However, there are instances where negation words precede these sentiments. Negation words are words that reverse the sentiment of a succeeding word in sentiment analysis, essentially reversing its polarity (AlGhamdi, 2022). In unigram-based sentiment analysis, it becomes necessary to account for this reversal in sentiment when negation words are present. Bigrams, which are pairs of consecutive words, prove to be valuable in investigating this phenomenon. Analyzing negation in conjunction with unigram sentiment helps assess whether some positive or negative sentiments might be incorrectly classified and whether the most frequently used positive/negative words truly represent a polar sentiment to the realization discussed.</p>
+<p>The negation words used here have been drawn from the dictionary provided by (Rinker, T. W., 2013). It’s important to note that this list of negation words is not exhaustive, and this limitation could affect the outcomes of the analysis.</p>
+<p>To facilitate this process, the text was tokenized into bigrams. Following this, the words were separated, which allowed for the removal of stop words from the text. Negation words were collected, to handle contractions within some of these negation words, apostrophes were removed. Given that many negation words were found among the stop words, these negation terms were excluded from the stop word dictionary. Subsequently, the stop words were filtered out from the bigrams, resulting in a filtered dataset used for the analysis of bigram sentiment.</p>
+<p>In cases where a bigram contained a negation word as the first of the two words, the sentiment was reversed. Afterward, an overall sentiment score was computed for each bigram to determine the sentiment associated with it.</p>
 </section>
 <section id="topic-modelling-1" class="level3">
 <h3 class="anchored" data-anchor-id="topic-modelling-1"><em>Topic Modelling</em></h3>
@@ -283,6 +284,48 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="Template_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<table class="table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 19%">
+<col style="width: 28%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Topic</th>
+<th>Label</th>
+<th>Words</th>
+<th>Sentences</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Economic Growth</td>
+<td>Economy, Investment, Growth, Business</td>
+<td>“The crisis cost our economy about 900 000 jobs.” “To ensure the promotion of an inclusive economy, to aid growth and development…” “As part of our efforts to encourage greater economic growth, we are working to reduce the cost to communicate.”</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Social Development</td>
+<td>People, Development, Social, Improve</td>
+<td>“We must sustain and improve the effectiveness of our social development programmes…” “The government will create a public service echelon of multi-skilled community development workers…”</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Public Governance</td>
+<td>Government, Public, Service, Democracy</td>
+<td>“That will provide an opportunity to address the more detailed issues on the government’s programme … that will support the government’s actions as our country begins its second decade of democracy.” “In particular we have decided that this year the government itself, in all its spheres, and the public sector as a whole, must make a decisive and integrated contribution…”</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Politics and Administration</td>
+<td>National, Compatriots, President, Infrastructure</td>
+<td>“Compatriots and esteemed guests, local government must work.” “We dare not allow any minority to deprive the great majority South Africans of their long-awaited desire to elect national and provincial governments which will for the first time in our history be truly representative of all South Africans.” “Over the next few years, there will be a dramatic expansion … for water, land care, municipal infrastructure...”</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="conclusion" class="level2">
@@ -291,10 +334,12 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
+<p>AlGhamdi, Najwa, Shaheen Khatoon, and Majed Alshamari. 2022. “Multi-Aspect Oriented Sentiment Classification: Prior Knowledge Topic Modelling and Ensemble Learning Classifier Approach” Applied Sciences 12, no. 8: 4066. https://doi.org/10.3390/app12084066</p>
 <p>Bringula, R., Ulfa, S., Miranda, J and Atienze, F. 2022. Text mining analysis on students’ expectations and anxieties towards data analytics course. Cogent Engineering.</p>
 <p>Miranda, J. and Bringula, R. 2021. Exploring Phillipine presidents’ speeches: a sentiment analysis and topic modeling approach. Cogent Social Sciences.</p>
 <p>Medhat, W., Hassan, A. and Korashy, H. 2014. Sentiment analysis algorithms and applications: a survey. Ain Shams Engineering Journal, 5(4).</p>
 <p>R Core Team. 2022. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.</p>
+<p>Rinker, T. W. (2013). qdapDictionaries: Dictionaries to Accompany the qdap Package. 1.0.7. University at Buffalo. Buffalo, New York. http://github.com/trinker/qdapDictionaries</p>
 <p>Silge, J. and Robinson, D. 2016. Text Mining with R, A tidy approach. O’Reilly.</p>
 <p>Silge, J. and Robinson, D. 2016. “tidytext: Text Mining and Analysis Using Tidy Data Principles in R.” <em>JOSS</em>, <em>1</em>(3). doi:10.21105/joss.00037 https://doi.org/10.21105/joss.00037.</p>
 <p>Wickham H., François R., Henry L., Müller K., Vaughan D. 2023. <em>dplyr: A Grammar of Data Manipulation</em>. R package version 1.1.3, https://CRAN.R-project.org/package=dplyr.</p>
