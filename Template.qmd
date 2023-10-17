@@ -387,6 +387,337 @@ wordsSentiment %>%
 
 #### *Bigrams*
 
+```{r Negation}
+# Tokenize into bigram
+bigram <- speechSentences %>% 
+  unnest_tokens(word, sentences, token = 'ngrams', n = 2)
+
+# Collect some negation words from qdap dictionary
+negation_words <-  qdapDictionaries::negation.words
+clean <- function(x){
+  hold <- str_replace_all(x, "’", "'")
+  hold <- str_replace_all(x, "'", "")  
+}
+negation_words <- unlist(lapply(negation_words, clean))
+
+# Remove negation words from list of stop words
+stop_words <- stop_words %>%
+  filter(!word %in% negation_words)
+
+
+bigrams_separated <- bigram %>%
+  separate(word, c("word1", "word2"), sep = " ")
+
+# Filter out stop words
+bigrams_filtered <- bigrams_separated %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+
+# Unite bigram
+bigrams_unite <- bigrams_filtered %>%
+  unite(word1, word2)
+
+# Obtain the negated words
+negated_words <- bigrams_filtered %>%
+  filter(word1 %in% negation_words) %>%
+  inner_join(afinn, by = c(word2 = "word")) %>%
+  count(word1, word2, value, sort = TRUE) %>%
+  arrange(desc(n))
+
+# Plot of the negated words
+negated_words %>%
+  mutate(Contribution = n * value) %>%
+  arrange(desc(abs(Contribution))) %>%
+  mutate(word2 = reorder(word2, Contribution)) %>%
+  filter(abs(value) > 1.9) %>%
+  ungroup() %>%
+  ggplot(aes(Contribution, word2, fill = word1)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~word1, ncol = 2, scales = "free_y") +
+  theme_bw() +
+  ylab("Negated Word")
+
+
+# Sentiment of a bigram
+# reverse the sentiment of word2 whenever it is preceded by a negation word, and then add up the number of positive and negative words within a bigram and take the difference.
+bigrams_filtered <- bigrams_filtered %>% 
+  # add sentiment for word 1
+  left_join(bing, by = c(word1 = 'word')) %>%
+  rename(sentiment1 = sentiment) %>%
+  mutate(sentiment1 = ifelse(is.na(sentiment1), 'neutral', sentiment1)) %>%
+  # add sentiment for word 2
+  left_join(bing, by = c(word2 = 'word')) %>%
+  rename(sentiment2 = sentiment) %>%
+  mutate(sentiment2 = ifelse(is.na(sentiment2), 'neutral', sentiment2)) %>%
+  select(word1, word2, sentiment1, sentiment2, everything())
+
+# Reverse sentiment of negated words
+bigrams_filtered <- bigrams_filtered %>%
+  mutate(opp_sentiment2 = recode(sentiment2, 
+                                 'positive' = 'negative',
+                                 'negative' = 'positive',
+                                 'neutral' = 'neutral')) %>%
+  mutate(sentiment2 = ifelse(word1 %in% negation_words, opp_sentiment2, sentiment2)) %>%
+  select(-opp_sentiment2)
+
+# Obtaining the net sentiment of the bigrams
+bigrams_filtered <- bigrams_filtered %>%
+  mutate(net_sentiment = (sentiment1 == 'positive') + (sentiment2 == 'positive') - 
+           (sentiment1 == 'negative') - (sentiment2 == 'negative')) %>%
+  unite(bigram, word1, word2, sep = ' ', remove = FALSE)
+```
+
+```{r Negated Words per President}
+s1 <- bigrams_filtered %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+    filter(president == "deKlerk") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+  arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) +   geom_col(fill = "purple", col = "black") + coord_flip() + ylab('Frequency')+ xlab("") + theme_bw() + ggtitle("deKlerk")
+
+# Negative biagrams
+s2 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+    filter(president == "deKlerk") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "orange", col = "black") + coord_flip() + ylab('Frequency')+xlab("") + theme_bw(base_size = 12) + ggtitle("deKlerk")
+
+# Negated bigrams
+# s3 <- bigrams_filtered %>%
+#   filter(net_sentiment < 0) %>% # get negative bigrams
+#     filter(president == "deKlerk") %>%
+#   filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+#   count(bigram, sort = TRUE) %>%
+#   filter(rank(desc(n)) < 20) %>%
+#     arrange(desc(n)) %>%
+#   mutate(id = 1:dim(.)[1]) %>%
+#   filter(id <= 15) %>%
+#   ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('Frequency') +theme_bw()
+
+
+s4 <- bigrams_filtered %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+    filter(president == "Zuma") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "purple", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Zuma")
+
+# Negative biagrams
+s5 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+  filter(president == "Zuma") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "orange", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Zuma")
+
+# Negated bigrams
+s6 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+  filter(president == "Zuma") %>%
+  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "red", col = "black")+ coord_flip() + ylab('Frequency')+ 
+  xlab("") +theme_bw() + ggtitle("Zuma")
+
+s7 <- bigrams_filtered %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+  filter(president == "Ramaphosa") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "purple", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Ramaphosa")
+
+# Negative biagrams
+s8 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+    filter(president == "Ramaphosa") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "orange", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 12) + ggtitle("Ramaphosa")
+
+# Negated bigrams
+s9 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+    filter(president == "Ramaphosa") %>%
+  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "red", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Ramaphosa")
+
+s10 <-  bigrams_filtered %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+    filter(president == "Motlanthe") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) +  geom_col(fill = "purple", col = "black") + coord_flip() +ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 6) + ggtitle("Motlanthe")
+
+# Negative biagrams
+s11 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+      filter(president == "Motlanthe") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "orange", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Motlanthe")
+
+# Negated bigrams
+s12 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+      filter(president == "Motlanthe") %>%
+  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "red", col = "black")+ coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Motlanthe")
+
+s13 <-  bigrams_filtered %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+      filter(president == "Mbeki") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "purple", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 9) + ggtitle("Mbeki")
+
+# Negative biagrams
+s14 <-  bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+  filter(president == "Mbeki") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "orange", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 9) + ggtitle("Mbeki")
+
+# Negated bigrams
+s15 <-  bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+  filter(president == "Mbeki") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "red", col = "black") + coord_flip() + ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 9) + ggtitle("Mbeki")
+
+s16 <- bigrams_filtered %>%
+  filter(net_sentiment > 0) %>% # get positive bigrams
+  filter(president == "Mandela") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n))  + geom_col(fill = "purple", col = "black") + coord_flip() + 
+  ylab('Frequency')+ 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 7) + ggtitle("Mandela")
+
+# Negative biagrams
+s17 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+    filter(president == "Mandela") %>%
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "orange", col = "black") + coord_flip() + 
+  ylab('Frequency') + 
+  xlab("") + theme_bw(base_size = 12) +
+  gghighlight(id <= 6) + ggtitle("Mandela")
+
+# Negated bigrams
+s18 <- bigrams_filtered %>%
+  filter(net_sentiment < 0) %>% # get negative bigrams
+    filter(president == "Mandela") %>%
+  filter(word1 %in% negation_words) %>% # get bigrams where first word is negation
+  count(bigram, sort = TRUE) %>%
+  filter(rank(desc(n)) < 20) %>%
+    arrange(desc(n)) %>%
+  mutate(id = 1:dim(.)[1]) %>%
+  filter(id <= 15) %>%
+  ggplot(aes(reorder(bigram,n),n)) + 
+  geom_col(fill = "red", col = "black") + 
+  coord_flip() + 
+  ylab('Frequency') + 
+  xlab("")
+  theme_bw(base_size = 12) + 
+  ggtitle("Mandela")
+```
+
+
+```{r Positive Bigrams per President}
+ggarrange( s1, s4, s7, s10, s13, s16, ncol=3, nrow=2)
+```
+
+
+```{r Negative Bigrams per President}
+ggarrange( s2, s5, s8, s11, s14, s17, ncol=3, nrow=2)
+```
+
+
+```{r Negated Bigrams per President}
+ggarrange( s6, s9, s12, s15, s18, ncol=3, nrow=2)
+```
+
 ### *Topic Modelling*
 
 ## Conclusion
