@@ -1,11 +1,15 @@
 ---
-title: "Template"
+title: "Assignment 2: Report"
 author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
 format: html
 editor: visual
 ---
 
 ## Abstract
+
+Due to the large volume of text data available today, sentiment analysis and topic modelling have become popular methods to classify documents (or other pieces of text) based on their emotional content and topics or themes present. Sentiment analysis and topic modelling methods provide techniques to programmatically categorize documents and does not require individuals to sit and read through large documents. In this report, sentiment analysis and topic modelling is applied to State of the Nation Addresses in South Africa between 1994 and 2023. The sentiment analysis section allows one to identify different presidents sentiment conveyed in their speeches and how this changed over time. Topic modelling highlights what the major themes are that each president speaks about and if the proportion of time spent on each topic changes over time. The results of the sentiment analysis showed that on the whole South African presidents have a net positive sentiment in their speeches. Specifically Mandela and Mbeki became more positive in their speeches over the time of their presidency while Zuma and Ramaphosa become less positive during their time in office. These findings correlate with what was happening in South Africa at the times of their respective presidencies.
+
+-   ADD TOPIC MODELLING RESULTS ONCE COMPLETE
 
 ## Introduction
 
