@@ -2,14 +2,24 @@
 title: "Using Chat GPT"
 ---
 
-Need an introductory paragraph.
+ChatGPT is a large language model that was made use of in this assignment. The purpose of using ChatGPT was to assess its ability to help with the assignment and identify areas where it is helpful and identify any short comings.
 
-A number of requests were made to ChatGPT to be able to see how it could help with the assignment and how well it is able to do as well as to identify short comings of the model.
+A number of different types of requests were made and its performance on these different types of requests varied.
 
--   talk about its response to fairly open ended questions
+**Open ended questions/Asking for guidance:**
 
--   talk about providing literature - seemed to actually do all right but obviously its not comprehensive. But also some papers that not convinced actually exist.
+The first types of questions asked to ChatGPT were questions asking quite broad questions are for guidance and direction. For example: "What is the best way to perform sentiment analysis of speeches in R?" or "What are the major application areas for sentiment analysis?". For question like these ChatGPT is quite helpful and provides lists with useful information which was beneficial for giving some direction on what to do or write about in the report.
 
--   Talk about help with code
+**Providing literature:**
 
--   Help with write up?
+The second task that ChatGPT was attempted to be used for was to provide literature for a brief literature review. Questions asked were "Can you recommend papers or textbooks on sentiment analysis for the purpose of a literature review?" and "Please also provide some papers for a brief literature review for Topic Modelling? Particularly any papers that have done topic modelling for presidential speeches". Some papers provided were helpful and were the right type of information that was being looked for however some of the papers suggested seemed to not exist or were written by different authors then those specified. In addition, a number of Machine Learning papers linked to sentiment analysis were recommended which while potentially interesting one would not necessarily be looking at when looking for basic sentiment analysis information. However this was not specified in the prompt and maybe one needs to be specific with what type of literature one is looking for.
+
+**Assistance with code:**
+
+A number of prompts were give to ChatGPT regarding code and how to fix error in R or creating certain plots. This is one area that ChatGPT performs well in and is able to take a request for how to do something and produce chunks of code that execute the task. One area in which ChatGPT did not do particularly well was identifying why a particular error was occurring in R. For example for the S4 objects that are created when one does LDA analysis, ChatGPT did not know that one cannot make use of the \$ operator. Even after giving it the R error which specifies that this is the case, it still did not produce the correct code. The prompt had to be modified to specify that this is the case and request the correct operator before ChatGPT was able to give the correct code.
+
+**Assistance with write up:**
+
+The final task for which the ChatGPT tool was used was to see its ability in writing up some of the report. For this purpose the prompt given was the introduction and asked to edit it and make it 'better' for a scientific paper. This is one area where ChatGPT does not perform particularly well. While it is able to write and generate text that makes sense and in terms of structure is good, the language used is quite 'flowery' language and says many unnecessary words. This makes it very obvious that it was written by a Large Language Model and it does not convey the same tone that an academic would write.
+
+Overall it was found that while ChatGPT is a useful tool and can provide one with ideas to get start as well as code for when one is not sure what to do, one needs to be wary of taking everything it says without checking it. In addition sometimes its 'fixes' do not work as they should and prompts given need to be quite specific or help push it in the right direction.
