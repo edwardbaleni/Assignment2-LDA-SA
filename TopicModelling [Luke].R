@@ -313,6 +313,7 @@ ggplot(ramPlotData, aes(x = as.factor(Ram.Len))) +
   ylab("Speech Topic Probability") + xlab("Speech") +
   theme_bw(base_size = 12)
 
+### Finding sentences for each Topic
 # includes the sentences with the gammas
 
 sentencesGamma = left_join(speechSentences %>% 
@@ -322,10 +323,156 @@ sentencesGamma = left_join(speechSentences %>%
                            relationship = "many-to-many") %>%
   mutate(gamma = round(gamma, 3))
 
-sentencesGamma %>%
-  filter(grepl("economy", sentences))
 
-chosenTopic %>%
+sonaSentences = as_tibble(sona) %>%
+  mutate(speechID = 1:36) %>%
+  rename(president = president_13) %>%
+  unnest_tokens(sentences, speech, token = "sentences") %>%
+  select(speechID, president, year, sentences) %>%
+  mutate(sentID = row_number())
+
+### Topic 1: Economic Growth
+
+sentencesGamma %>%
+  filter(grepl("economy", sentences) & topic == 1 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 4744 | sentID == 4779) %>%
+  select(sentences)
+
+ss$sentences
+
+# "The crisis cost our economy about 900 000 jobs."
+# "To ensure the promotion of an inclusive economy, to aid growth and development, we have established the broad-based black economic empowerment advisory council, chaired by the president."
+
+sentencesGamma %>%
+  filter(grepl("investment", sentences) & topic == 1 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 4771) %>%
+  select(sentences)
+
+ss$sentences
+
+# "Underpinning our strategy for economic recovery and growth, is our capital investment programme."
+
+sentencesGamma %>%
+  filter(grepl("economic growth", sentences) & topic == 1 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 4877) %>%
+  select(sentences)
+
+ss$sentences
+
+# "As part of our efforts to encourage greater economic growth, we are working to reduce the cost to communicate."
+
+### Topic 2: Social Development
+
+sentencesGamma %>%
+  filter(grepl("social development", sentences) & topic == 2 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 3617) %>%
+  select(sentences)
+
+ss$sentences
+
+# "We must sustain and improve the effectiveness of our social development programmes targeted at providing a cushion of support to those most exposed to the threat of abject poverty..."
+
+sentencesGamma %>%
+  filter(grepl("development", sentences) & topic == 2 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 2665) %>%
+  select(sentences)
+
+ss$sentences
+
+# "The government will create a public service echelon of multi-skilled community development workers who will maintain direct contact with the people where these masses live."
+
+### Topic 3: Public Governance
+
+sentencesGamma %>%
+  filter(grepl("government", sentences) & grepl("democracy", sentences) & topic == 3 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 6053) %>%
+  select(sentences)
+
+ss$sentences
+
+# "That will provide an opportunity to address the more detailed issues on the government's programme ... that will support the government's actions as our country begins its second decade of democracy."
+
+sentencesGamma %>%
+  filter(grepl("government", sentences) & grepl("public", sentences) & topic == 3 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 2060) %>%
+  select(sentences)
+
+ss$sentences
+
+# "In particular we have decided that this year the government itself, in all its spheres, and the public sector as a whole, must make a decisive and integrated contribution..."
+
+sentencesGamma %>%
+  filter(grepl("service", sentences) & grepl("public", sentences) & topic == 3 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 5562) %>%
+  select(sentences)
+
+ss$sentences
+
+# "Ensuring that the public services we provide our people today can continue to be provided to our people tomorrow, requires that we have suitable tax policies to generate sufficient revenue to pay for these services."
+
+### Topic 4: Politics and Administration
+
+sentencesGamma %>%
+  filter(grepl("compatriots", sentences) & topic == 1 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 4845 | sentID == 4742) %>%
+  select(sentences)
+
+ss$sentences
+
+# "Compatriots and esteemed guests,  local government must work."
+
+sentencesGamma %>%
+  filter(grepl("national", sentences) & grepl("africa", sentences) & topic == 4 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 215) %>%
+  select(sentences)
+
+ss$sentences
+
+# "We dare not allow any minority to deprive the great majority South Africans of their long-awaited desire to elect national and provincial governments which will for the first time in our history be truly representative of all South Africans."
+
+sentencesGamma %>%
+  filter(grepl("water", sentences) & grepl("infrastructure", sentences) & topic == 4 & gamma > 0.5) %>%
+  print(n = 20)
+
+ss = sonaSentences %>%
+  filter(sentID == 1602) %>%
+  select(sentences)
+
+ss$sentences
+
+# "Over the next few years, there will be a dramatic expansion ... for water, land care, municipal infrastructure and selected welfare projects."
+
+aaa = chosenTopic %>%
   group_by(term) %>%
   slice(which.max(beta)) %>%
   ungroup() %>%
