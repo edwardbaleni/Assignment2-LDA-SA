@@ -73,6 +73,8 @@ The *topicmodels* package is used in R in order to perform LDA on the SONA data 
 
 In terms of selecting the number of topics to look for, this has to be specified in the LDA() function when it is run. Miranda and Bringula (2021) selected three topics in analyzing the Philippines SONA speeches. For this analysis: two, three and four topics were considered. A few of the different results for these different numbers of topics will be presented in the results. It was found that four topics was best and were easiest to categorize into understandable labels. For this reason the majority of topic modelling results presented below are based on the four topic case.
 
+It was found that in many cases the same words were appearing in many topics, particularly more common words like 'government', 'africa' and 'people'. In order to make the individual topics more meaningful these repeated words were set to only be allowed to be within one topic. This helped make the topics more unique so that better topic labels could be identified for each. 
+
 ## Results and Discussion
 
 Having outlined the methods used to perform sentiment analysis and topic modelling, the results and analysis of the speeches is now given.
