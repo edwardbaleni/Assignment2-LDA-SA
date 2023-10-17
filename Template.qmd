@@ -387,7 +387,7 @@ wordsSentiment %>%
 
 #### *Bigrams*
 
-```{r Negation}
+```{r Negation, echo=FALSE}
 # Tokenize into bigram
 bigram <- speechSentences %>% 
   unnest_tokens(word, sentences, token = 'ngrams', n = 2)
@@ -453,7 +453,7 @@ bigrams_filtered <- bigrams_filtered %>%
   unite(bigram, word1, word2, sep = ' ', remove = FALSE)
 ```
 
-```{r Negated Words per President}
+```{r Negated Words per President, echo=FALSE}
 s1 <- bigrams_filtered %>%
   filter(net_sentiment > 0) %>% # get positive bigrams
     filter(president == "deKlerk") %>%
@@ -689,15 +689,15 @@ s18 <- bigrams_filtered %>%
   ggtitle("Mandela")
 ```
 
-```{r Positive Bigrams per President}
+```{r Positive Bigrams per President, echo=FALSE}
 ggarrange( s1, s4, s7, s10, s13, s16, ncol=3, nrow=2)
 ```
 
-```{r Negative Bigrams per President}
+```{r Negative Bigrams per President, echo=FALSE}
 ggarrange( s2, s5, s8, s11, s14, s17, ncol=3, nrow=2)
 ```
 
-```{r Negated Bigrams per President}
+```{r Negated Bigrams per President, echo=FALSE}
 ggarrange( s6, s9, s12, s15, s18, ncol=3, nrow=2)
 ```
 
