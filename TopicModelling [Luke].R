@@ -322,4 +322,14 @@ sentencesGamma = left_join(speechSentences %>%
                            relationship = "many-to-many") %>%
   mutate(gamma = round(gamma, 3))
 
+sentencesGamma %>%
+  filter(grepl("economy", sentences))
 
+chosenTopic %>%
+  group_by(term) %>%
+  slice(which.max(beta)) %>%
+  ungroup() %>%
+  group_by(topic) %>%
+  slice_max(n = 10, order_by = beta) %>% 
+  ungroup() %>%
+  arrange(topic, -beta)

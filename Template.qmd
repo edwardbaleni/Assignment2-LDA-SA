@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 title: "Assignment 2: Report"
 author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
@@ -14,7 +13,7 @@ Due to the large volume of text data available today, sentiment analysis and top
 
 ## Introduction
 
-The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (Silge & Robinson, 2017). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (Silge & Robinson, 2017). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
+The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (Silge & Robinson, 2017). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (Silge & Robinson, 2017. This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
 
 Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.
 
@@ -54,7 +53,11 @@ In order to analyze the sentiment of different presidents we can consider each p
 
 In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.
 
--   NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS
+Sentiment analysis, with unigram tokens, can effectively capture the sentiment associated with a word. However, there are instances where negation words precede these sentiments. Negation words are words that reverse the sentiment of a succeeding word in sentiment analysis, essentially reversing its polarity (\url{https://www.mdpi.com/2076-3417/12/8/4066}). In unigram-based sentiment analysis, it becomes necessary to account for this reversal in sentiment when negation words are present. Bigrams, which are pairs of consecutive words, prove to be valuable in investigating this phenomenon. Analyzing negation in conjunction with unigram sentiment helps assess whether some positive or negative sentiments might be incorrectly classified and whether the most frequently used positive/negative words truly represent a polar sentiment to the realization discussed.
+
+The negation words used here have been drawn from the dictionary provided by (\url{https://cran.r-project.org/web/packages/qdapDictionaries/index.html}). It's important to note that this list of negation words is not exhaustive, and this limitation could affect the outcomes of the analysis.
+
+For this to happen, tokenization by bigrams occured. These words were subsequently separated so that stop words could be filtered out of them. The stop word dictionary provided by
 
 ### *Topic Modelling*
 
@@ -93,6 +96,7 @@ library(tokenizers)
 library(gghighlight)
 library(tictoc)
 library(ggpubr)
+library(topicmodels)
 
 ### Load Data
 
@@ -104,9 +108,10 @@ load("dsfi-lexicons.Rdata")
 unnest_reg = "[^\\w_#@']"
 
 speechSentences = as_tibble(sona) %>%
+  mutate(speechID = 1:36) %>%
   rename(president = president_13) %>%
   unnest_tokens(sentences, speech, token = "sentences") %>%
-  select(president, year, sentences) %>%
+  select(speechID, president, year, sentences) %>%
   mutate(sentences, sentences = str_replace_all(sentences, "’", "'")) %>%
   mutate(sentences, sentences = str_replace_all(sentences, "'", "")) %>%
   mutate(sentences, sentences = str_remove_all(sentences, "[0-9]")) %>%
@@ -116,7 +121,7 @@ wordsWithSentID = speechSentences %>%
   unnest_tokens(word, sentences, token = 'regex', pattern = unnest_reg) %>%
   filter(str_detect(word, '[a-z]')) %>%
   filter(!word %in% stop_words$word) %>%
-  select(sentID, president, year, word)
+  select(sentID, speechID, president, year, word)
 
 ### Join with Sentiment Lexicon
 
@@ -372,6 +377,8 @@ wordsSentiment %>%
   xlab("President") + ylab("Change in Net Positive Sentiments in Speech") + 
   theme_bw(base_size = 12) 
 ```
+
+[*Figure 4: Change in Net Positive Sentiment between first and last speech, for each president.*]{.underline}
 
 ```{r, echo = FALSE, eval = FALSE}
 
@@ -704,29 +711,6 @@ ggarrange( s6, s9, s12, s15, s18, ncol=3, nrow=2)
 
 ### *Topic Modelling*
 
-## Conclusion
-
-## References
-
-Bringula, R., Ulfa, S., Miranda, J and Atienze, F. 2022. *Text mining analysis on students' expectations and anxieties towards data analytics course.* Cogent Engineering.
-
-Miranda, J. and Bringula, R. 2021. *Exploring Phillipine presidents' speeches: a sentiment analysis and topic modeling approach.* Cogent Social Sciences.
-
-Medhat, W., Hassan, A. and Korashy, H. 2014. *Sentiment analysis algorithms and applications: a survey.* Ain Shams Engineering Journal, 5(4).
-
-R Core Team. 2022. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
-
-Silge, J. and Robinson, D. 2016. Text Mining with R, A tidy approach. O'Reilly.
-
-Silge, J. and Robinson, D. 2016. "tidytext: Text Mining and Analysis Using Tidy Data Principles in R." \_JOSS\_, \*1\*(3). doi:10.21105/joss.00037 https://doi.org/10.21105/joss.00037.
-
-Wickham H., François R., Henry L., Müller K., Vaughan D. 2023. \_dplyr: A Grammar of Data Manipulation\_. R package version 1.1.3, https://CRAN.R-project.org/package=dplyr.
-
-Wickham, H. 2022. \_stringr: Simple, Consistent Wrappers for Common String Operations\_. R package version 1.5.0, \<https://CRAN.R-project.org/package=stringr\>.
-
-
-### *Topic Modelling*
-
 ```{r echo = FALSE}
 
 speechTDF = wordsWithSentID %>%
@@ -778,7 +762,7 @@ chosenTopic %>%
 ## Topic 1: Economic Growth
 ## Topic 2: Social Development
 ## Topic 3: Public Governance / Government Policy 
-## Topic 4: 
+## Topic 4: Politics and Admin
 
 ```
 
@@ -1026,4 +1010,3 @@ ggarrange(man, mbe, zum, ram, ncol = 2, nrow = 2)
 ```
 
 ## Conclusion
->>>>>>> fcb03fe2bbc3c0915ff5e86272d2f91753db5c74

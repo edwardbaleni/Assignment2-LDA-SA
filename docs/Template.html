@@ -195,9 +195,9 @@ ul.task-list li input[type="checkbox"] {
 <p>In order to get each words sentiment, the data frame containing individual words, with an associated president, year ans sentence ID is left joined with the <em>bing</em> lexicon in order to get their associated positive or negative sentiment. Because many of the words in the speeches are not in the dictionary, these words are assigned with a sentiment value of neutral instead of removing them from analysis. This is not an ideal situation as it may mean that words which are very emotively loaded are being assigned as neutral and so one could miss the true sentiment of a sentence or speech however it is better than removing all these words from the analysis completely.</p>
 <p>In order to analyze the sentiment of different presidents we can consider each presidents most commonly used positive and negative words which can be found using filtering by president and filtering by positive or negative sentiment.</p>
 <p>In addition one can consider how sentiment changes over time and by president by considering the number of positive and negative sentiment associated words and seeing how this changes over time. This can also be done using the filter() function and filtering by year. In this way one can see if the percentage of positive sentiment in a speech increased or decreased as well as identify the net sentiment of the SONA speeches over time.</p>
-<ul>
-<li>NEED TO ADD BIGRAMS SECTION OF SENTIMENT ANALYSIS</li>
-</ul>
+<p>Sentiment analysis, with unigram tokens, can effectively capture the sentiment associated with a word. However, there are instances where negation words precede these sentiments. Negation words are words that reverse the sentiment of a succeeding word in sentiment analysis, essentially reversing its polarity (). In unigram-based sentiment analysis, it becomes necessary to account for this reversal in sentiment when negation words are present. Bigrams, which are pairs of consecutive words, prove to be valuable in investigating this phenomenon. Analyzing negation in conjunction with unigram sentiment helps assess whether some positive or negative sentiments might be incorrectly classified and whether the most frequently used positive/negative words truly represent a polar sentiment to the realization discussed.</p>
+<p>The negation words used here have been drawn from the dictionary provided by (). It’s important to note that this list of negation words is not exhaustive, and this limitation could affect the outcomes of the analysis.</p>
+<p>For this to happen, tokenization by bigrams occured. These words were subsequently separated so that stop words could be filtered out of them. The stop word dictionary provided by</p>
 </section>
 <section id="topic-modelling-1" class="level3">
 <h3 class="anchored" data-anchor-id="topic-modelling-1"><em>Topic Modelling</em></h3>
@@ -255,16 +255,58 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="Template_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p><u><em>Figure 4: Change in Net Positive Sentiment between first and last speech, for each president.</em></u></p>
 <div class="cell">
 
 </div>
 </section>
 <section id="bigrams" class="level4">
 <h4 class="anchored" data-anchor-id="bigrams"><em>Bigrams</em></h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/Positive Bigrams per President-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/Negative Bigrams per President-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/Negated Bigrams per President-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 </section>
 <section id="topic-modelling-2" class="level3">
 <h3 class="anchored" data-anchor-id="topic-modelling-2"><em>Topic Modelling</em></h3>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><u><em>Figure 5: Top 10 Terms in each Topic by word-topic probability.</em></u></p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 </section>
 <section id="conclusion" class="level2">
