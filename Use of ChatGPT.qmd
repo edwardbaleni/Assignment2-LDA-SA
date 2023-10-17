@@ -1,10 +1,15 @@
 ---
-title: "Appendix"
+title: "Using Chat GPT"
 ---
 
-This will contain Chat GPT section. 
+Need an introductory paragraph.
 
-```{r}
-2 + 2
-```
+A number of requests were made to ChatGPT to be able to see how it could help with the assignment and how well it is able to do as well as to identify short comings of the model.
 
+-   talk about its response to fairly open ended questions
+
+-   talk about providing literature - seemed to actually do all right but obviously its not comprehensive
+
+-   Talk about help with code
+
+-   Help with write up?

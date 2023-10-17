@@ -18,7 +18,7 @@
     "href": "Template.html#literature-review",
     "title": "Template",
     "section": "Literature Review",
-    "text": "Literature Review\n\nSentiment Analysis\n\n\nTopic Modelling"
+    "text": "Literature Review\n\nSentiment Analysis\nlook at tidytext chapter\n\n\nTopic Modelling"
   },
   {
     "objectID": "Template.html#data",
@@ -58,8 +58,8 @@
   {
     "objectID": "Use of ChatGPT.html",
     "href": "Use of ChatGPT.html",
-    "title": "Appendix",
+    "title": "Using Chat GPT",
     "section": "",
-    "text": "This will contain Chat GPT section.\n\n2 + 2\n\n[1] 4"
+    "text": "Need an introductory paragraph.\nA number of requests were made to ChatGPT to be able to see how it could help with the assignment and how well it is able to do as well as to identify short comings of the model.\n\ntalk about its response to fairly open ended questions\ntalk about providing literature - seemed to actually do all right but obviously its not comprehensive\nTalk about help with code\nHelp with write up?"
   }
 ]

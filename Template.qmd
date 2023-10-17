@@ -19,6 +19,8 @@ Chat GPT was used as an aid to this assignment. The purpose of this was to exper
 
 #### ***Sentiment Analysis***
 
+look at tidytext chapter
+
 #### ***Topic Modelling***
 
 ## Data
