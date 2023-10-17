@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 title: "Assignment 2: Report"
 author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
