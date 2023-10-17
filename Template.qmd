@@ -1,5 +1,5 @@
 ---
-title: "Template"
+title: "Assignment 2: Report"
 author: "Edward Baleni, Andrea Plumbley, Luke Barnes"
 format: html
 editor: visual
@@ -7,19 +7,27 @@ editor: visual
 
 ## Abstract
 
+Due to the large volume of text data available today, sentiment analysis and topic modelling have become popular methods to classify documents (or other pieces of text) based on their emotional content and topics or themes present. Sentiment analysis and topic modelling methods provide techniques to programmatically categorize documents and does not require individuals to sit and read through large documents. In this report, sentiment analysis and topic modelling is applied to State of the Nation Addresses in South Africa between 1994 and 2023. The sentiment analysis section allows one to identify different presidents sentiment conveyed in their speeches and how this changed over time. Topic modelling highlights what the major themes are that each president speaks about and if the proportion of time spent on each topic changes over time. The results of the sentiment analysis showed that on the whole South African presidents have a net positive sentiment in their speeches. Specifically Mandela and Mbeki became more positive in their speeches over the time of their presidency while Zuma and Ramaphosa become less positive during their time in office. These findings correlate with what was happening in South Africa at the times of their respective presidencies.
+
+-   ADD TOPIC MODELLING RESULTS ONCE COMPLETE
+
 ## Introduction
 
-The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (REFERENCE). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (REFERENCE). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
+The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (Silge & Robinson, 2017). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (Silge & Robinson, 2017. This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
 
 Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.
 
-Chat GPT was used as an aid to this assignment. The purpose of this was to experiment large language models and to assess Chat GPT's ability to assist with the assignment. A brief summary of how well it did and how it responded to different prompts and guides in given in Appendix A (which can be found on Appendix A tab of this website).
+Chat GPT was used as an aid to this assignment. The purpose of this was to experiment large language models and to assess Chat GPT's ability to assist with the assignment. A brief summary of how well it did and how it responded to different prompts and guides in given in Use of ChatGPT appendix (which can be found on Use of ChatGPT tab of this website).
 
 ## Literature Review
 
 #### ***Sentiment Analysis***
 
+Sentiment analysis is a technique to programmatically asses the emotional content of a text (Silge & Robinson, 2017). It gives a way, through the use of sentiment lexicons to understand the attitudes and opinions expressed in a piece of text or speech and identify if they are positive or negstive (Silge & Robinson, 2017). Sentiment analysis can also be seen as a classification method as it classifies documents into positive or negative categories or more sophiscated classes such as joy, disgust or anger, depending on which specific sentiment lexicon one is using in the analysis (Medhat et al., 2014). Due to the large amount of text data around today, sentiment analysis is becoming more popular and necessary in order to classify documents and arrange them in terms of sentiment because the volume is too large for documents to be manually sifted through by people to decide on its emotional contents (Medhat et al., 2014). There are a number of application areas for sentiment analysis including customer feedback and reviews, social media monitoring, market research and political analysis. In the context of the SONA data the sentiment analysis can be seen as a form of political analysis and also a way in which to describe how the country is doing in terms of governance and economy of the years from 1994 to 2023.
+
 #### ***Topic Modelling***
+
+Topic Modelling is a unsupervised classification technique for grouping documents according to topic or theme (Silge & Robinson, 2017). The particular topic modelling method that is popular is Latent Dirichlet Allocation (Silge & Robinson, 2017). The key ideas of this method is to consider documents as a collection of topics and topics as a collection of words (Silge & Robinson, 2017). Topic modelling thus allows one to categorize documents into broad themes and calculate the proportions of each topic or theme that appear in a document. Topic modelling has been done on SONA speeches before by Miranda and Bringula (2021) who analysed the State of the Nation Addresses in the Phillipines. Through the use of Latent Dirichlet Allocation, they were able to identify three major topics each linked with concerns within the country (Miranda & Bringula, 2021). In general one is able to pull out and label a topic by looking at the sentences that contain the words in that topic. This however needs to be discussed and consensus reached on what labels best represents the topic (Miranda & Bringula, 2021). This gives an indication that selecting the labels for topics is not always easy and may in some instances not represent perfectly the true underlying topic picked up by the LDA analysis.
 
 ## Data
 
@@ -29,7 +37,7 @@ This data needed to be cleaned before sentiment analysis or topic modelling coul
 
 In order to perform sentiment analysis the speeches needed to be tokenized into shorter parts such as bigrams and words in order to assess the sentiment of each smaller part and then aggregate these sentiments to understand the sentiment of the speech as a whole. The speeches are tokenized first into sentences and then into words using the unnest_tokens() function in R.
 
--   Explain why bigrams were necessary and how this worked - Were stop words not removed?? Because we need not and no etc
+A separate analysis is done on bigrams in order to consider negation of words, for example 'improvement' vs 'no improvement', and to assess how frequently negation occurred. In order to perform this analysis the unnest_tokens() function was also done specifying the token argument to 'ngrams' and setting 'n' to 2. The same cleaning was done in order to remove numbers and punctuation marks before the speeches were tokenized in this way. In terms of stop word removal, stop words were removed except for those stop words that are negation words. The qdapDictionary::negation.words dictionary was used to identify negation words and remove them from the stop words before removing stop words from the analysis.
 
 For topic modelling, for which Latent Dirichlet allocation will be applied, the data format that will be used is a DocumentTermMatrix object. Once the speeches have been tokenized and cleaned, as was done above, a DTM object is created using the cast_dtm() function which is part of the *tidytext* package in R. The cast_dtm() function is applied to the data frame containing the words, speechIDs and counts and turns the data frame into a DTM object using these variables.
 
@@ -59,7 +67,7 @@ If one wanted to generate a speech, first the number of words to generate must b
 
 The *topicmodels* package is used in R in order to perform LDA on the SONA data using the LDA() function. A seed of 2023 is set within the LDA control argument in order to ensure results are reproducible. The LDA() function takes in as arguments the DocumentTermMatrix of the speeches, as discussed in the data section and a parameter k which specifies the number of topics one wants to obtain.
 
-How did we go about choosing k?
+In terms of selecting the number of topics to look for, this has to be specified in the LDA() function when it is run. Miranda and Bringula (2021) selected three topics in analyzing the Philippines SONA speeches. For this analysis: two, three and four topics were considered. A few of the different results for these different numbers of topics will be presented in the results. It was found that four topics was best and were easiest to categorize into understandable labels. For this reason the majority of topic modelling results presented below are based on the four topic case.
 
 ## Results and Discussion
 
