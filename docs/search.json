@@ -56,6 +56,13 @@
     "text": "Conclusion"
   },
   {
+    "objectID": "Template.html#references",
+    "href": "Template.html#references",
+    "title": "Assignment 2: Report",
+    "section": "References",
+    "text": "References\nBringula, R., Ulfa, S., Miranda, J and Atienze, F. 2022. Text mining analysis on students’ expectations and anxieties towards data analytics course. Cogent Engineering.\nMiranda, J. and Bringula, R. 2021. Exploring Phillipine presidents’ speeches: a sentiment analysis and topic modeling approach. Cogent Social Sciences.\nMedhat, W., Hassan, A. and Korashy, H. 2014. Sentiment analysis algorithms and applications: a survey. Ain Shams Engineering Journal, 5(4).\nR Core Team. 2022. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.\nSilge, J. and Robinson, D. 2016. Text Mining with R, A tidy approach. O’Reilly.\nSilge, J. and Robinson, D. 2016. “tidytext: Text Mining and Analysis Using Tidy Data Principles in R.” JOSS, 1(3). doi:10.21105/joss.00037 https://doi.org/10.21105/joss.00037.\nWickham H., François R., Henry L., Müller K., Vaughan D. 2023. dplyr: A Grammar of Data Manipulation. R package version 1.1.3, https://CRAN.R-project.org/package=dplyr.\nWickham, H. 2022. stringr: Simple, Consistent Wrappers for Common String Operations. R package version 1.5.0, https://CRAN.R-project.org/package=stringr."
+  },
+  {
     "objectID": "Bigrams and Negation.html",
     "href": "Bigrams and Negation.html",
     "title": "Negation",
