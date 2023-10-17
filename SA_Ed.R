@@ -2,6 +2,10 @@
 
 ### Libraries
 
+library(textdata) 
+library(stringr)
+library(lubridate)
+
 library(tidyverse)
 library(tidytext)
 library(tokenizers)
@@ -14,6 +18,9 @@ library(ggpubr)
 load("SonaData.RData")
 load("dsfi-lexicons.Rdata")
 
+### Change format of date
+sona$date = as.Date(sona$date, tryFormats = "%Y-%m-%d")
+
 ### Separate speeches into sentences and sentences into words
 
 unnest_reg = "[^\\w_#@']"
@@ -21,7 +28,7 @@ unnest_reg = "[^\\w_#@']"
 speechSentences = as_tibble(sona) %>%
   rename(president = president_13) %>%
   unnest_tokens(sentences, speech, token = "sentences") %>%
-  select(president, year, sentences) %>%
+  select(president, year, sentences, date) %>%
   mutate(sentences, sentences = str_replace_all(sentences, "’", "'")) %>%
   mutate(sentences, sentences = str_replace_all(sentences, "'", "")) %>%
   mutate(sentences, sentences = str_remove_all(sentences, "[0-9]")) %>%
@@ -145,28 +152,14 @@ bigrams_separated %>%
 ##### Using old data, we have some analysis
 
 
-
-
-
-library(tidyverse)
-library(tidytext)
-library(textdata) 
-library(stringr)
-library(lubridate)
-
-source("sona-first-steps.R")
-source("DataClean.R")
-
-data_count$date = as.Date(data_count$date, tryFormats = "%d-%m-%Y")
-
-afinn <- get_sentiments('afinn') 
-bing <- get_sentiments('bing') 
-nrc <- get_sentiments('nrc') %>%
+#data_count$date = as.Date(data_count$date, tryFormats = "%d-%m-%Y")
+data_count <-  speechSentences
+nrc <- nrc %>%
   distinct(word, .keep_all = T)
 
 # Tokenize
 uni <- data_count %>%
-  unnest_tokens(word, speech, token = "words") %>%
+  unnest_tokens(word, sentences, token = "words") %>%
   filter(!word %in% stop_words$word)
 
 # Combining sentiment dictionaries with tokens
