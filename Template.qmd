@@ -13,7 +13,7 @@ Due to the large volume of text data available today, sentiment analysis and top
 
 ## Introduction
 
-The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (Silge & Robinson, 2017). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (Silge & Robinson, 2017. This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
+The aim of this assignment is to provide a descriptive analysis of the State of the Nation speeches in South Africa between 1994 and 2022. This descriptive analysis is performed using sentiment analysis and topic modelling. Sentiment analysis aims to describe the content of text in terms of its 'emotions' (Silge & Robinson, 2017). The purpose of performing sentiment analysis on these speeches is to identify the overall tone or emotion of the speech and identify how this might change over time or as presidents change. Topic modelling is a technique that aims to summarize text, in this case speeches, in terms of a number of topics. It is a way of categorizing speeches into different topics and identifying the main themes of a body of text (Silge & Robinson, 2017). This is of interest in order to identify what topics or themes are important in the context of the government of South Africa and how these themes or main topics may change over time or over different presidents.
 
 Before the analysis is applied to the data a brief literature review will be given. Following this the data and any cleaning that was done will be discussed. The methods for performing sentiment analysis and topic modelling will be outlined. Finally the results of the analysis on the SONA speeches data will be presented and discussed.
 
@@ -704,3 +704,21 @@ ggarrange( s6, s9, s12, s15, s18, ncol=3, nrow=2)
 ### *Topic Modelling*
 
 ## Conclusion
+
+## References
+
+Bringula, R., Ulfa, S., Miranda, J and Atienze, F. 2022. *Text mining analysis on students' expectations and anxieties towards data analytics course.* Cogent Engineering.
+
+Miranda, J. and Bringula, R. 2021. *Exploring Phillipine presidents' speeches: a sentiment analysis and topic modeling approach.* Cogent Social Sciences.
+
+Medhat, W., Hassan, A. and Korashy, H. 2014. *Sentiment analysis algorithms and applications: a survey.* Ain Shams Engineering Journal, 5(4).
+
+R Core Team. 2022. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+Silge, J. and Robinson, D. 2016. Text Mining with R, A tidy approach. O'Reilly.
+
+Silge, J. and Robinson, D. 2016. "tidytext: Text Mining and Analysis Using Tidy Data Principles in R." \_JOSS\_, \*1\*(3). doi:10.21105/joss.00037 https://doi.org/10.21105/joss.00037.
+
+Wickham H., François R., Henry L., Müller K., Vaughan D. 2023. \_dplyr: A Grammar of Data Manipulation\_. R package version 1.1.3, https://CRAN.R-project.org/package=dplyr.
+
+Wickham, H. 2022. \_stringr: Simple, Consistent Wrappers for Common String Operations\_. R package version 1.5.0, \<https://CRAN.R-project.org/package=stringr\>.
