@@ -2,6 +2,8 @@
 title: "Appendix"
 ---
 
+Figure A and B enable the visualisation of trend in sentiment over time. More specifically, they demonstrate the general tone for each president in their years of presidency.
+
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 ### Libraries
 
@@ -173,6 +175,8 @@ bigrams_filtered %>%
   ggplot(aes(reorder(bigram,n),n)) + geom_col() + coord_flip() + xlab('Frequency') +theme_bw()
 ```
 
+Figures C, D and E simply demonstrate that there is little negation used in the presidents' speeches.
+
 ```{r Negated Words per President, echo=FALSE}
 # Negated bigrams
 # s3 <- bigrams_filtered %>%
@@ -195,7 +199,7 @@ s3.1 <- bigrams_filtered %>%
     arrange(desc(n)) %>%
   mutate(id = 1:dim(.)[1]) %>%
   filter(id <= 10) %>%
-  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "pink", col = "black") + coord_flip() + xlab("") + ylab("Frequency") +theme_bw()
+  ggplot(aes(reorder(bigram,n),n)) + geom_col(fill = "pink", col = "black") + coord_flip() + xlab("") + ylab("Frequency") +theme_bw() + ggtitle("deKlerk")
 
 # Negated bigrams
 s6 <- bigrams_filtered %>%
@@ -423,6 +427,8 @@ wideBeta = function(speechTopics, k, thresh){
 betaWide = wideBeta(chosenTopic, k = 4, thresh = 0.001)
 
 ```
+
+Figures F, G and H illustrate comparisons between topics and their terms that classify them. This pairwise comparison is done for each topic.
 
 ```{r Log Beta Plots, echo=FALSE}
 
