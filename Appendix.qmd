@@ -336,14 +336,16 @@ s18.1 <- bigrams_filtered %>%
 
 ```
 
+[*Figure C: The most commonly occurring negated bigrams.*]{.underline}
+
 ```{r Negated Bigrams per President, echo=FALSE}
 ggarrange( s6, s9, s12, s15, s18, ncol=2, nrow=3)
 ```
 
-[*Figure C: The most commonly used negated positive words used by each president.*]{.underline}
+[*Figure D: The most commonly used negated positive words used by each president.*]{.underline}
 
 ```{r Negated Positive Bigrams per President, echo=FALSE}
 ggarrange( s3.1, s6.1, s9.1, s12.1, s15.1, s18.1, ncol=2, nrow=3)
 ```
 
-[*Figure D: The most commonly used negated negative words used by each president.*]{.underline}
+[*Figure E The most commonly used negated negative words used by each president.*]{.underline}
