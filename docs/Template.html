@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,7 +18,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
 </style>
@@ -60,7 +60,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
@@ -77,31 +76,29 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">Assignment 2</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./index.html">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./Template.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="./Template.html" aria-current="page">
  <span class="menu-text">Assignment 2: Report</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Appendix.html" rel="" target="">
+    <a class="nav-link" href="./Appendix.html">
  <span class="menu-text">Appendix</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Use of ChatGPT.html" rel="" target="">
+    <a class="nav-link" href="./Use of ChatGPT.html">
  <span class="menu-text">Using Chat GPT</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
+              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -253,9 +250,18 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <p><u><em>Figure 4: Change in Net Positive Sentiment between first and last speech, for each president.</em></u></p>
+<div class="cell">
+
+</div>
 </section>
 <section id="bigrams" class="level4">
 <h4 class="anchored" data-anchor-id="bigrams"><em>Bigrams</em></h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
 <p>In Figure 5, each president seems to have a number of repeating phrases that are meant to convey positive sentiment. These all seem to be rather unique to each individual.</p>
 <p>Both president’s Ramaphosa and Zuma speak upon land reform, a very polarising topic dependent on who is asked. For those who have suffered the backlash of Apartheid, land reform is a very positive sentiment, however, for many who own land, land reform is a very negative sentiment. However, it is undestandable that this has been given a positive sentiment overall as the word reform means to improve upon.</p>
 <p>Although these are supposed to be the presidents’ positive sentiments, characters like de Klerk and Zuma do not subjectively convey a lot of positivity. Their statements are rather neutral. Their positive sentiment cannot be translated well. This may be a result of there possibly not being many positive items that they could have hoped to address. The bing dictionary may also not be a good dictionary for these two. De Klerk did, however, have a lot of positive sentiment about the freedom alliance.</p>
@@ -287,41 +293,30 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="topic-modelling-2" class="level3">
 <h3 class="anchored" data-anchor-id="topic-modelling-2"><em>Topic Modelling</em></h3>
-<p>To specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, <span class="math inline">\(\beta\)</span>, and gamma, <span class="math inline">\(\gamma\)</span>. Where <span class="math inline">\(\beta\)</span> is a parameter that controls the probability of a topic generating a particular word and <span class="math inline">\(gamma\)</span> gives the proportions of topics in a document .</p>
-<p>We first look into the <span class="math inline">\(\beta\)</span>’s, the word-topic probabilities. To find a decent number of topics we ran 2, 3 and 4 topics in the LDA function and found that 4 topics gives the best result of the option.</p>
-<p>Both 2 and 3 topics had topics that had almost the same words, although it is possible for topics to share some terms, the number of similar terms between topics was so great that it was difficult to distinguish the topics at all. When 4 topics was used, there were much clearer distintions between the topics, this can be seen in Figure 7.</p>
-<p>In Figure 7, we see that although there still remains some common terms between some of the topics, majority of the words are unique to their topic. The words in each of the four topics seem to infer a potential idea for each.</p>
-<p>Topic 1 looks to have words related to economic growth. This can be seen in how words like economy, investment, support, growth, sector and business fall into this topic. These are terms that are associated with economic behaviour and business.</p>
-<p>Topic 2 looks to have words related to social development. This can be seen in the inculsion of words like people, development, ensure, regard, social and system. These words are related to social behaviour.</p>
-<p>Topic 3 looks to have words related to public governance / government policy. This can be seen in the inculsion of words like governement, public, service, nation, parliament and democracy. These are all aspects that are related to government involvement.</p>
-<p>Topic 4 can be seen to have ideas related to politics and admin. This topic is rather ambiguous, which resulted in it taking on two main ideas. On the side of politics there are words like national, Africa, honourable, president and chairperson. On the side of admin there are words like programme, million, infastructure and water.</p>
-<p>Since these topics seem somewhat distinguishable, the LDA has successfully discriminated between the 4 topics.</p>
+<p>Having considered the sentiment analysis results of each speech, the topic modelling results are now presented.</p>
+<p>As mentioned in the methods section, in order to specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, <span class="math inline">\(\beta\)</span>, and gamma, <span class="math inline">\(\gamma\)</span>. Where <span class="math inline">\(\beta\)</span> is a parameter that gives the probability of a topic generating a particular word and <span class="math inline">\(\gamma\)</span> gives the proportions of topics in a document .</p>
+<p>We first look into the <span class="math inline">\(\beta\)</span>’s, the word-topic probabilities. To find a decent number of topics we ran 2, 3 and 4 topics in the LDA function and found that 4 topics gives the best result of the option. Both 2 and 3 topics had topics that had almost the same words as well as words with very similar meanings or themes. Although it is possible for topics to share some terms and meaning, the similarity of terms between topics was so great that it was difficult to distinguish the topics at all. When 4 topics were used, there were much clearer distinctions between the topics which can be seen in Figure 7.</p>
+<div class="cell">
+
+</div>
+<p>In Figure 7, it can be seen that although there still remains some common terms, such as ‘africa’ and ‘african’, between some of the topics, majority of the words are unique to their topic. The words in each of the four topics seem to infer a potential idea or theme for each. Table 1 below gives the four topics along with their key words and sentences in which these words appear to help derive a meaningful label for each topic. This table may aid in demonstrating the meaning of each topic.</p>
+<p><strong>Topic 1</strong> contains words related to economic growth. This can be seen in how words like economy, investment, support, growth, sector and business fall into this topic. These are terms that are associated with economic behaviour and business.</p>
+<p><strong>Topic 2</strong> contains words related to social development. This can be seen with the inclusion of words such as people, development, ensure, regard, social and system. These words are related to social behaviour and the sentences containing these word speak about ‘social development’ and ‘community workers’.</p>
+<p><strong>Topic 3</strong> contains words related to public governance / government policy. This can be seen in the inclusion of words like government, public, service, nation, parliament and democracy. These are all aspects that are related to government involvement. Associated sentences to these words include ideas around government taking action and implementing programmes.</p>
+<p><strong>Topic 4</strong> contains words associated with ideas related to politics and administration. This topic is rather ambiguous, which resulted in it taking on two main ideas. On the side of politics there are words like national, Africa, honourable, president and chairperson. Some sentences associated with these words demonstrate a sense of pride and contain an encouragement to support political leaders. On the side of administration there are words like programme, million, infrastructure and water. Associated sentences refer to the work that needs to be done in terms of infrastructure in the country and some of the plans of government to implement changes in this regard.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Template_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><u><em>Figure 7: Top 10 Terms in each Topic by word-topic probability.</em></u></p>
-<p>Next we are able to analyse the document-topic probabilities, <span class="math inline">\(\gamma\)</span>’s. This as mentioned prior describes each document as a mixture of topics. It is helpful in analysing the proportions of a topic present in the document.</p>
-<p>In Figure 8, these <span class="math inline">\(\gamma\)</span>’s are captured across the speeches allowing the visualization of trend in topic over time for each president. This would aid in identifying what the general idea of the speech at a given time was.</p>
-<p>Mandela was very involved in ideas of politics and admin. This makes sense as this was a period of transformation in government. Policy and administration were two very important points that needed to be tackled to escape the previously oppressive and hateful era. This emphasis on protecting the new governement structure and politics is further reflected in how the topics of public governance are also strongly occuring topics in his speeches.</p>
-<p>Almost every speech that Ramaphosa has given strongly deals with the topics of economic growth, this is shown in the dominating document-topic probabilities of the topic over all of Ramphosa’s speeches. In his last two speeches it would seem that he gave more attention to politics and administration, while still focusing heavily on economic growth.</p>
-<p>Mbeki tried to touch on as many topics as he possibly could. In each speech that Thabo makes the dominating topic seems to shift. In his first and third speeches he seems to talk on politics and administration. In his second and sixth speech his dominating topic is that of social development. His fifth, eighth and nineth speeches deal with government policy. His fourth and seventh speech have a combination of ideas…</p>
-<p>Zuma’s speeches revolve around two topics, economic growth and government policy.</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="Template_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p><u><em>Figure 8: The trend in topic over time for each president’s speeches.</em></u></p>
-<p>The table below illustrates examples of sentences that may aid in demonstrating the meaning of each topic.</p>
 <p><u><em>Table 1: Example sentences to aid in depicting the meaning of topics</em></u></p>
 <table class="table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 23%">
-<col style="width: 35%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -358,6 +353,27 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<p>Next we are able to analyse the document-topic probabilities, <span class="math inline">\(\gamma\)</span>’s. This as mentioned prior describes each document as a mixture of topics. It is helpful in analysing the proportions of a topic present in the document.</p>
+<p>In Figure 8, these <span class="math inline">\(\gamma\)</span>’s are captured across the speeches allowing the visualization of trend in topic over time for each president. This would aid in identifying what the general idea of the speech at a given time was.</p>
+<p>Mandela was very involved in ideas of politics and admin. This makes sense as this was a period of transformation in government. Policy and administration were two very important points that needed to be tackled to escape the previously oppressive and hateful era. This emphasis on protecting the new governement structure and politics is further reflected in how the topics of public governance are also strongly occuring topics in his speeches.</p>
+<p>Almost every speech that Ramaphosa has given strongly deals with the topics of economic growth, this is shown in the dominating document-topic probabilities of the topic over all of Ramphosa’s speeches. In his last two speeches it would seem that he gave more attention to politics and administration, while still focusing heavily on economic growth.</p>
+<p>Mbeki tried to touch on as many topics as he possibly could. In each speech that Thabo makes the dominating topic seems to shift. In his first and third speeches he seems to talk on politics and administration. In his second and sixth speech his dominating topic is that of social development. His fifth, eighth and nineth speeches deal with government policy. His fourth and seventh speech have a combination of ideas…</p>
+<p>Zuma’s speeches revolve around two topics, economic growth and government policy.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Template_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><u><em>Figure 8: The trend in topic over time for each president’s speeches.</em></u></p>
+<div class="cell">
+
+</div>
 </section>
 </section>
 <section id="conclusion" class="level2">
@@ -408,23 +424,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
+    target: function(trigger) {
+      return trigger.previousElementSibling;
     }
   });
   clipboard.on('success', function(e) {
@@ -489,92 +491,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

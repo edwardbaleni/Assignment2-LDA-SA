@@ -653,11 +653,11 @@ In the [Appendix](Appendix.qmd), it can be seen that negation words do appear fr
 
 ### *Topic Modelling*
 
-To specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, $\beta$, and gamma, $\gamma$. Where $\beta$ is a parameter that controls the probability of a topic generating a particular word and $gamma$ gives the proportions of topics in a document \url{IanDurbach.html}.
+Having considered the sentiment analysis results of each speech, the topic modelling results are now presented.
 
-We first look into the $\beta$'s, the word-topic probabilities. To find a decent number of topics we ran 2, 3 and 4 topics in the LDA function and found that 4 topics gives the best result of the option.
+As mentioned in the methods section, in order to specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, $\beta$, and gamma, $\gamma$. Where $\beta$ is a parameter that gives the probability of a topic generating a particular word and $\gamma$ gives the proportions of topics in a document \url{IanDurbach.html}.
 
-Both 2 and 3 topics had topics that had almost the same words, although it is possible for topics to share some terms, the number of similar terms between topics was so great that it was difficult to distinguish the topics at all. When 4 topics was used, there were much clearer distintions between the topics, this can be seen in Figure 7.
+We first look into the $\beta$'s, the word-topic probabilities. To find a decent number of topics we ran 2, 3 and 4 topics in the LDA function and found that 4 topics gives the best result of the option. Both 2 and 3 topics had topics that had almost the same words as well as words with very similar meanings or themes. Although it is possible for topics to share some terms and meaning, the similarity of terms between topics was so great that it was difficult to distinguish the topics at all. When 4 topics were used, there were much clearer distinctions between the topics which can be seen in Figure 7.
 
 ```{r echo = FALSE}
 
@@ -688,17 +688,15 @@ chosenTopic = topicsList$Four
 
 ```
 
-In Figure 7, we see that although there still remains some common terms between some of the topics, majority of the words are unique to their topic. The words in each of the four topics seem to infer a potential idea for each.
+In Figure 7, it can be seen that although there still remains some common terms, such as 'africa' and 'african', between some of the topics, majority of the words are unique to their topic. The words in each of the four topics seem to infer a potential idea or theme for each. Table 1 below gives the four topics along with their key words and sentences in which these words appear to help derive a meaningful label for each topic. This table may aid in demonstrating the meaning of each topic.
 
-Topic 1 looks to have words related to economic growth. This can be seen in how words like economy, investment, support, growth, sector and business fall into this topic. These are terms that are associated with economic behaviour and business.
+**Topic 1** contains words related to economic growth. This can be seen in how words like economy, investment, support, growth, sector and business fall into this topic. These are terms that are associated with economic behaviour and business.
 
-Topic 2 looks to have words related to social development. This can be seen in the inculsion of words like people, development, ensure, regard, social and system. These words are related to social behaviour.
+**Topic 2** contains words related to social development. This can be seen with the inclusion of words such as people, development, ensure, regard, social and system. These words are related to social behaviour and the sentences containing these word speak about 'social development' and 'community workers'.
 
-Topic 3 looks to have words related to public governance / government policy. This can be seen in the inculsion of words like governement, public, service, nation, parliament and democracy. These are all aspects that are related to government involvement.
+**Topic 3** contains words related to public governance / government policy. This can be seen in the inclusion of words like government, public, service, nation, parliament and democracy. These are all aspects that are related to government involvement. Associated sentences to these words include ideas around government taking action and implementing programmes.
 
-Topic 4 can be seen to have ideas related to politics and admin. This topic is rather ambiguous, which resulted in it taking on two main ideas. On the side of politics there are words like national, Africa, honourable, president and chairperson. On the side of admin there are words like programme, million, infastructure and water.
-
-Since these topics seem somewhat distinguishable, the LDA has successfully discriminated between the 4 topics.
+**Topic 4** contains words associated with ideas related to politics and administration. This topic is rather ambiguous, which resulted in it taking on two main ideas. On the side of politics there are words like national, Africa, honourable, president and chairperson. Some sentences associated with these words demonstrate a sense of pride and contain an encouragement to support political leaders. On the side of administration there are words like programme, million, infrastructure and water. Associated sentences refer to the work that needs to be done in terms of infrastructure in the country and some of the plans of government to implement changes in this regard.
 
 ```{r echo = FALSE}
 
@@ -728,6 +726,18 @@ chosenTopic %>%
 ```
 
 [*Figure 7: Top 10 Terms in each Topic by word-topic probability.*]{.underline}
+
+
+[*Table 1: Example sentences to aid in depicting the meaning of topics*]{.underline}
+
+| Topic | Label                       | Words                                            | Sentences                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|----------------|----------------|----------------|------------------------|
+| 1     | Economic Growth             | Economy, Investment, Growth, Business            | "The crisis cost our economy about 900 000 jobs." "To ensure the promotion of an inclusive economy, to aid growth and development..." "As part of our efforts to encourage greater economic growth, we are working to reduce the cost to communicate."                                                                                                                                                                                  |
+| 2     | Social Development          | People, Development, Social, Improve             | "We must sustain and improve the effectiveness of our social development programmes..." "The government will create a public service echelon of multi-skilled community development workers..."                                                                                                                                                                                                                                         |
+| 3     | Public Governance           | Government, Public, Service, Democracy           | "That will provide an opportunity to address the more detailed issues on the government's programme ... that will support the government's actions as our country begins its second decade of democracy." "In particular we have decided that this year the government itself, in all its spheres, and the public sector as a whole, must make a decisive and integrated contribution..."                                               |
+| 4     | Politics and Administration | National, Compatriots, President, Infrastructure | "Compatriots and esteemed guests, local government must work." "We dare not allow any minority to deprive the great majority South Africans of their long-awaited desire to elect national and provincial governments which will for the first time in our history be truly representative of all South Africans." "Over the next few years, there will be a dramatic expansion ... for water, land care, municipal infrastructure\..." |
+
+
 
 ```{r echo = FALSE, eval = FALSE}
 
@@ -1150,17 +1160,6 @@ ss$sentences
 # "Over the next few years, there will be a dramatic expansion ... for water, land care, municipal infrastructure and selected welfare projects."
 
 ```
-
-The table below illustrates examples of sentences that may aid in demonstrating the meaning of each topic.
-
-[*Table 1: Example sentences to aid in depicting the meaning of topics*]{.underline}
-
-| Topic | Label                       | Words                                            | Sentences                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|---------------|---------------|-----------------|--------------------------|
-| 1     | Economic Growth             | Economy, Investment, Growth, Business            | "The crisis cost our economy about 900 000 jobs." "To ensure the promotion of an inclusive economy, to aid growth and development..." "As part of our efforts to encourage greater economic growth, we are working to reduce the cost to communicate."                                                                                                                                                                                  |
-| 2     | Social Development          | People, Development, Social, Improve             | "We must sustain and improve the effectiveness of our social development programmes..." "The government will create a public service echelon of multi-skilled community development workers..."                                                                                                                                                                                                                                         |
-| 3     | Public Governance           | Government, Public, Service, Democracy           | "That will provide an opportunity to address the more detailed issues on the government's programme ... that will support the government's actions as our country begins its second decade of democracy." "In particular we have decided that this year the government itself, in all its spheres, and the public sector as a whole, must make a decisive and integrated contribution..."                                               |
-| 4     | Politics and Administration | National, Compatriots, President, Infrastructure | "Compatriots and esteemed guests, local government must work." "We dare not allow any minority to deprive the great majority South Africans of their long-awaited desire to elect national and provincial governments which will for the first time in our history be truly representative of all South Africans." "Over the next few years, there will be a dramatic expansion ... for water, land care, municipal infrastructure\..." |
 
 ## Conclusion
 
