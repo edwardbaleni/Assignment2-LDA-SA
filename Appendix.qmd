@@ -514,4 +514,5 @@ ggarrange(b4, b5, ncol = 1, nrow = 2)
 
 ggarrange(b6, ncol = 1, nrow = 1)
 ```
+
 [*Figure H Words with the greatest difference in beta values between Topic 3 and Topic 4.*]{.underline}
