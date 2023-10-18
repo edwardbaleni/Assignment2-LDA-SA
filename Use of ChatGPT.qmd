@@ -6,7 +6,9 @@ ChatGPT, a large language model, was used in this assignment to assisst in ident
 
 **Open ended questions/Asking for guidance:**
 
-The first type of questions asked to ChatGPT were broad questions seeking guidance and direction. For example: "What is the best way to perform sentiment analysis of speeches in R?" or "What are the major application areas for sentiment analysis?". In response to these types of questions ChatGPT was quite helpful, offering lists with valueable information, which aided in giving direction on what to do or write about in the report. This included giving steps one could follow in R with associated code, as well as lists of application areas with brief descriptions of how sentiment analysis is applied.
+The first type of questions asked to ChatGPT were broad questions seeking guidance and direction. For example: "What is the best way to perform sentiment analysis of speeches in R?" or "What are the major application areas for sentiment analysis?". In response to these types of questions ChatGPT was quite helpful, offering lists with valueable information, which aided in giving direction on what to do or write about in the report. This included giving steps one could follow in R with associated code, as well as lists of application areas with brief descriptions of how sentiment analysis is applied. 
+
+Additionally, ChatGPT was asked to provide the title of this report. It provided a very concise and useful result.
 
 **Providing literature:**
 
