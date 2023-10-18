@@ -1,0 +1,16 @@
+{
+  "hash": "847abb1a41bda139262e26972732dceb",
+  "result": {
+    "markdown": "---\ntitle: \"Appendix\"\n---\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](Appendix_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\n[*Figure A: Positive Sentiment Over Time*]{.underline}\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](Appendix_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n[*Figure B: Negative Sentiment Over Time*]{.underline}\n\n\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](Appendix_files/figure-html/Negation-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](Appendix_files/figure-html/Negated Bigrams per President-1.png){width=672}\n:::\n:::\n\n[*Figure C: The most commonly used negated positive words used by each president.*]{.underline}\n\n::: {.cell}\n::: {.cell-output-display}\n![](Appendix_files/figure-html/Negated Positive Bigrams per President-1.png){width=672}\n:::\n:::\n\n[*Figure D: The most commonly used negated negative words used by each president.*]{.underline}",
+    "supporting": [
+      "Appendix_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

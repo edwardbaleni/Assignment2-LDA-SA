@@ -637,13 +637,13 @@ ggarrange( s2, s5, s8, s11, s14, s17, ncol=2, nrow=3)
 
 [*Figure 6: The most commonly used negative bigrams used by each president.*]{.underline}
 
-Figure C, D and E in the [Appendix](Appendix.qmd) show the use of negations in bigrams to identify if any positive words are frequently negated. It can be seen that negation words do appear frequently in these speeches or in front of other words. This is an important observation particularly for the positive individual words identified above. The fact that the negation of these positives happens infrequently indicates that on the whole the positive words identified are used within a positive context and are not negated.
+Figure C, D and E in the [Appendix](Appendix.qmd) show the use of negations in bigrams to identify if any positive or negative words are frequently negated. It can be seen that negation words do not appear frequently in these speeches or in front of other words. This is an important observation particularly for both the positive and negative individual words identified above. The fact that the negation of these positive and negative sentiments happens infrequently indicates that on the whole the positive and negative words identified are used within the correct context and are not negated.
 
 ### *Topic Modelling*
 
 Having considered the sentiment analysis results of each speech, the topic modelling results are now presented.
 
-As mentioned in the methods section, in order to specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, $\beta$, and gamma, $\gamma$. Where $\beta$ is a parameter that gives the probability of a topic generating a particular word and $\gamma$ gives the proportions of topics in a document \url{IanDurbach.html}.
+As mentioned in the methods section, in order to specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, $\beta$, and gamma, $\gamma$. Where $\beta$ is a parameter that gives the probability of a topic generating a particular word and $\gamma$ gives the proportions of topics in a document (Durbach, I., 2023).
 
 We first look into the $\beta$'s, the word-topic probabilities. To find a decent number of topics we ran 2, 3 and 4 topics in the LDA function and found that 4 topics gives the best result of the option. Both 2 and 3 topics had topics that had almost the same words as well as words with very similar meanings or themes. Although it is possible for topics to share some terms and meaning, the similarity of terms between topics was so great that it was difficult to distinguish the topics at all. When 4 topics were used, there were much clearer distinctions between the topics which can be seen in Figure 7.
 
@@ -718,7 +718,7 @@ chosenTopic %>%
 [*Table 1: Example sentences to aid in depicting the meaning of topics*]{.underline}
 
 | Topic | Label                       | Words                                            | Sentences                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|-------|-----------------------------|--------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------|--------|--------|-----------------------------------------------|
 | 1     | Economic Growth             | Economy, Investment, Growth, Business            | "The crisis cost our economy about 900 000 jobs." "To ensure the promotion of an inclusive economy, to aid growth and development..." "As part of our efforts to encourage greater economic growth, we are working to reduce the cost to communicate."                                                                                                                                                                                  |
 | 2     | Social Development          | People, Development, Social, Improve             | "We must sustain and improve the effectiveness of our social development programmes..." "The government will create a public service echelon of multi-skilled community development workers..."                                                                                                                                                                                                                                         |
 | 3     | Public Governance           | Government, Public, Service, Democracy           | "That will provide an opportunity to address the more detailed issues on the government's programme ... that will support the government's actions as our country begins its second decade of democracy." "In particular we have decided that this year the government itself, in all its spheres, and the public sector as a whole, must make a decisive and integrated contribution..."                                               |
@@ -1047,6 +1047,8 @@ This report has outlined a descriptive analysis of the State of the Nation speec
 AlGhamdi, Najwa, Shaheen Khatoon, and Majed Alshamari. 2022. "Multi-Aspect Oriented Sentiment Classification: Prior Knowledge Topic Modelling and Ensemble Learning Classifier Approach" Applied Sciences 12, no. 8: 4066. https://doi.org/10.3390/app12084066
 
 Bringula, R., Ulfa, S., Miranda, J and Atienze, F. 2022. Text mining analysis on students' expectations and anxieties towards data analytics course. Cogent Engineering.
+
+Durbach, I. 2023. "Topic Modelling." Data Science for Industry. 07-textmining-05.html. Statistical Sciences Department, University of Cape Town.
 
 Miranda, J. and Bringula, R. 2021. Exploring Phillipine presidents' speeches: a sentiment analysis and topic modeling approach. Cogent Social Sciences.
 
