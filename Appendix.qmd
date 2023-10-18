@@ -349,3 +349,143 @@ ggarrange( s3.1, s6.1, s9.1, s12.1, s15.1, s18.1, ncol=2, nrow=3)
 ```
 
 [*Figure E The most commonly used negated negative words used by each president.*]{.underline}
+
+```{r Log Beta Code, echo=FALSE}
+
+# compare terms with the greatest difference in Betas between topics
+# plots are for all comparisons, assess and visualise for importance
+
+wideBeta = function(speechTopics, k, thresh){
+  
+  if (k == 2){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1))
+  }
+  
+  if (k == 3){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh | topic3 > thresh) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
+      mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
+      mutate(log_ratio2.3 = log2(topic3 / topic2))
+  }
+  
+  if (k == 4){
+    
+    betaWide = speechTopics %>%
+      mutate(topic = paste0("topic", topic)) %>%
+      pivot_wider(names_from = topic, values_from = beta) %>% 
+      filter(topic1 > thresh | topic2 > thresh | topic3 > thresh | topic4 > thresh ) %>%
+      mutate(log_ratio1.2 = log2(topic2 / topic1)) %>%
+      mutate(log_ratio1.3 = log2(topic3 / topic1)) %>%
+      mutate(log_ratio1.4 = log2(topic4 / topic1)) %>%
+      mutate(log_ratio2.3 = log2(topic3 / topic2)) %>%
+      mutate(log_ratio2.4 = log2(topic4 / topic2)) %>%
+      mutate(log_ratio3.4 = log2(topic4 / topic3)) 
+  }
+  
+  return(betaWide)
+}
+
+betaWide = wideBeta(chosenTopic, k = 4, thresh = 0.001)
+
+```
+
+```{r Log Beta Plots, echo=FALSE}
+
+b1 = betaWide %>%
+  select(term, log_ratio1.2) %>%
+  filter(abs(log_ratio1.2) >= 10) %>%
+  mutate(pos = log_ratio1.2 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.2), log_ratio1.2, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log2 Ratio between Topic 2 and 1") +
+  scale_fill_manual(values=c("black", "deeppink")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+b2 = betaWide %>%
+  select(term, log_ratio1.3) %>%
+  filter(abs(log_ratio1.3) >= 50) %>%
+  mutate(pos = log_ratio1.3 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.3), log_ratio1.3, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log2 Ratio between Topic 3 and 1") +
+  scale_fill_manual(values=c("black", "deepskyblue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+b3 = betaWide %>%
+  select(term, log_ratio1.4) %>%
+  filter(abs(log_ratio1.4) >= 200) %>%
+  mutate(pos = log_ratio1.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio1.4), log_ratio1.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log2 Ratio between Topic 4 and 1") +
+  scale_fill_manual(values=c("black", "darkorchid")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+b4 = betaWide %>%
+  select(term, log_ratio2.3) %>%
+  filter(abs(log_ratio2.3) >= 10) %>%
+  mutate(pos = log_ratio2.3 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio2.3), log_ratio2.3, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log2 Ratio between Topic 3 and 2") +
+  scale_fill_manual(values=c("deeppink", "deepskyblue")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+b5 = betaWide %>%
+  select(term, log_ratio2.4) %>%
+  filter(abs(log_ratio2.4) >= 10) %>%
+  mutate(pos = log_ratio2.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio2.4), log_ratio2.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log2 Ratio between Topic 4 and 2") +
+  scale_fill_manual(values=c("deeppink", "darkorchid")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+b6 = betaWide %>%
+  select(term, log_ratio3.4) %>%
+  filter(abs(log_ratio3.4) >= 100) %>%
+  mutate(pos = log_ratio3.4 >= 0) %>%
+  ggplot(aes(reorder(term, log_ratio3.4), log_ratio3.4, fill = pos)) +
+  geom_bar(stat = "identity", position = 'dodge') + 
+  coord_flip() + xlab("") + ylab("Beta Log2 Ratio between Topic 4 and 3") +
+  scale_fill_manual(values=c("deepskyblue", "darkorchid")) +
+  guides(fill = "none") +
+  theme_bw(base_size = 12)
+
+#ggarrange(b1, b2, b3, b4, b5, b6, ncol = 2, nrow = 3)
+
+```
+
+```{r Beta Arranged Plots T1, echo=FALSE, fig.height=9, fig.width=12}
+
+ggarrange(b1, b2, b3, ncol = 1, nrow = 3)
+```
+
+[*Figure F Words with the greatest difference in beta values between Topic 1 and the other Topics.*]{.underline}
+
+```{r Beta Arranged Plots T2, echo=FALSE, fig.height=6, fig.width=12}
+
+ggarrange(b4, b5, ncol = 1, nrow = 2)
+```
+
+[*Figure G Words with the greatest difference in beta values between Topic 2 and Topics 3 and 4.*]{.underline}
+
+```{r Beta Arranged Plots T3, echo=FALSE, fig.height=3, fig.width=12}
+
+ggarrange(b6, ncol = 1, nrow = 1)
+```
+[*Figure H Words with the greatest difference in beta values between Topic 3 and Topic 4.*]{.underline}
