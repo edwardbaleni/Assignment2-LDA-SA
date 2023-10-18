@@ -60,6 +60,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -254,40 +256,72 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="bigrams" class="level4">
 <h4 class="anchored" data-anchor-id="bigrams"><em>Bigrams</em></h4>
+<p>In Figure 5, each president seems to have a number of repeating phrases that are meant to convey positive sentiment. These all seem to be rather unique to each individual.</p>
+<p>Both president’s Ramaphosa and Zuma speak upon land reform, a very polarising topic dependent on who is asked. For those who have suffered the backlash of Apartheid, land reform is a very positive sentiment, however, for many who own land, land reform is a very negative sentiment. However, it is undestandable that this has been given a positive sentiment overall as the word reform means to improve upon.</p>
+<p>Although these are supposed to be the presidents’ positive sentiments, characters like de Klerk and Zuma do not subjectively convey a lot of positivity. Their statements are rather neutral. Their positive sentiment cannot be translated well. This may be a result of there possibly not being many positive items that they could have hoped to address. The bing dictionary may also not be a good dictionary for these two. De Klerk did, however, have a lot of positive sentiment about the freedom alliance.</p>
+<p>Ramaphosa’s positive sentiment seems to be very hopeful. He talks about plans, progress and steps forward. These ideas are indicative of a process or belief of a process to betterment.</p>
+<p>Mandela’s positive sentiment worked around ideas of humanity. The reconcilliation commission, national unity, human dignity and affirmative action are all ideas that were prophesed in hopes of establishing a cooperative and friendlier social environment.</p>
+<p>Mbeki was very focused on the improvement of the country’s economic status. Most of his positive sentiment includes words that envoke the idea of an increasing economy.</p>
+<p>For some of these presidents, the bing dictionary was adequate in finding positive sentiment.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Template_files/figure-html/Negated Bigrams per President-1.png" class="img-fluid" width="672"></p>
+<p><img src="Template_files/figure-html/Positive Bigrams per President-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p><u><em>Figure 5: The most commonly used negated positive words used by each president.</em></u></p>
+<p><u><em>Figure 5: The most commonly used positive bigrams used by each president.</em></u></p>
+<p>In Figure 6, each president seems to have a number of repeating phrases that are meant to convey negative sentiment.</p>
+<p>Both Motlanthe and Mbeki happen to have very similar ideas about the negative sentiment. This is understandable as Motlanthe took office after the resignation of Thabo Mbeki, it seems by looking at these plots of negative sentiment that these two presidents were dealing with crime and poverty.</p>
+<p>Some of these sentiments are in fact quite positive. This is a show of how not every negation can be countered beforehand. For example, bigrams like criminal justice, poverty alleviation and anti corruption, have been shown to hold a negative meaning. These same bigrams could’ve just as easily had a positive connotation. Anti corruption is the fight against something quite bad, that is corruption; criminal justice is the fight against crime; poverty alleviation is the mitigation of poverty. All these sentiments have been categorized as negative where in fact their meaning is quite positive. Such a realization puts into context some limitations that come about from the use of dictionaries that may have value some of these positive or negative as neutral, or not valued them at all. These types of bigrams would have been better classified as neutral as the two terms cancel each other out.</p>
+<p>During Zuma’s presidency, the negative sentiment that was expressed was undeniably negative. It seemed to be a period that was ladeled with greater amounts of corruption as this is a topic that appears the most. Apart from the attempt to combat corruption, the sentiment in Zuma’s speeches does not seem to have any double meaning. The speaker seems to speak on the financial and economic crisis that plagued the country at the time.</p>
+<p>Ramaphosa’s negative sentiment is rather ambiguous. It is clear that at this time a very frequent topic was railways, employment, corruption and equality. The word rail has been given negative sentiment while it’s accompanying words are either neutral or not defined in the bing dicitonary, this is rather obscure as a physical object such as train tracks should not necessarily hold negative connotations. It may not exactly be accurate to say that this rail is a negative sentiment. That along with critical skill and critical role, demonstrates that Ramaphosa’s negative bigram sentiments were not able to capture the true meaning behind his statements. This is an indication that either the bing dictionary was not good pick for this task or the possibility that Ramaphosa refrained from giving out bad news, or buried it in some roundabout way.</p>
+<!-- I have no idea what to say about deKlerk and Mandela -->
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Template_files/figure-html/Negated Positive Bigrams per President-1.png" class="img-fluid" width="672"></p>
+<p><img src="Template_files/figure-html/Negative Bigrams per President-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p><u><em>Figure 6: The most commonly used negated negative words used by each president.</em></u></p>
+<p><u><em>Figure 6: The most commonly used negative bigrams used by each president.</em></u></p>
+<p>It should be noted about the bigram plots in Figures 5, Figure 6 and in the Figures present in the <a href="./Appendix.html">Appendix</a>, is that in comparison to the unigram sentiment, the bigram sentiments are not as frequently occuring.</p>
+<p>In the <a href="./Appendix.html">Appendix</a>, it can be seen that negation words do appear frequently in these speeches or in front of other words. There are some that appear, but they are so in frequent that it will in general not affect the interpretation of the unigram sentiment. As mentioned above, it is clear that for these political speeches, a number of case specific negation words were excluded in the analysis of negation words.</p>
 </section>
 </section>
 <section id="topic-modelling-2" class="level3">
 <h3 class="anchored" data-anchor-id="topic-modelling-2"><em>Topic Modelling</em></h3>
+<p>To specify an LDA model, one has to specify the number of topics one could expect to see in a document. Having selected this number of topics, the LDA will produces two outputs beta, <span class="math inline">\(\beta\)</span>, and gamma, <span class="math inline">\(\gamma\)</span>. Where <span class="math inline">\(\beta\)</span> is a parameter that controls the probability of a topic generating a particular word and <span class="math inline">\(gamma\)</span> gives the proportions of topics in a document .</p>
+<p>We first look into the <span class="math inline">\(\beta\)</span>’s, the word-topic probabilities. To find a decent number of topics we ran 2, 3 and 4 topics in the LDA function and found that 4 topics gives the best result of the option.</p>
+<p>Both 2 and 3 topics had topics that had almost the same words, although it is possible for topics to share some terms, the number of similar terms between topics was so great that it was difficult to distinguish the topics at all. When 4 topics was used, there were much clearer distintions between the topics, this can be seen in Figure 7.</p>
+<p>In Figure 7, we see that although there still remains some common terms between some of the topics, majority of the words are unique to their topic. The words in each of the four topics seem to infer a potential idea for each.</p>
+<p>Topic 1 looks to have words related to economic growth. This can be seen in how words like economy, investment, support, growth, sector and business fall into this topic. These are terms that are associated with economic behaviour and business.</p>
+<p>Topic 2 looks to have words related to social development. This can be seen in the inculsion of words like people, development, ensure, regard, social and system. These words are related to social behaviour.</p>
+<p>Topic 3 looks to have words related to public governance / government policy. This can be seen in the inculsion of words like governement, public, service, nation, parliament and democracy. These are all aspects that are related to government involvement.</p>
+<p>Topic 4 can be seen to have ideas related to politics and admin. This topic is rather ambiguous, which resulted in it taking on two main ideas. On the side of politics there are words like national, Africa, honourable, president and chairperson. On the side of admin there are words like programme, million, infastructure and water.</p>
+<p>Since these topics seem somewhat distinguishable, the LDA has successfully discriminated between the 4 topics.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Template_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><u><em>Figure 7: Top 10 Terms in each Topic by word-topic probability.</em></u></p>
+<p>Next we are able to analyse the document-topic probabilities, <span class="math inline">\(\gamma\)</span>’s. This as mentioned prior describes each document as a mixture of topics. It is helpful in analysing the proportions of a topic present in the document.</p>
+<p>In Figure 8, these <span class="math inline">\(\gamma\)</span>’s are captured across the speeches allowing the visualization of trend in topic over time for each president. This would aid in identifying what the general idea of the speech at a given time was.</p>
+<p>Mandela was very involved in ideas of politics and admin. This makes sense as this was a period of transformation in government. Policy and administration were two very important points that needed to be tackled to escape the previously oppressive and hateful era. This emphasis on protecting the new governement structure and politics is further reflected in how the topics of public governance are also strongly occuring topics in his speeches.</p>
+<p>Almost every speech that Ramaphosa has given strongly deals with the topics of economic growth, this is shown in the dominating document-topic probabilities of the topic over all of Ramphosa’s speeches. In his last two speeches it would seem that he gave more attention to politics and administration, while still focusing heavily on economic growth.</p>
+<p>Mbeki tried to touch on as many topics as he possibly could. In each speech that Thabo makes the dominating topic seems to shift. In his first and third speeches he seems to talk on politics and administration. In his second and sixth speech his dominating topic is that of social development. His fifth, eighth and nineth speeches deal with government policy. His fourth and seventh speech have a combination of ideas…</p>
+<p>Zuma’s speeches revolve around two topics, economic growth and government policy.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Template_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><u><em>Figure 8: The trend in topic over time for each president’s speeches.</em></u></p>
+<p>The table below illustrates examples of sentences that may aid in demonstrating the meaning of each topic.</p>
+<p><u><em>Table 1: Example sentences to aid in depicting the meaning of topics</em></u></p>
 <table class="table">
 <colgroup>
-<col style="width: 10%">
-<col style="width: 19%">
-<col style="width: 28%">
-<col style="width: 41%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 35%">
 </colgroup>
 <thead>
 <tr class="header">
