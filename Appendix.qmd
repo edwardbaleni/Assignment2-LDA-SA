@@ -11,6 +11,7 @@ library(tokenizers)
 library(gghighlight)
 library(tictoc)
 library(ggpubr)
+library(topicmodels)
 
 ### Load Data
 
@@ -351,6 +352,31 @@ ggarrange( s3.1, s6.1, s9.1, s12.1, s15.1, s18.1, ncol=2, nrow=3)
 [*Figure E The most commonly used negated negative words used by each president.*]{.underline}
 
 ```{r Log Beta Code, echo=FALSE}
+
+speechTDF = wordsWithSentID %>%
+  group_by(president, word) %>%
+  count() %>%  
+  ungroup() 
+
+dtmSpeech = speechTDF %>% 
+  cast_dtm(president, word, n)
+
+kSeq = 2:4
+topicsList = list()
+
+for (k in kSeq){
+  
+  speechLDA = LDA(dtmSpeech, k = k, control = list(seed = 2023))
+  
+  speechTopics = tidy(speechLDA, matrix = 'beta')
+  
+  topicsList[[k-1]] = speechTopics
+  
+}
+
+names(topicsList) = c("Two", "Three", "Four")
+
+chosenTopic = topicsList$Four
 
 # compare terms with the greatest difference in Betas between topics
 # plots are for all comparisons, assess and visualise for importance
