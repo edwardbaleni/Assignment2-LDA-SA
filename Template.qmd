@@ -866,6 +866,8 @@ speechGamma = left_join(speechSentences %>%
   ungroup() %>%
   mutate(gamma = round(gamma, 3))
 
+deKlerk_gamma = speechGamma %>% filter(president=="deKlerk")
+Motlanthe_gamma = speechGamma %>% filter(president=="Motlanthe")
 ```
 
 Having considered the word-topic probabilities, the document-topic probabilities, $\gamma$'s, can now be considered which will give an indication of how much each president spoke about the four topics and if and how this changes over time. As mentioned previously the document-topic probabilities describe each document as a mixture of topics. It is helpful to analyze the proportions of a topic present in the document to understand the main theme of each speech and identify which topics were of most importance to each president.
@@ -879,6 +881,8 @@ The plot for Mbeki shows a much larger amount of change in topics between differ
 Zuma's speeches revolve around two topics, economic growth and government policy. The plot shows that most of his speeches changed between having one of these two topics as his main theme and they often switched in terms of which was more important over consecutive years.
 
 Almost every speech that Ramaphosa has given strongly deals with the topics of economic growth, this is shown in the dominating document-topic probabilities of the topic over all of Ramphosa's speeches. This makes intuitive sense as much of Ramaphosa's presidency has been during the COVID-19 pandemic which had a large negative impact on the economy, thus requiring a need for economic growth and stimulation in the country. In his last two speeches it would seem that he gave more attention to politics and administration, while still focusing heavily on economic growth.
+
+In de Klerk's single speech, he spoke about two topics. Topic 1 with a $\gamma$ value of 0.468 and Topic 4 with a $\gamma$ value of 0.532. His focus was therefore on both economic growth and politics and administration with slightly more of a focus on the latter topic. In Motlanthe's speech he had a $\gamma$ value of 1 for topic 2 which indicates that his speech primarily focused on social development. This makes sense as Motlanthe followed on from Mbeki whose last speeches also primarily focused on social development.
 
 Topic Modelling use Latent Dirichlet Allocation has allowed for four key themes to be picked up in the SONA data from 1994 to 2023. These key topics have been outlined and have been able to be tracked over time. As mentioned there are some limitation in this analysis which include the fact that some topics contain words that convey similar meaning to word in other topics. This makes it challenging to identify labels and the labels identified here may not be exactly in line with what the true underlying topic may have been. Despite this, topic modelling gives one the ability to identify possible themes in each speech without requiring one to have listened to or read the whole speech. This makes topic modelling, and specifically LDA, a useful method as it automates the analysis of large volumes of text data.
 
