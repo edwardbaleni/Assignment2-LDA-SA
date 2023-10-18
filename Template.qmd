@@ -727,17 +727,14 @@ chosenTopic %>%
 
 [*Figure 7: Top 10 Terms in each Topic by word-topic probability.*]{.underline}
 
-
 [*Table 1: Example sentences to aid in depicting the meaning of topics*]{.underline}
 
 | Topic | Label                       | Words                                            | Sentences                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|----------------|----------------|----------------|------------------------|
+|-----------------|-----------------|-----------------|----------------------|
 | 1     | Economic Growth             | Economy, Investment, Growth, Business            | "The crisis cost our economy about 900 000 jobs." "To ensure the promotion of an inclusive economy, to aid growth and development..." "As part of our efforts to encourage greater economic growth, we are working to reduce the cost to communicate."                                                                                                                                                                                  |
 | 2     | Social Development          | People, Development, Social, Improve             | "We must sustain and improve the effectiveness of our social development programmes..." "The government will create a public service echelon of multi-skilled community development workers..."                                                                                                                                                                                                                                         |
 | 3     | Public Governance           | Government, Public, Service, Democracy           | "That will provide an opportunity to address the more detailed issues on the government's programme ... that will support the government's actions as our country begins its second decade of democracy." "In particular we have decided that this year the government itself, in all its spheres, and the public sector as a whole, must make a decisive and integrated contribution..."                                               |
 | 4     | Politics and Administration | National, Compatriots, President, Infrastructure | "Compatriots and esteemed guests, local government must work." "We dare not allow any minority to deprive the great majority South Africans of their long-awaited desire to elect national and provincial governments which will for the first time in our history be truly representative of all South Africans." "Over the next few years, there will be a dramatic expansion ... for water, land care, municipal infrastructure\..." |
-
-
 
 ```{r echo = FALSE, eval = FALSE}
 
@@ -883,17 +880,19 @@ speechGamma = left_join(speechSentences %>%
 
 ```
 
-Next we are able to analyse the document-topic probabilities, $\gamma$'s. This as mentioned prior describes each document as a mixture of topics. It is helpful in analysing the proportions of a topic present in the document.
+Having considered the word-topic probabilities, the document-topic probabilities, $\gamma$'s, can now be considered which will give an indication of how much each president spoke about the four topics and if and how this changes over time. As mentioned previously the document-topic probabilities describe each document as a mixture of topics. It is helpful to analyze the proportions of a topic present in the document to understand the main theme of each speech and identify which topics were of most importance to each president.
 
-In Figure 8, these $\gamma$'s are captured across the speeches allowing the visualization of trend in topic over time for each president. This would aid in identifying what the general idea of the speech at a given time was.
+In Figure 8, these $\gamma$'s are captured across the speeches allowing the visualization of trend in topic over time for each president. This would aid in identifying what the general idea of the speech at a given time was. The speeches given by de Klerk and Motlanthe are not in this plot because they each only gave one speech so changes over time cannot be considered.
 
-Mandela was very involved in ideas of politics and admin. This makes sense as this was a period of transformation in government. Policy and administration were two very important points that needed to be tackled to escape the previously oppressive and hateful era. This emphasis on protecting the new governement structure and politics is further reflected in how the topics of public governance are also strongly occuring topics in his speeches.
+Mandela's speeches was very focused on ideas of politics and admin. This makes sense as this was a period of transformation in government. Policy and administration were two very important points that needed to be tackled to escape the previously oppressive and hateful era. This emphasis on protecting the new government structure and politics is further reflected in how the topics of public governance are also strongly occurring topics in his speeches. Interesting the economic growth topic does not appear here. This shows a limitation of this analysis, because while Mandela may not have spoken about economic growth as much as later presidents, it definitely would have been part of his speeches and so should have been more present here.
 
-Almost every speech that Ramaphosa has given strongly deals with the topics of economic growth, this is shown in the dominating document-topic probabilities of the topic over all of Ramphosa's speeches. In his last two speeches it would seem that he gave more attention to politics and administration, while still focusing heavily on economic growth.
+The plot for Mbeki shows a much larger amount of change in topics between different speeches. In each of his speeches the dominating topic seems to shift. In his first and third speeches he seems to talk on politics and administration. In his second and sixth speech his dominating topic is that of social development. His fifth, eighth and nineth speeches deal with government policy. His fourth and seventh speech have a combination of ideas these different topics. In his last years of presidency, the main theme of his speeches was that of social development.
 
-Mbeki tried to touch on as many topics as he possibly could. In each speech that Thabo makes the dominating topic seems to shift. In his first and third speeches he seems to talk on politics and administration. In his second and sixth speech his dominating topic is that of social development. His fifth, eighth and nineth speeches deal with government policy. His fourth and seventh speech have a combination of ideas...
+Zuma's speeches revolve around two topics, economic growth and government policy. The plot shows that most of his speeches changed between having one of these two topics as his main theme and they often switched in terms of which was more important over consecutive years.
 
-Zuma's speeches revolve around two topics, economic growth and government policy.
+Almost every speech that Ramaphosa has given strongly deals with the topics of economic growth, this is shown in the dominating document-topic probabilities of the topic over all of Ramphosa's speeches. This makes intuitive sense as much of Ramaphosa's presidency has been during the COVID-19 pandemic which had a large negative impact on the economy, thus requiring a need for economic growth and stimulation in the country. In his last two speeches it would seem that he gave more attention to politics and administration, while still focusing heavily on economic growth.
+
+Topic Modelling use Latent Dirichlet Allocation has allowed for four key themes to be picked up in the SONA data from 1994 to 2023. These key topics have been outlined and have been able to be tracked over time. As mentioned there are some limitation in this analysis which include the fact that some topics contain words that convey similar meaning to word in other topics. This makes it challenging to identify labels and the labels identified here may not be exactly in line with what the true underlying topic may have been. Despite this, topic modelling gives one the ability to identify possible themes in each speech without requiring one to have listened to or read the whole speech. This makes topic modelling, and specifically LDA, a useful method as it automates the analysis of large volumes of text data.
 
 ```{r echo = FALSE}
 
