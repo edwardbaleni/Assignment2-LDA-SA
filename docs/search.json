@@ -81,7 +81,7 @@
     "href": "Appendix.html",
     "title": "Appendix",
     "section": "",
-    "text": "Figure A: Positive Sentiment Over Time\n\n\n\n\n\nFigure B: Negative Sentiment Over Time\n\n\n\n\n\n\n\n\nFigure C: The most commonly occurring negated bigrams.\n\n\n\n\n\nFigure D: The most commonly used negated positive words used by each president.\n\n\n\n\n\nFigure E The most commonly used negated negative words used by each president."
+    "text": "Figure A: Positive Sentiment Over Time\n\n\n\n\n\nFigure B: Negative Sentiment Over Time\n\n\n\n\n\nFigure C: The most commonly occurring negated bigrams.\n\n\n\n\n\nFigure D: The most commonly used negated positive words used by each president.\n\n\n\n\n\nFigure E The most commonly used negated negative words used by each president.\n\n\n\n\n\nFigure F Words with the greatest difference in beta values between Topic 1 and the other Topics.\n\n\n\n\n\nFigure G Words with the greatest difference in beta values between Topic 2 and Topics 3 and 4.\n\n\n\n\n\nFigure H Words with the greatest difference in beta values between Topic 3 and Topic 4."
   },
   {
     "objectID": "Use of ChatGPT.html",
