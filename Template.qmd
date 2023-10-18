@@ -1,5 +1,5 @@
 ---
-title: "Report"
+title: "Assignment 2: Report"
 author: "Andrea Plumbley, Edward Baleni, Luke Barnes"
 format: html
 editor: visual
